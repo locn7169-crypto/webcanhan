@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyễn Thành Lộc — Developer · Creator · Product Builder</title>
+  <meta name="description" content="Personal portfolio of Nguyễn Thành Lộc. Building useful products with code, AI and design.">
+
+  <!-- Google Fonts Preconnect & Load -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="./src/styles/main.css">
+</head>
+<body>
+
+  <!-- Photographic Canvas Backdrop (Image 1: White Garden Roses & Marble) -->
+  <div class="site-backdrop" aria-hidden="true"></div>
+
+  <!-- Fullscreen Studio Mobile Menu (Le-Lab Style) -->
+  <div class="fullscreen-menu-overlay" aria-hidden="true">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <div class="brand-monogram">
+        <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="monogram-avatar-img">
+        <div class="brand-text-group">
+          <span class="brand-text">Nguyễn Thành Lộc</span>
+          <span class="brand-subtext">阮城禄</span>
+        </div>
+      </div>
+      <div style="font-family: var(--font-display-studio); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-gold);">
+        HO CHI MINH CITY, VN
+      </div>
+    </div>
+
+    <nav class="fullscreen-menu-nav">
+      <a href="#hero" class="fullscreen-menu-link">01 / Index</a>
+      <a href="#philosophy" class="fullscreen-menu-link">02 / Philosophy</a>
+      <a href="#works" class="fullscreen-menu-link">03 / Works</a>
+      <a href="#synthesis" class="fullscreen-menu-link">04 / Synthesis</a>
+      <a href="#explorations" class="fullscreen-menu-link">05 / Field Notes</a>
+      <a href="#principles" class="fullscreen-menu-link">06 / Principles</a>
+      <a href="#contact" class="fullscreen-menu-link">07 / Connect & Bio</a>
+    </nav>
+
+    <!-- Mobile Quote & Quick Socials -->
+    <div style="padding: 1rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      <div style="font-family: 'PingFang SC', serif; font-size: 0.85rem; color: var(--ink-secondary); font-style: italic;">
+        “我努力不一定会成功 但我不努力一定会失败”
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
+        <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="badge-pill">Instagram</a>
+        <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="badge-pill">TikTok</a>
+        <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="badge-pill">Facebook</a>
+        <a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" class="badge-pill">X (Twitter)</a>
+        <a href="tel:0866192413" class="badge-pill" style="border-color: var(--accent-gold); color: var(--accent-gold);">0866 192 413</a>
+      </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1.25rem;">
+      <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">
+        Developer · Creator · Product Builder
+      </div>
+      <div style="display: flex; gap: 0.75rem;">
+        <a href="tel:0866192413" class="badge-pill">Gọi điện</a>
+        <a href="sms:0866192413" class="badge-pill">SMS</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global Viewport Scroll Progress Bar -->
+  <div class="global-scroll-progress-bar" aria-hidden="true"></div>
+
+  <!-- Custom Cursor & Trailing Follower -->
+  <div class="custom-cursor" aria-hidden="true"></div>
+  <div class="custom-cursor-follower" aria-hidden="true"></div>
+
+  <!-- Navigation Header -->
+  <header class="site-header" role="banner">
+    <div class="container nav-inner">
+      <a href="#hero" class="brand-monogram" aria-label="Nguyễn Thành Lộc Home">
+        <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="monogram-avatar-img">
+        <div class="brand-text-group">
+          <span class="brand-text">Nguyễn Thành Lộc</span>
+          <span class="brand-subtext">阮城禄</span>
+        </div>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
+          <li><a href="#works" class="nav-link">Featured Works</a></li>
+          <li><a href="#synthesis" class="nav-link">Synthesis Lens</a></li>
+          <li><a href="#explorations" class="nav-link">Explorations</a></li>
+          <li><a href="#principles" class="nav-link">Principles</a></li>
+          <li><a href="#contact" class="nav-link">Connect</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 1rem;">
+        <div class="nav-status">
+          <span class="status-dot"></span>
+          <span>Available for projects</span>
+        </div>
+
+        <!-- Le-Lab Signature Organic Liquid Morphing Magnetic Button -->
+        <a href="#contact" class="le-lab-magnetic-btn" aria-label="Connect with Nguyễn Thành Lộc">
+          <div class="le-lab-wrap">
+            <div class="blob-span blob-span-1 go"></div>
+            <div class="blob-span blob-span-2 go"></div>
+            <div class="blob-span blob-span-3 go"></div>
+            <div class="blob-span blob-span-4 go"></div>
+            <div class="inner-icon">
+              <i data-lucide="arrow-up-right" style="width: 20px; height: 20px;"></i>
+            </div>
+          </div>
+        </a>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="hamburger-toggle-btn" aria-label="Toggle navigation menu" type="button">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Hero Section: Arrival & Dimensional Staging -->
+    <section id="hero" class="section-hero">
+      <div class="container">
+        <div class="hero-header">
+          <div class="eyebrow hero-eyebrow">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+            <span>Developer · Creator · Product Builder</span>
+          </div>
+
+          <div class="hero-title-wrap" style="margin-top: 1rem;">
+            <h1 class="title-hero">
+              <span class="hero-title-line">Nguyễn Thành Lộc</span>
+            </h1>
+            <div style="font-family: var(--font-display-studio); font-size: 0.95rem; font-weight: 700; color: var(--accent-gold); letter-spacing: 0.08em; margin-top: 0.35rem;">
+              阮城禄 · DEVELOPER · CREATOR · PRODUCT BUILDER
+            </div>
+          </div>
+
+          <p class="hero-tagline">
+            Building useful products with code, AI and design. Turning conceptual ideas into robust, living digital software.
+          </p>
+        </div>
+
+        <!-- 2.5D Layered Visual Stage -->
+        <div class="hero-stage">
+          <div class="hero-workbench-card">
+            <div class="workbench-bar">
+              <div class="workbench-dots">
+                <span class="workbench-dot" style="background: #E8B4B8;"></span>
+                <span class="workbench-dot" style="background: #EED7A1;"></span>
+                <span class="workbench-dot" style="background: #B6E2D3;"></span>
+              </div>
+              <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">loc-studio / main.ts</span>
+            </div>
+            <pre class="workbench-code-snippet"><code><span class="code-keyword">interface</span> <span class="code-fn">ProductBuilder</span> {
+  vision: <span class="code-string">"Empowering practical human utility"</span>;
+  stack: [<span class="code-string">"TypeScript"</span>, <span class="code-string">"Modern Web"</span>, <span class="code-string">"AI Workflows"</span>];
+  approach: <span class="code-string">"Requirements → UI/UX → Code → Iteration"</span>;
+}
+
+<span class="code-comment">// Active session: Building high-craft digital experiences</span>
+<span class="code-keyword">const</span> loc = <span class="code-keyword">new</span> <span class="code-fn">ProductBuilder</span>();
+loc.<span class="code-fn">synthesize</span>({ craft: <span class="code-string">"editorial"</span>, performance: <span class="code-string">"60fps"</span> });</code></pre>
+          </div>
+
+          <div class="hero-stage-aside">
+            <!-- Hero Authentic Identity Bio Card (Carrd Profile Synergy) -->
+            <div class="hero-bio-card">
+              <div class="hero-bio-header">
+                <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="hero-bio-avatar">
+                <div class="hero-bio-meta">
+                  <div class="hero-bio-name">Nguyễn Thành Lộc</div>
+                  <div class="hero-bio-signature">阮城禄 · Studio Identity</div>
+                </div>
+              </div>
+              <div class="hero-bio-quote">
+                “我努力不一定会成功 但我不努力一定会失败”
+              </div>
+              <div class="hero-bio-socials">
+                <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="Instagram nguyenthanhloc8561">
+                  <i data-lucide="instagram" style="width: 12px; height: 12px;"></i>
+                  <span>Instagram</span>
+                </a>
+                <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="TikTok Thành Lộc">
+                  <i data-lucide="video" style="width: 12px; height: 12px;"></i>
+                  <span>TikTok</span>
+                </a>
+                <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="Facebook Nguyễn Thành Lộc">
+                  <i data-lucide="facebook" style="width: 12px; height: 12px;"></i>
+                  <span>Facebook</span>
+                </a>
+                <a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="X @Nguyễn Thành Lộc">
+                  <i data-lucide="twitter" style="width: 12px; height: 12px;"></i>
+                  <span>X</span>
+                </a>
+              </div>
+            </div>
+
+            <!-- Direct Line & Location -->
+            <div class="hero-stat-card">
+              <div class="hero-stat-label">Direct Line & Location</div>
+              <div class="hero-stat-value" style="display: flex; align-items: center; justify-content: space-between;">
+                <span style="font-size: 1.1rem;">Ho Chi Minh City, VN</span>
+                <a href="tel:0866192413" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); text-decoration: none; font-weight: 600;">0866 192 413</a>
+              </div>
+              <div style="font-size: var(--text-xs); color: var(--ink-secondary); margin-top: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
+                <span class="status-dot"></span>
+                <span>Available for software & design projects</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Le-Lab Style Hero Bottom Bar -->
+        <div class="hero-bottom-bar">
+          <div class="hero-bottom-location">
+            <i data-lucide="map-pin" style="width: 15px; height: 15px; color: var(--accent-gold);"></i>
+            <span>Ho Chi Minh City, VN</span>
+          </div>
+
+          <a href="#philosophy" class="mouse-scroll-indicator" aria-label="Scroll to explore">
+            <div class="mouse-body">
+              <div class="mouse-dot"></div>
+            </div>
+            <span class="scroll-label">Scroll</span>
+          </a>
+
+          <ul class="hero-bottom-socials">
+            <li><a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" title="Instagram nguyenthanhloc8561" aria-label="Instagram"><i data-lucide="instagram" style="width: 15px; height: 15px;"></i></a></li>
+            <li><a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" title="TikTok Thành Lộc" aria-label="TikTok"><i data-lucide="video" style="width: 15px; height: 15px;"></i></a></li>
+            <li><a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" title="Facebook Nguyễn Thành Lộc" aria-label="Facebook"><i data-lucide="facebook" style="width: 15px; height: 15px;"></i></a></li>
+            <li><a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" title="X @Nguyễn Thành Lộc" aria-label="X"><i data-lucide="twitter" style="width: 15px; height: 15px;"></i></a></li>
+            <li><a href="tel:0866192413" title="Gọi trực tiếp 0866 192 413" aria-label="Phone"><i data-lucide="phone" style="width: 15px; height: 15px;"></i></a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Le-Lab References Style Technology Marquee Bar -->
+    <div class="tech-references-section" aria-label="Disciplines and Technologies">
+      <div class="tech-marquee-wrapper">
+        <div class="tech-item"><span>TypeScript</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>AI Agent Workflows</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>GSAP 3 & ScrollTrigger</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Lenis Smooth Scroll</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Progressive Web Apps (PWA)</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>UI/UX Interaction Design</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Prompt Architecture</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Butter-Smooth 60 FPS</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Editorial Typography</span><span class="tech-item-dot"></span></div>
+        <!-- Duplicated set for seamless infinite loop -->
+        <div class="tech-item"><span>TypeScript</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>AI Agent Workflows</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>GSAP 3 & ScrollTrigger</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Lenis Smooth Scroll</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Progressive Web Apps (PWA)</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>UI/UX Interaction Design</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Prompt Architecture</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Butter-Smooth 60 FPS</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Editorial Typography</span><span class="tech-item-dot"></span></div>
+      </div>
+    </div>
+
+    <!-- 2. Philosophy & Bio: Editorial Narrative & Process -->
+    <section id="philosophy" class="section">
+      <div class="container philosophy-grid">
+        <div class="philosophy-sticky">
+          <div class="eyebrow" style="margin-bottom: 1rem;">
+            <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+            <span>Philosophy & Practice</span>
+          </div>
+          <h2 class="title-section" style="margin-bottom: 1.5rem;">
+            Where code, design, and AI <span class="font-italic-accent">converge</span>.
+          </h2>
+          <p class="text-body" style="font-size: var(--text-md); line-height: 1.7;">
+            I explore the intersection of AI, software development, product design, and practical problem-solving.
+          </p>
+          <p class="text-body" style="margin-top: 1rem; line-height: 1.7;">
+            I use AI-assisted development to turn ideas into functional digital products, from product requirements and interface design to implementation, testing, and continuous iteration.
+          </p>
+
+          <div class="interests-wrap">
+            <div class="interests-header">Core Interests & Domains</div>
+            <div class="interests-grid">
+              <span class="interest-tag active">AI-assisted development</span>
+              <span class="interest-tag active">Web applications & PWA</span>
+              <span class="interest-tag active">UI/UX & interaction design</span>
+              <span class="interest-tag">Product engineering</span>
+              <span class="interest-tag">Photography & visual storytelling</span>
+              <span class="interest-tag">Trekking & outdoor exploration</span>
+              <span class="interest-tag">Chinese language learning</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="methodology-list">
+          <div class="methodology-step">
+            <div class="step-num">01</div>
+            <div class="step-content">
+              <h3>Requirements & Spec Crystallization</h3>
+              <p class="text-body">
+                Distilling amorphous problems into crisp architectural specifications, data schemas, and user journeys before writing a single line of production code.
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <div class="step-num">02</div>
+            <div class="step-content">
+              <h3>Interface Architecture & Spatial Design</h3>
+              <p class="text-body">
+                Composing refined, editorial UI layouts where typography, generous whitespace, and subtle micro-interactions establish visual hierarchy without unnecessary noise.
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <div class="step-num">03</div>
+            <div class="step-content">
+              <h3>AI-Augmented Engineering</h3>
+              <p class="text-body">
+                Pairing deeply with specialized AI agents and autonomous reasoning loops to accelerate code generation, type-safety verification, and edge-case testing.
+              </p>
+            </div>
+          </div>
+
+          <div class="methodology-step">
+            <div class="step-num">04</div>
+            <div class="step-content">
+              <h3>Rigorous In-Browser Verification</h3>
+              <p class="text-body">
+                Every interaction is audited across real viewports for 60fps frame pacing, accessible keyboard navigation, and honest reduced-motion safety.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Featured Works: Curated Project Showcase (Fluid Natural Flow) -->
+    <section id="works" class="section section-works">
+      <div class="container">
+        <div class="works-header">
+          <div>
+            <div class="eyebrow" style="margin-bottom: 0.5rem;">
+              <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
+              <span>Curated Personal Projects</span>
+            </div>
+            <h2 class="title-section">Featured Works</h2>
+          </div>
+          <div class="works-counter-badge">
+            03 Flagship Projects · Interactive Previews
+          </div>
+        </div>
+
+        <div class="projects-grid">
+            
+            <!-- Project 1: LỘC LEARN -->
+            <article class="project-card">
+              <div class="project-card-glare"></div>
+              <div class="project-preview">
+                <!-- Interactive HSK Flashcard Mockup -->
+                <div class="learn-mockup-card" title="Click to flip vocabulary card">
+                  <div class="learn-hanzi">知行合一</div>
+                  <div class="learn-pinyin">zhī xíng hé yī</div>
+                  <div class="learn-meaning">Unity of Knowledge & Action</div>
+                  
+                  <div class="srs-meter">
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-muted);">SRS Retention</span>
+                    <div class="srs-track">
+                      <div class="srs-bar"></div>
+                    </div>
+                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-gold); font-weight: 600;">94%</span>
+                  </div>
+                  <div style="margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);">
+                    Click card to cycle vocabulary · Spaced repetition
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-details">
+                <div class="project-meta-top">
+                  <span class="project-badge">01 // PROJECT</span>
+                  <span class="project-tag">Language Learning · PWA</span>
+                </div>
+                <h3 class="project-card-title">LỘC LEARN</h3>
+                <p class="project-desc">
+                  A language-learning application focused on HSK vocabulary, flashcards, spaced repetition, listening practice, and learning progress. Engineered to make daily retention consistent, tactile, and natural.
+                </p>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                  <span class="badge-pill">HSK 1-6</span>
+                  <span class="badge-pill">Spaced Repetition</span>
+                  <span class="badge-pill">Audio Drills</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Project 2: LỘC MONEY 2 -->
+            <article class="project-card loc-money-card loc-money-trigger" data-project="loc-money" data-target-tab="tong-quan" role="button" tabindex="0" aria-label="Khám phá ứng dụng Lộc Money 2">
+              <div class="project-card-glare"></div>
+              <div class="project-preview loc-dragon-preview-wrap">
+                <div class="loc-dragon-hero-banner">
+                  <!-- Ambient Gold Smoke / Aura Glow -->
+                  <div class="loc-dragon-ambient-glow"></div>
+
+                  <!-- Large Dragon Logo Image with feathered/blurred edges ("mờ 2 viền bao trọn nửa phần trên") -->
+                  <div class="loc-dragon-img-container">
+                    <img src="./assets/locmoney/logo-dragon.jpg" alt="Logo Lộc Money 2 Chrome Dragon to bản mờ hai viền" class="loc-dragon-hero-img" />
+                    <div class="loc-dragon-edge-fade-left"></div>
+                    <div class="loc-dragon-edge-fade-right"></div>
+                    <div class="loc-dragon-edge-fade-bottom"></div>
+                  </div>
+
+                  <!-- Floating Top Bar -->
+                  <div class="loc-dragon-top-dock">
+                    <div class="loc-dragon-brand-tag">
+                      <span class="loc-dragon-crest">✦</span>
+                      <span class="loc-dragon-name">LỘC MONEY 2</span>
+                    </div>
+                    <span class="badge-pill loc-live-pill">
+                      ● Live Ready
+                    </span>
+                  </div>
+
+                  <!-- Floating Bottom Bar -->
+                  <div class="loc-dragon-bottom-dock">
+                    <div class="loc-dragon-stats-row">
+                      <span class="loc-mini-glass-pill">5 Phân hệ lõi</span>
+                      <span class="loc-mini-glass-pill">Financial AI</span>
+                    </div>
+                    <div class="loc-dragon-click-cue">
+                      <span>Khám phá</span>
+                      <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-details">
+                <div class="project-meta-top">
+                  <span class="project-badge">02 // FINANCIAL SUITE</span>
+                  <span class="project-tag">Mobile-First · Financial Suite</span>
+                </div>
+                <h3 class="project-card-title">LỘC MONEY 2</h3>
+                <p class="project-desc">
+                  Financial Intelligence — Quản lý tiền thông minh. Kết hợp quản lý tài sản, phân tích tài chính, dự báo dòng tiền, nhật ký cuộc sống và xây dựng nền tảng tài chính bền vững.
+                </p>
+                <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.5rem;">
+                  “Hiểu tiền hôm nay. Nhìn thấy ngày mai.”
+                </div>
+                <div style="display: flex; gap: 0.45rem; margin-top: 0.9rem; flex-wrap: wrap;">
+                  <span class="badge-pill">Tổng quan & Dự báo</span>
+                  <span class="badge-pill">Giao dịch & Giỏ tiền</span>
+                  <span class="badge-pill">Nhật ký cuộc sống</span>
+                  <span class="badge-pill">Cá nhân & Streaks</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Project 3: LỘC VIDEO -->
+            <article class="project-card">
+              <div class="project-card-glare"></div>
+              <div class="project-preview">
+                <!-- Step-by-Step AI Pipeline Mockup -->
+                <div class="video-pipeline-mockup">
+                  <div class="pipeline-node active">
+                    <div style="font-weight: 600; color: var(--accent-gold);">01</div>
+                    <div>Article URL</div>
+                  </div>
+                  <div style="color: var(--ink-muted);">→</div>
+                  <div class="pipeline-node active">
+                    <div style="font-weight: 600; color: var(--accent-gold);">02</div>
+                    <div>Narration</div>
+                  </div>
+                  <div style="color: var(--ink-muted);">→</div>
+                  <div class="pipeline-node active">
+                    <div style="font-weight: 600; color: var(--accent-gold);">03</div>
+                    <div>Visuals</div>
+                  </div>
+                  <div style="color: var(--ink-muted);">→</div>
+                  <div class="pipeline-node active">
+                    <div style="font-weight: 600; color: var(--accent-gold);">04</div>
+                    <div>Timeline</div>
+                  </div>
+                  <div style="color: var(--ink-muted);">→</div>
+                  <div class="pipeline-node active" style="background: var(--accent-gold-subtle); border-color: var(--accent-gold);">
+                    <div style="font-weight: 600; color: var(--accent-gold);">MP4</div>
+                    <div>Export</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="project-details">
+                <div class="project-meta-top">
+                  <span class="project-badge">03 // PROJECT</span>
+                  <span class="project-tag">AI Workflow · Media</span>
+                </div>
+                <h3 class="project-card-title">LỘC VIDEO</h3>
+                <p class="project-desc">
+                  An AI-assisted workflow for transforming web articles into structured data, narration, visual sequences, timelines, and short MP4 videos. Synthesizes editorial text into synchronized multi-modal media.
+                </p>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                  <span class="badge-pill">Semantic Parser</span>
+                  <span class="badge-pill">TTS Narration</span>
+                  <span class="badge-pill">MP4 Render</span>
+                </div>
+              </div>
+            </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Signature Move: The Synthesis Matrix -->
+    <section id="synthesis" class="section section-synthesis">
+      <div class="container">
+        <div class="eyebrow" style="margin-bottom: 0.5rem;">
+          <i data-lucide="terminal" style="width: 14px; height: 14px;"></i>
+          <span>The Signature Move</span>
+        </div>
+        <h2 class="title-section">The Synthesis Matrix</h2>
+        <p class="text-body" style="max-width: 620px; margin-top: 0.5rem;">
+          Explore the three core disciplines behind my work. Switch modes to inspect how code, AI architecture, and editorial design interact in practice.
+        </p>
+
+        <div class="synthesis-container">
+          <!-- Control Buttons -->
+          <div class="synthesis-controls">
+            <button class="synthesis-btn active" data-mode="code" type="button">
+              <span class="synthesis-btn-title">01 / Clean Code</span>
+              <span class="synthesis-btn-sub">TypeScript · Architecture · 60fps</span>
+            </button>
+            <button class="synthesis-btn" data-mode="ai" type="button">
+              <span class="synthesis-btn-title">02 / AI Orchestration</span>
+              <span class="synthesis-btn-sub">Reasoning Loops · Structured Extraction</span>
+            </button>
+            <button class="synthesis-btn" data-mode="design" type="button">
+              <span class="synthesis-btn-title">03 / Spatial Design</span>
+              <span class="synthesis-btn-sub">Warm Editorial · Fluid Tokens · Micro-motion</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Inspection Stage -->
+          <div class="synthesis-screen">
+            <!-- View: Code -->
+            <div class="synthesis-view active" data-mode="code">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span class="badge-pill">Architecture & Resilience</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">runtime: browser / edge</span>
+              </div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Deterministic, Composited Frontend</h3>
+              <p class="text-body" style="margin-bottom: 1.25rem;">
+                Every animation executes via GPU-accelerated <code>transform</code> and <code>opacity</code>. Frame pacing is unified into a single RAF playhead through Lenis and GSAP, avoiding layout thrashing.
+              </p>
+              <pre class="workbench-code-snippet" style="background: var(--bg-canvas-subtle); padding: 1.25rem; border-radius: var(--radius-md);"><code><span class="code-comment">// Lenis + GSAP ticker synchronization</span>
+lenis.<span class="code-fn">on</span>(<span class="code-string">'scroll'</span>, ScrollTrigger.update);
+gsap.ticker.<span class="code-fn">add</span>((t) => lenis.<span class="code-fn">raf</span>(t * <span class="code-fn">1000</span>));
+gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</span>);</code></pre>
+            </div>
+
+            <!-- View: AI -->
+            <div class="synthesis-view" data-mode="ai">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span class="badge-pill">Structured Prompt Pipelines</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">pipeline: multi-stage agent</span>
+              </div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">From Unstructured Text to Structured Schema</h3>
+              <p class="text-body" style="margin-bottom: 1.25rem;">
+                Turning raw articles into structured timeline cues, script paragraphs, and audio prompts. Strict schemas validate outputs to prevent hallucinations and enforce deterministic processing.
+              </p>
+              <pre class="workbench-code-snippet" style="background: var(--bg-canvas-subtle); padding: 1.25rem; border-radius: var(--radius-md);"><code><span class="code-comment">// Structured Schema Extraction Schema</span>
+<span class="code-keyword">const</span> ArticleVideoSchema = z.<span class="code-fn">object</span>({
+  headline: z.<span class="code-fn">string</span>(),
+  narrativeBeats: z.<span class="code-fn">array</span>(z.<span class="code-fn">object</span>({
+    cueTime: z.<span class="code-fn">number</span>(),
+    voiceScript: z.<span class="code-fn">string</span>(),
+    visualKeywords: z.<span class="code-fn">array</span>(z.<span class="code-fn">string</span>())
+  }))
+});</code></pre>
+            </div>
+
+            <!-- View: Design -->
+            <div class="synthesis-view" data-mode="design">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                <span class="badge-pill">Warm Editorial Studio</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">palette: ivory & champagne</span>
+              </div>
+              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Quiet Luxury & Meaningful Restraint</h3>
+              <p class="text-body" style="margin-bottom: 1.25rem;">
+                Replacing generic dark themes with warm ivory tones, serif italic flair, refined hair-thin borders, and gentle spring physics that reward interaction without overwhelming the reader.
+              </p>
+              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;">
+                <div style="background: #FAF7F2; border: 1px solid var(--border-medium); padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#FAF7F2 Ivory</div>
+                <div style="background: #F4EFE6; border: 1px solid var(--border-medium); padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#F4EFE6 Cream</div>
+                <div style="background: #1C1A17; color: white; padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#1C1A17 Ink</div>
+                <div style="background: #B88E38; color: white; padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#B88E38 Gold</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Explorations: Photography, Trekking & Chinese Learning -->
+    <section id="explorations" class="section">
+      <div class="container">
+        <div class="eyebrow" style="margin-bottom: 0.5rem;">
+          <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+          <span>Field Notes & Perspectives</span>
+        </div>
+        <h2 class="title-section">Explorations Outside the Screen</h2>
+        <p class="text-body" style="max-width: 640px; margin-top: 0.5rem;">
+          Inspiration drawn from physical nature, visual observation, and ancient linguistic nuances.
+        </p>
+
+        <div class="explorations-grid">
+          <!-- Card 1: Photography -->
+          <article class="exploration-card tilt-target">
+            <div class="exploration-visual">
+              <img src="/assets/loc-banner.jpg" alt="White garden roses on marble table" class="exploration-real-img">
+            </div>
+            <div class="exploration-content">
+              <h3>Photography & Visual Storytelling</h3>
+              <p>Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.</p>
+              <span class="exploration-coord">Still Life & Drapery · Visual Balance</span>
+            </div>
+          </article>
+
+          <!-- Card 2: Trekking -->
+          <article class="exploration-card tilt-target">
+            <div class="exploration-visual" style="background: linear-gradient(135deg, #DFD8CB 0%, #C8BFB0 100%);">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#685E51" stroke-width="1.5">
+                <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
+              </svg>
+            </div>
+            <div class="exploration-content">
+              <h3>Trekking & Outdoors</h3>
+              <p>Seeking clarity and endurance across highland trails, foggy ridges, and quiet mountain forests.</p>
+              <span class="exploration-coord">Highland Trails · Physical Endurance</span>
+            </div>
+          </article>
+
+          <!-- Card 3: Chinese Language -->
+          <article class="exploration-card tilt-target">
+            <div class="exploration-visual" style="background: linear-gradient(135deg, #E6DDD0 0%, #D4C7B5 100%);">
+              <div class="exploration-chinese-box">
+                <span class="exploration-chinese-glyph">知行合一</span>
+                <span class="exploration-chinese-sub">阮城禄 · 语言与心智</span>
+              </div>
+            </div>
+            <div class="exploration-content">
+              <h3>Chinese Language & Philosophy</h3>
+              <p>Studying HSK characters and philosophical expressions where language mirrors worldview: <em>“我努力不一定会成功 但我不努力一定会失败”</em>.</p>
+              <span class="exploration-coord">HSK Studies · Hanzi Calligraphy</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Engineering Principles: Honest Craft -->
+    <section id="principles" class="section">
+      <div class="container">
+        <div class="eyebrow" style="margin-bottom: 0.5rem;">
+          <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
+          <span>Standards & Ethos</span>
+        </div>
+        <h2 class="title-section">Engineering Principles</h2>
+
+        <div class="principles-grid">
+          <div class="principle-card">
+            <div class="principle-num">01 / HONESTY</div>
+            <h3>Zero Slop & Honest Claims</h3>
+            <p>
+              Personal projects are presented for what they are: practical, thoughtful software. No fabricated user counts, false venture metrics, or inflated marketing jargon.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-num">02 / PERFORMANCE</div>
+            <h3>Butter-Smooth 60 FPS</h3>
+            <p>
+              Every visual motion is computed via composited GPU properties. Zero layout thrashing, single unified requestAnimationFrame loop, and minimal bundle footprint.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-num">03 / PURPOSE</div>
+            <h3>Restrained, Meaningful Motion</h3>
+            <p>
+              Animation is choreography, not decoration. Every transition clarifies spatial hierarchy and guides the user's attention to what matters most.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-num">04 / ACCESSIBILITY</div>
+            <h3>Accessible & Motion-Safe</h3>
+            <p>
+              Full support for <code>prefers-reduced-motion</code>, semantic HTML structure, high-contrast typography, and visible keyboard focus management.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. Colophon & Authentic Identity / Bio Connect: Carrd Signature Showcase -->
+    <section id="contact" class="section section-contact">
+      <div class="container">
+        <div class="contact-wrap">
+          <div class="eyebrow" style="margin-bottom: 0.75rem; justify-content: center;">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+            <span>Authentic Identity // Connect</span>
+          </div>
+          <h2 class="title-section" style="margin-bottom: 0.5rem;">
+            Nguyễn Thành Lộc <span class="font-italic-accent">(阮城禄)</span>
+          </h2>
+          <p class="text-body" style="font-size: var(--text-md); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            Building useful products with code, AI and design. Kết nối qua mạng xã hội hoặc liên hệ trực tiếp đến tôi.
+          </p>
+
+          <!-- Carrd Signature Frosted Profile Card -->
+          <div class="carrd-profile-card">
+            <!-- Header Banner -->
+            <div class="carrd-card-banner">
+              <img src="/assets/loc-banner.jpg" alt="White floral arrangement banner" class="carrd-banner-img">
+              <div class="carrd-banner-overlay"></div>
+            </div>
+
+            <!-- Avatar Ring -->
+            <div class="carrd-avatar-container">
+              <div class="carrd-avatar-ring">
+                <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="carrd-avatar-img">
+              </div>
+            </div>
+
+            <!-- Profile Info -->
+            <div class="carrd-card-body">
+              <h3 class="carrd-name">Nguyễn Thành Lộc</h3>
+              <div class="carrd-subtitle">阮城禄 · Developer · Creator · Product Builder</div>
+
+              <!-- Motto Quote -->
+              <div class="carrd-quote-box">
+                <div class="carrd-quote-chinese">“ 我努力不一定会成功 但我不努力一定会失败 ”</div>
+                <div class="carrd-quote-vi">Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.</div>
+              </div>
+
+              <!-- 4 Social Link Buttons (Exact Carrd Channels) -->
+              <div class="carrd-buttons-list">
+                <!-- 1. Instagram -->
+                <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="carrd-btn-row">
+                  <div class="carrd-btn-icon">
+                    <i data-lucide="instagram" style="width: 20px; height: 20px;"></i>
+                  </div>
+                  <div class="carrd-btn-text">
+                    <span class="carrd-btn-title">Instagram</span>
+                    <span class="carrd-btn-handle">nguyenthanhloc8561</span>
+                  </div>
+                  <div class="carrd-btn-arrow">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                </a>
+
+                <!-- 2. TikTok -->
+                <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="carrd-btn-row">
+                  <div class="carrd-btn-icon">
+                    <svg viewBox="0 0 40 40" width="20" height="20" fill="currentColor"><path d="M36.1,11.7v5c-3.3,0-6.3-1-8.8-2.8v12.9c0,6.5-5.2,11.7-11.7,11.7c-2.4,0-4.6-0.7-6.5-2c0,0,0,0,0,0 c-3.1-2.1-5.2-5.7-5.2-9.7c0-6.5,5.2-11.7,11.7-11.7c0.5,0,1.1,0,1.6,0.1v1.4c0,0,0,0,0,0v5c-0.5-0.2-1.1-0.3-1.6-0.3 c-2.9,0-5.3,2.4-5.3,5.4c0,2.1,1.2,3.9,2.9,4.8c0.7,0.4,1.5,0.6,2.4,0.6c2.9,0,5.3-2.4,5.3-5.3V1.5h6.3v0.8c0,0.2,0.1,0.5,0.1,0.7 c0.4,2.5,1.9,4.7,4,6c0,0,0.1,0.1,0.1,0.1c0,0-0.1-0.1-0.1-0.1c1.4,0.9,3,1.3,4.7,1.3V11.7"/></svg>
+                  </div>
+                  <div class="carrd-btn-text">
+                    <span class="carrd-btn-title">TikTok</span>
+                    <span class="carrd-btn-handle">Thành Lộc · @nguyenthanhloc475</span>
+                  </div>
+                  <div class="carrd-btn-arrow">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                </a>
+
+                <!-- 3. X (Twitter) -->
+                <a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" class="carrd-btn-row">
+                  <div class="carrd-btn-icon">
+                    <svg viewBox="0 0 40 40" width="18" height="18" fill="currentColor"><path d="M36,36l-12.4-18.3,11.6-13.7h-4l-9.4,11-7.5-11H4.2l12,17.7-12.2,14.3h4l9.9-11.7,7.9,11.7h10.2,0ZM13,6.6l18.2,26.9h-4L9,6.6h4Z" /></svg>
+                  </div>
+                  <div class="carrd-btn-text">
+                    <span class="carrd-btn-title">X (Twitter)</span>
+                    <span class="carrd-btn-handle">@Nguyễn Thành Lộc</span>
+                  </div>
+                  <div class="carrd-btn-arrow">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                </a>
+
+                <!-- 4. Facebook -->
+                <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="carrd-btn-row">
+                  <div class="carrd-btn-icon">
+                    <i data-lucide="facebook" style="width: 20px; height: 20px;"></i>
+                  </div>
+                  <div class="carrd-btn-text">
+                    <span class="carrd-btn-title">Facebook</span>
+                    <span class="carrd-btn-handle">Nguyễn Thành Lộc ( 阮城禄)</span>
+                  </div>
+                  <div class="carrd-btn-arrow">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                </a>
+              </div>
+
+              <!-- Direct Contact Dock (Call, SMS, Copy) -->
+              <div class="carrd-dock">
+                <a href="tel:0866192413" class="carrd-dock-btn" title="Gọi trực tiếp 0866 192 413">
+                  <i data-lucide="phone-call" style="width: 15px; height: 15px;"></i>
+                  <span>0866 192 413</span>
+                </a>
+                <a href="sms:0866192413" class="carrd-dock-btn" title="Gửi tin nhắn SMS">
+                  <i data-lucide="message-square" style="width: 15px; height: 15px;"></i>
+                  <span>SMS Message</span>
+                </a>
+                <button type="button" class="carrd-dock-btn copy-phone-trigger" data-phone="0866192413" title="Sao chép số điện thoại">
+                  <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
+                  <span class="copy-label">Sao chép SĐT</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Toast Notification -->
+        <div class="toast-notice" role="alert" aria-live="polite">
+          <i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-gold);"></i>
+          <span class="toast-msg">Đã sao chép SĐT: 0866192413</span>
+        </div>
+
+        <div class="colophon-footer">
+          <div>
+            © 2026 Nguyễn Thành Lộc (阮城禄). All rights reserved.
+          </div>
+          <div class="time-badge">
+            <i data-lucide="clock" style="width: 13px; height: 13px; color: var(--accent-gold);"></i>
+            <span id="live-time">Loading local time...</span>
+          </div>
+          <div>
+            Direct Contact: <a href="tel:0866192413" style="color: var(--accent-gold); text-decoration: none;">0866 192 413</a> · Ho Chi Minh City, VN
+          </div>
+        </div>
+        <!-- Discrete Floating Scroll-to-Top Pill -->
+        <button type="button" class="scroll-top-btn" aria-label="Cuộn lên đầu trang">
+          <i data-lucide="arrow-up" style="width: 14px; height: 14px;"></i>
+          <span>Lên đầu</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- LỘC MONEY 2: Interactive Inspector Modal -->
+  <div id="loc-money-modal" class="loc-modal" role="dialog" aria-modal="true" aria-labelledby="loc-modal-title" hidden>
+    <div class="loc-modal-backdrop" aria-hidden="true"></div>
+    <div class="loc-modal-container">
+      
+      <!-- Modal Header with Cinematic Banner -->
+      <div class="loc-modal-header loc-modal-header-hero">
+        <div class="loc-modal-header-backdrop">
+          <img src="./assets/locmoney/logo-dragon.jpg" alt="" class="loc-modal-header-bg-img" aria-hidden="true" />
+          <div class="loc-modal-header-fade-left"></div>
+          <div class="loc-modal-header-fade-right"></div>
+          <div class="loc-modal-header-fade-bottom"></div>
+        </div>
+
+        <div class="loc-modal-header-brand">
+          <div class="loc-modal-header-crest-wrap">
+            <img src="./assets/locmoney/logo-dragon.jpg" alt="Lộc Money 2 Chrome Dragon Logo" class="loc-modal-header-logo" />
+            <div class="loc-modal-crest-glow"></div>
+          </div>
+          <div class="loc-modal-header-text">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+              <h3 id="loc-modal-title">LỘC MONEY 2</h3>
+              <span class="badge-pill" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12); font-size: 0.65rem;">
+                ● Live Ready
+              </span>
+            </div>
+            <p>Financial Intelligence — Quản lý tiền thông minh</p>
+            <div class="loc-modal-header-slogan">“Hiểu tiền hôm nay. Nhìn thấy ngày mai.”</div>
+          </div>
+        </div>
+
+        <button type="button" class="loc-modal-close" aria-label="Đóng bảng phân tích">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Money 2">
+        <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-loc-tab="tong-quan">
+          <i data-lucide="wallet" style="width: 14px; height: 14px;"></i>
+          <span>Tổng quan</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="thong-ke">
+          <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
+          <span>Thống kê & Dự báo</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="giao-dich">
+          <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i>
+          <span>Giao dịch (Composer)</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="nhat-ky">
+          <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
+          <span>Nhật ký cuộc sống</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="can-han">
+          <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
+          <span>Cá nhân & Star Money</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="triet-ly">
+          <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
+          <span>Tầm nhìn & Triết lý</span>
+        </button>
+      </nav>
+
+      <!-- Tab Content Panes -->
+      <div class="loc-modal-body">
+        
+        <!-- PANE 1: TỔNG QUAN -->
+        <div class="loc-modal-tab-pane active" data-loc-pane="tong-quan">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/locmoney/module_tongquan.png" alt="Màn hình Tổng quan Lộc Money 2" loading="lazy" />
+              </div>
+            </div>
+
+            <div class="loc-details-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge">
+                  <i data-lucide="wallet" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 01 // Overview</span>
+                </div>
+                <h4 class="loc-module-title">Tổng Quan Tài Sản & Dòng Tiền</h4>
+                <p class="loc-module-lead">
+                  Theo dõi tổng tài sản, số dư khả dụng, cơ cấu tài sản, giao dịch gần đây và các khoản chi sắp tới trong một bảng điều khiển thống nhất.
+                </p>
+              </div>
+
+              <div class="loc-features-grid">
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Tổng Tài Sản & Khả Dụng</h5>
+                    <p>Phân tách rõ ràng giữa tiền mặt khả dụng để chi tiêu hàng ngày và tài sản tích lũy dài hạn.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Cơ Cấu Giỏ Tài Sản</h5>
+                    <p>Phân bổ theo tỷ trọng: Quỹ chi tiêu, Quỹ khẩn cấp, Tài khoản ngân hàng và Đầu tư an toàn.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Giao Dịch Gần Đây</h5>
+                    <p>Truy xuất tức thì các khoản thu chi mới nhất với phân loại danh mục và biểu tượng trực quan.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Khoản Chi Sắp Tới</h5>
+                    <p>Nhận diện trước nghĩa vụ tài chính định kỳ (hóa đơn điện thoại, tiền trọ, phí dịch vụ) để chủ động dự phòng.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loc-tech-note">
+                <strong>Bảo toàn dữ liệu tài chính (Data Invariants):</strong> Số dư hiển thị trên Tổng quan được cập nhật tự động và kiểm tra tính nhất quán 100% với từng giao dịch, loại bỏ hoàn toàn hiện tượng lệch số dư giữa các màn hình.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: THỐNG KÊ -->
+        <div class="loc-modal-tab-pane" data-loc-pane="thong-ke">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/locmoney/module_thongke.png" alt="Màn hình Thống kê Lộc Money 2" loading="lazy" />
+              </div>
+            </div>
+
+            <div class="loc-details-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge">
+                  <i data-lucide="trending-up" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 02 // Analytics & Forecast</span>
+                </div>
+                <h4 class="loc-module-title">Thống Kê, Hành Vi & Dự Báo</h4>
+                <p class="loc-module-lead">
+                  Phân tích thu nhập, chi tiêu, dòng tiền ròng, hành vi tài chính, sức khỏe tài chính và các kịch bản dự báo tương lai có thể giải thích được.
+                </p>
+              </div>
+
+              <div class="loc-features-grid">
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Dòng Tiền Ròng (Net Cashflow)</h5>
+                    <p>Đo lường biên độ thặng dư thực tế: Thu nhập trừ đi Chi tiêu, giúp đánh giá khả năng sinh lời và tiết kiệm.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Phân Tích Hành Vi Chi Tiêu</h5>
+                    <p>Biểu đồ cơ cấu nhóm chi tiêu (Ăn uống, Nhà ở, Di chuyển, Mua sắm) giúp nhận diện rò rỉ ngân sách.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Chỉ Số Sức Khỏe Tài Chính</h5>
+                    <p>Đo lường độ an toàn tài chính dựa trên tỷ lệ tiết kiệm, tỷ lệ nợ và số tháng duy trì quỹ khẩn cấp.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Kịch Bản Dự Báo Tương Lai</h5>
+                    <p>Mô phỏng quỹ đạo tài sản 30 - 90 ngày tới dựa trên tốc độ chi tiêu thực tế và các giả định rõ ràng.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loc-tech-note">
+                <strong>Minh bạch thuật toán:</strong> Toàn bộ công thức tính toán và chỉ số dự báo được giải thích rõ ràng về tham số đầu vào, không sử dụng thuật toán hộp đen.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: GIAO DỊCH -->
+        <div class="loc-modal-tab-pane" data-loc-pane="giao-dich">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/locmoney/module_giaodich.png" alt="Màn hình Ghi nhận Giao dịch Lộc Money 2" loading="lazy" />
+              </div>
+            </div>
+
+            <div class="loc-details-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge">
+                  <i data-lucide="smartphone" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 03 // Transaction Composer</span>
+                </div>
+                <h4 class="loc-module-title">Ghi Nhận & Quản Lý Giao Dịch</h4>
+                <p class="loc-module-lead">
+                  Ghi nhận, phân loại và theo dõi lịch sử thu chi nhanh chóng với bàn phím số chuyên dụng, tạo nền tảng dữ liệu chính xác cho toàn bộ hệ thống.
+                </p>
+              </div>
+
+              <div class="loc-features-grid">
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Ghi Thu / Chi 1 Chạm</h5>
+                    <p>Bàn phím số tích hợp phím tắt tiền tệ, giúp nhập liệu trong dưới 3 giây mà không gây gián đoạn công việc.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Chuẩn Hóa Danh Mục</h5>
+                    <p>Đồng bộ từ điển danh mục (Ăn uống, Nhà ở, Di chuyển...) đảm bảo phân tích thống kê chính xác tuyệt đối.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Chọn Nguồn Giỏ Tiền</h5>
+                    <p>Gắn giao dịch trực tiếp vào Tiền mặt, Tài khoản MB Bank, Techcombank hoặc giỏ Quỹ khẩn cấp tương ứng.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Đính Kèm Ảnh & Ghi Chú</h5>
+                    <p>Hỗ trợ chụp hóa đơn biên lai và lưu trữ offline an toàn bằng IndexedDB trên máy thiết bị.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loc-tech-note">
+                <strong>Delta Reconciliation:</strong> Khi chỉnh sửa hoặc xóa giao dịch, hệ thống áp dụng cơ chế điều chỉnh hiệu số delta để hoàn trả và cập nhật tức thì vào giỏ tài sản nguồn, không bao giờ sinh tiền ảo.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 4: NHẬT KÝ CUỘC SỐNG -->
+        <div class="loc-modal-tab-pane" data-loc-pane="nhat-ky">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/locmoney/module_nhatky.png" alt="Màn hình Nhật ký cuộc sống Lộc Money 2" loading="lazy" />
+              </div>
+            </div>
+
+            <div class="loc-details-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge">
+                  <i data-lucide="book-open" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 04 // Lifestyle Journal</span>
+                </div>
+                <h4 class="loc-module-title">Nhật Ký Cuộc Sống & Ký Ức</h4>
+                <p class="loc-module-lead">
+                  Lưu giữ hình ảnh, cảm xúc, hoạt động và những dấu mốc cá nhân, đồng thời hỗ trợ liên kết trực tiếp với dữ liệu chi tiêu để thấy ý nghĩa đằng sau từng đồng tiền.
+                </p>
+              </div>
+
+              <div class="loc-features-grid">
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Dấu Mốc Cá Nhân & Hình Ảnh</h5>
+                    <p>Lưu giữ những khoảnh khắc kỷ niệm, buổi gặp gỡ bạn bè, chuyến du lịch hay thành tựu cuộc sống.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Theo Dõi Cảm Xúc (Mood)</h5>
+                    <p>Ghi nhận cảm xúc tại thời điểm chi tiêu, giúp phát hiện thói quen mua sắm theo cảm xúc để điều chỉnh.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Liên Kết Giao Dịch Thu Chi</h5>
+                    <p>Gắn kèm hóa đơn hoặc bữa ăn vào nhật ký: Tiền bạc biến thành trải nghiệm sống có giá trị.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Dòng Thời Gian Thống Nhất</h5>
+                    <p>Xóa bỏ định kiến rằng quản lý tiền là khô khan; tiền bạc hòa vào nhịp sống thường nhật của người dùng.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loc-tech-note">
+                <strong>Giá trị cốt lõi: Gắn với cuộc sống.</strong> LỘC MONEY 2 không biến người dùng thành cỗ máy đếm tiền, mà trao quyền để người dùng sống trọn vẹn và an tâm hơn với nguồn lực của mình.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 5: CÁ NHÂN -->
+        <div class="loc-modal-tab-pane" data-loc-pane="can-han">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/locmoney/module_canhan.png" alt="Màn hình Cá nhân Lộc Money 2" loading="lazy" />
+              </div>
+            </div>
+
+            <div class="loc-details-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge">
+                  <i data-lucide="user-check" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 05 // Profile & Discipline</span>
+                </div>
+                <h4 class="loc-module-title">Hồ Sơ Cá Nhân & Chuỗi Kỷ Luật</h4>
+                <p class="loc-module-lead">
+                  Tập trung hồ sơ người dùng, cấp bậc Star Money, huy hiệu chuỗi ngày kỷ luật (Streaks), cài đặt bảo mật và các tùy chọn cá nhân hóa sâu.
+                </p>
+              </div>
+
+              <div class="loc-features-grid">
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Cấp Bậc Star Money</h5>
+                    <p>Thăng hạng dựa trên điểm kỷ luật ghi chép và tỷ lệ hoàn thành mục tiêu tiết kiệm hằng tháng.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Chuỗi Ngày Liên Tục (Streaks)</h5>
+                    <p>Cơ chế tích điểm chuỗi điểm danh tạo động lực hình thành thói quen kiểm soát tài chính mỗi ngày.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Quản Lý Mục Tiêu Tài Chính</h5>
+                    <p>Theo dõi thanh tiến độ tích lũy cho mục tiêu lớn: mua laptop, học chứng chỉ, quỹ du lịch gia đình.</p>
+                  </div>
+                </div>
+
+                <div class="loc-feature-item">
+                  <div class="loc-feature-icon"><i data-lucide="check" style="width: 16px; height: 16px;"></i></div>
+                  <div class="loc-feature-text">
+                    <h5>Bảo Mật & Sao Lưu Đám Mây</h5>
+                    <p>Tùy chọn mã hóa thiết bị, đồng bộ tài khoản Google/Firebase và xuất dữ liệu JSON an toàn.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="loc-tech-note">
+                <strong>Hành trình phát triển bền vững:</strong> Từ một người chi tiêu vô thức trở thành nhà quản lý tài chính cá nhân thông thái và có mục tiêu rõ ràng.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 6: TẦM NHÌN & TRIẾT LÝ -->
+        <div class="loc-modal-tab-pane" data-loc-pane="triet-ly">
+          <div class="loc-module-header" style="margin-bottom: 1.5rem;">
+            <div class="loc-module-badge">
+              <i data-lucide="shield-check" style="width: 13px; height: 13px;"></i>
+              <span>Product Blueprint // Core Philosophy</span>
+            </div>
+            <h4 class="loc-module-title">Tầm Nhìn Sản Phẩm & Triết Lý Thiết Kế</h4>
+            <p class="loc-module-lead">
+              LỘC MONEY 2 được xây dựng với mục tiêu giúp người dùng kiểm soát dòng tiền, hiểu hành vi chi tiêu và xây dựng nền tảng tài chính bền vững trong một trải nghiệm di động thống nhất.
+            </p>
+          </div>
+
+          <div class="loc-blueprint-grid">
+            <div class="loc-blueprint-card">
+              <h4>Tầm Nhìn Sản Phẩm</h4>
+              <p>
+                Biến dữ liệu tài chính hằng ngày thành thông tin hữu ích để người dùng biết mình đang ở đâu, tiền đến từ đâu, được sử dụng như thế nào và cần làm gì tiếp theo.
+              </p>
+              <div style="margin-top: 1.25rem;">
+                <h5 style="font-size: 0.9rem; font-weight: 600; color: var(--ink-primary); margin-bottom: 0.4rem;">Định Hướng Phát Triển</h5>
+                <p style="font-size: 0.8rem; color: var(--ink-secondary); line-height: 1.55;">
+                  Ưu tiên độ chính xác của dữ liệu, tính nhất quán giữa các màn hình, bảo mật thông tin, khả năng sao lưu và đồng bộ, cùng những phân tích tài chính có thể giải thích được. Các chỉ số đánh giá và dự báo sẽ được trình bày minh bạch về công thức, dữ liệu đầu vào và giả định sử dụng.
+                </p>
+              </div>
+            </div>
+
+            <div class="loc-blueprint-card">
+              <h4>5 Giá Trị Cốt Lõi</h4>
+              <ul class="loc-values-list">
+                <li>
+                  <span class="loc-values-num">01.</span>
+                  <div><strong>Minh bạch:</strong> Biết tiền đang ở đâu và được sử dụng vào việc gì.</div>
+                </li>
+                <li>
+                  <span class="loc-values-num">02.</span>
+                  <div><strong>Chủ động:</strong> Nhận diện các khoản chi bất thường và chuẩn bị cho nghĩa vụ tài chính sắp tới.</div>
+                </li>
+                <li>
+                  <span class="loc-values-num">03.</span>
+                  <div><strong>Có mục tiêu:</strong> Theo dõi tiến độ tiết kiệm và xây dựng quỹ dự phòng.</div>
+                </li>
+                <li>
+                  <span class="loc-values-num">04.</span>
+                  <div><strong>Có cơ sở:</strong> Sử dụng thống kê và kịch bản dự báo để hỗ trợ ra quyết định.</div>
+                </li>
+                <li>
+                  <span class="loc-values-num">05.</span>
+                  <div><strong>Gắn với cuộc sống:</strong> Kết nối hành trình tài chính với những hoạt động và trải nghiệm cá nhân.</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="loc-blueprint-card" style="margin-top: 1.25rem;">
+            <h4>Triết Lý Thiết Kế Trực Quan</h4>
+            <p>
+              LỘC MONEY 2 hướng đến trải nghiệm mobile-first với phong cách tối giản hiện đại, bảng màu xanh lá, trắng kem và hồng phấn, hệ thống thẻ thông tin trực quan cùng các biểu đồ dễ đọc. Giao diện không chỉ phục vụ việc xem số liệu mà còn hướng người dùng đến những hành động cụ thể: ghi nhận giao dịch, kiểm soát chi tiêu, tăng tích lũy và hoàn thành mục tiêu.
+            </p>
+            <div style="font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--accent-gold); margin-top: 1rem; text-align: center;">
+              “LỘC MONEY 2 — Hiểu tiền hôm nay. Nhìn thấy ngày mai.”
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="./src/scripts/main.ts"></script>
+</body>
+</html>
