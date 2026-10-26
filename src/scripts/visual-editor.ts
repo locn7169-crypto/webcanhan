@@ -2,7 +2,7 @@
 // Allows direct clicking and typing on any text, with localStorage persistence and export
 
 export function initVisualEditor() {
-  const STORAGE_KEY = 'loc_portfolio_edits_v1';
+  const STORAGE_KEY = 'loc_portfolio_edits_v2';
   let isEditMode = false;
 
   // Restore saved edits from localStorage on page load
@@ -30,6 +30,7 @@ export function initVisualEditor() {
       ['.hero-eyebrow span', 'hero-eyebrow'],
       ['.hero-title-line', 'hero-title'],
       ['.hero-tagline', 'hero-tagline'],
+      ['.workbench-code-snippet', 'hero-code-snippet'],
       ['.hero-bio-meta h3', 'hero-bio-name'],
       ['.hero-bio-meta span', 'hero-bio-title'],
       ['.hero-bio-quote', 'hero-bio-quote'],
