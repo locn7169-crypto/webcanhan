@@ -41,6 +41,7 @@ import { initSynthesisMatrix } from './synthesis-matrix';
 import { initLocMoneyModal } from './loc-money-modal';
 import { initScrollCinematics } from './scroll-cinematics';
 import { initHeroAmbientConstellation } from '../threeui/hero-constellation';
+import { initVisualEditor } from './visual-editor';
 
 // Initialize Lucide icons
 function setupIcons() {
@@ -213,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initLocMoneyModal();
   initScrollCinematics();
   initHeroAmbientConstellation();
+  initVisualEditor();
 
   console.info('[Loc Portfolio] Experience initialized with craft & precision.');
 });
