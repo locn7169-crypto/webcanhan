@@ -2977,45 +2977,6 @@ body.loc-modal-locked {
   color: #fff;
 }
 
-/* Floating Toggle Button (Discreet in Bottom Left) */
-.editor-floating-toggle-btn {
-  position: fixed;
-  bottom: 24px;
-  left: 24px;
-  z-index: 9990;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  padding: 0.45rem 0.85rem;
-  background: rgba(18, 20, 26, 0.7);
-  border: 1px solid rgba(212, 175, 55, 0.3);
-  border-radius: 9999px;
-  color: var(--ink-muted);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 500;
-  cursor: pointer;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  transition: all 0.25s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-}
-
-.editor-floating-toggle-btn:hover {
-  color: var(--accent-gold);
-  border-color: var(--accent-gold);
-  background: rgba(25, 28, 38, 0.9);
-  transform: translateY(-2px);
-}
-
-.editor-floating-toggle-btn.active {
-  background: var(--accent-gold);
-  color: #0b0c10;
-  border-color: var(--accent-gold);
-  font-weight: 700;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
-}
-
 /* Highlighting during Visual Edit Mode */
 body.visual-editor-active [data-editable-active="true"] {
   outline: 1px dashed rgba(212, 175, 55, 0.55);
@@ -3042,9 +3003,5 @@ body.visual-editor-active [data-editable-active="true"]:focus {
   }
   .editor-status-hint {
     display: none;
-  }
-  .editor-floating-toggle-btn {
-    bottom: 16px;
-    left: 16px;
   }
 }

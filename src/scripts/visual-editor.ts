@@ -120,9 +120,6 @@ export function initVisualEditor() {
 
     document.body.appendChild(dock);
 
-    // Also add a discreet trigger button in the footer for easy activation on mobile / tablet
-    createDiscreetTrigger();
-
     // Attach dock events
     document.getElementById('editor-save-btn')?.addEventListener('click', saveEdits);
     document.getElementById('editor-export-btn')?.addEventListener('click', exportHtml);
@@ -130,37 +127,14 @@ export function initVisualEditor() {
     document.getElementById('editor-close-btn')?.addEventListener('click', () => toggleEditMode(false));
   }
 
-  // Discreet footer trigger button
-  function createDiscreetTrigger() {
-    if (document.getElementById('editor-floating-toggle')) return;
-
-    const toggleBtn = document.createElement('button');
-    toggleBtn.id = 'editor-floating-toggle';
-    toggleBtn.type = 'button';
-    toggleBtn.className = 'editor-floating-toggle-btn';
-    toggleBtn.setAttribute('title', 'Bật chế độ chỉnh sửa chữ (Phím tắt: Option + E)');
-    toggleBtn.innerHTML = `
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-      <span>Sửa chữ</span>
-    `;
-
-    toggleBtn.addEventListener('click', () => {
-      toggleEditMode(!isEditMode);
-    });
-
-    document.body.appendChild(toggleBtn);
-  }
-
   // Toggle edit mode on/off
   function toggleEditMode(enable: boolean) {
     isEditMode = enable;
     const dock = document.getElementById('visual-editor-dock');
-    const toggleBtn = document.getElementById('editor-floating-toggle');
 
     if (enable) {
       document.body.classList.add('visual-editor-active');
       dock?.classList.remove('hidden');
-      toggleBtn?.classList.add('active');
 
       // Make all tagged elements editable
       document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
@@ -173,7 +147,6 @@ export function initVisualEditor() {
     } else {
       document.body.classList.remove('visual-editor-active');
       dock?.classList.add('hidden');
-      toggleBtn?.classList.remove('active');
 
       // Disable editing
       document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
@@ -264,7 +237,8 @@ export function initVisualEditor() {
 
   // Listen for keyboard shortcut: Option + E (or Alt + E)
   window.addEventListener('keydown', (e) => {
-    if (e.altKey && (e.key === 'e' || e.key === 'E' || e.code === 'KeyE')) {
+    const isEKey = e.code === 'KeyE' || e.key === 'e' || e.key === 'E' || e.key === '´' || e.key === 'Dead' || (e as KeyboardEvent).keyCode === 69;
+    if (e.altKey && isEKey) {
       e.preventDefault();
       toggleEditMode(!isEditMode);
     }
