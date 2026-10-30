@@ -31,6 +31,10 @@ import {
   UserCheck,
   Smartphone,
   ArrowUp,
+  Laptop,
+  Languages,
+  Coins,
+  Bot,
 } from 'lucide';
 import { initSmoothScroll } from './lenis-scroll';
 import { initMagneticAndCursor } from './magnetic-cursor';
@@ -80,6 +84,10 @@ function setupIcons() {
       BookOpen,
       UserCheck,
       Smartphone,
+      Laptop,
+      Languages,
+      Coins,
+      Bot,
     },
   });
 }
