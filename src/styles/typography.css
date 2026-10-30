@@ -38,10 +38,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .title-hero {
-  font-size: var(--text-hero);
-  line-height: 0.95;
-  letter-spacing: -0.035em;
-  font-weight: 400;
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.75rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  font-weight: 500;
 }
 
 .title-section {
@@ -106,3 +106,45 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--ink-primary);
   transform: translateY(-1px);
 }
+
+/* Bilingual Typography Styling */
+.bilingual-sub {
+  font-family: var(--font-serif);
+  font-size: 0.78em;
+  font-weight: 400;
+  color: var(--accent-gold);
+  font-style: italic;
+  letter-spacing: normal;
+}
+
+.bilingual-title-vi {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 0.6em;
+  font-weight: 400;
+  color: var(--accent-gold);
+  letter-spacing: -0.01em;
+  margin-top: 0.35rem;
+  font-style: italic;
+}
+
+.bilingual-en {
+  color: var(--ink-primary);
+  line-height: 1.65;
+}
+
+.bilingual-vi {
+  color: var(--ink-secondary);
+  font-size: 0.92em;
+  line-height: 1.65;
+}
+
+.bilingual-tagline-vi {
+  display: block;
+  font-size: 0.9em;
+  color: var(--ink-secondary);
+  margin-top: 0.45rem;
+  line-height: 1.55;
+  font-weight: 400;
+}
+

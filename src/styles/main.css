@@ -41,32 +41,204 @@ body::before {
   transition: opacity 0.3s ease;
 }
 
-/* Photographic Canvas Backdrop (Image 1: White Garden Roses & Marble) */
-.site-backdrop {
+/* ==========================================================================
+   CINEMATIC SCROLL-DRIVEN MULTI-STAGE BACKDROP SYSTEM
+   ========================================================================== */
+.site-backdrop-system {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
   pointer-events: none;
   z-index: 0;
-  background-image: 
-    linear-gradient(to right, rgba(250, 247, 242, 0.88) 0%, rgba(250, 247, 242, 0.62) 50%, rgba(250, 247, 242, 0.28) 100%),
-    linear-gradient(180deg, rgba(250, 247, 242, 0.15) 0%, rgba(250, 247, 242, 0.75) 100%),
-    url('/assets/loc-bg.jpg');
-  background-position: center right;
+  overflow: hidden;
+  background-color: var(--bg-canvas);
+}
+
+.backdrop-scene {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), visibility 1s ease;
+  will-change: opacity;
+}
+
+.backdrop-scene.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.scene-img-layer {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
   background-size: cover;
+  background-position: center center;
   background-repeat: no-repeat;
   will-change: transform;
 }
 
+/* 1. Scene Hero: White Garden Roses & Marble Silk */
+.scene-hero-img {
+  background-image: url('/assets/loc-bg.jpg');
+  background-position: center right;
+}
+
+.scene-overlay-hero {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(to right, rgba(250, 247, 242, 0.88) 0%, rgba(250, 247, 242, 0.62) 50%, rgba(250, 247, 242, 0.32) 100%),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.15) 0%, rgba(250, 247, 242, 0.75) 100%);
+}
+
+/* 2. Scene Philosophy: Depth of Field & Golden Ambient Bokeh */
+.scene-philosophy-img {
+  background-image: url('/assets/loc-bg.jpg');
+  background-position: 60% center;
+  filter: blur(4px);
+  transform: scale(1.08);
+}
+
+.scene-overlay-philosophy {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 80% 40%, rgba(184, 142, 56, 0.12) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(250, 247, 242, 0.94) 0%, rgba(244, 239, 230, 0.75) 60%, rgba(250, 247, 242, 0.88) 100%);
+}
+
+/* Floating Golden Bokeh Orbs */
+.bokeh-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(35px);
+  opacity: 0.45;
+  animation: float-bokeh 12s infinite ease-in-out alternate;
+}
+
+.bokeh-orb-1 {
+  width: 320px;
+  height: 320px;
+  top: 15%;
+  right: 15%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.35) 0%, transparent 70%);
+}
+
+.bokeh-orb-2 {
+  width: 250px;
+  height: 250px;
+  bottom: 25%;
+  right: 35%;
+  background: radial-gradient(circle, rgba(238, 215, 161, 0.4) 0%, transparent 70%);
+  animation-duration: 16s;
+  animation-delay: -4s;
+}
+
+.bokeh-orb-3 {
+  width: 200px;
+  height: 200px;
+  top: 50%;
+  left: 20%;
+  background: radial-gradient(circle, rgba(184, 142, 56, 0.25) 0%, transparent 70%);
+  animation-duration: 14s;
+  animation-delay: -8s;
+}
+
+@keyframes float-bokeh {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(25px, -20px) scale(1.08); }
+  100% { transform: translate(-20px, 25px) scale(0.95); }
+}
+
+/* 3. Scene Works: Moody Obsidian & Champagne Gold Architectural Studio */
+.scene-works-img {
+  background-image: url('/assets/backdrop-works.jpg');
+  background-position: center center;
+}
+
+.scene-overlay-works {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(135deg, rgba(250, 247, 242, 0.88) 0%, rgba(244, 239, 230, 0.65) 50%, rgba(28, 26, 23, 0.25) 100%),
+    radial-gradient(circle at 75% 30%, rgba(184, 142, 56, 0.15) 0%, transparent 60%);
+}
+
+.blueprint-grid {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    linear-gradient(rgba(184, 142, 56, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184, 142, 56, 0.04) 1px, transparent 1px);
+  background-size: 60px 60px;
+  opacity: 0.7;
+}
+
+/* 4. Scene Synthesis: Fluid Generative Horizon & Ambient Stardust */
+.backdrop-fluid-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.scene-overlay-synthesis {
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(ellipse at 50% 50%, rgba(184, 142, 56, 0.08) 0%, transparent 75%),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.85) 0%, rgba(244, 239, 230, 0.7) 100%);
+}
+
+/* 5. Scene Contact: Sunset Sanctuary Garden & Ethereal Golden Hour */
+.scene-contact-img {
+  background-image: url('/assets/backdrop-contact.jpg');
+  background-position: center center;
+}
+
+.scene-overlay-contact {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(180deg, rgba(250, 247, 242, 0.65) 0%, rgba(250, 247, 242, 0.45) 50%, rgba(250, 247, 242, 0.85) 100%),
+    radial-gradient(circle at 50% 55%, rgba(212, 175, 55, 0.18) 0%, transparent 60%);
+}
+
+.contact-sanctuary-halo {
+  position: absolute;
+  bottom: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 350px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(212, 175, 55, 0.22) 0%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
-  .site-backdrop {
+  .scene-hero-img {
     background-position: 75% center;
-    background-image: 
-      linear-gradient(180deg, rgba(250, 247, 242, 0.92) 0%, rgba(250, 247, 242, 0.78) 45%, rgba(250, 247, 242, 0.92) 100%),
-      url('/assets/loc-bg.jpg');
   }
+  .scene-works-img {
+    background-position: 65% center;
+  }
+  .scene-contact-img {
+    background-position: 60% center;
+  }
+}
+
+/* Backward Compatibility */
+.site-backdrop {
+  display: none;
 }
 
 main {
@@ -539,12 +711,14 @@ body.menu-active .hamburger-line:nth-child(3) {
 }
 
 .hero-title-wrap {
-  overflow: hidden;
+  overflow: visible;
+  padding: 0.15rem 0;
 }
 
 .hero-title-line {
   display: block;
-  transform: translateY(0);
+  color: var(--ink-primary);
+  opacity: 1;
 }
 
 .hero-tagline {
@@ -1290,6 +1464,8 @@ body.menu-active .hamburger-line:nth-child(3) {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+  position: sticky;
+  top: 5.5rem;
 }
 
 .synthesis-btn {
@@ -1489,7 +1665,7 @@ body.menu-active .hamburger-line:nth-child(3) {
 
 /* Colophon & Contact Section: Carrd Profile Integration */
 .section-contact {
-  background: var(--bg-canvas-subtle);
+  background: transparent;
   border-top: 1px solid var(--border-medium);
   padding-bottom: var(--space-2xl);
 }
@@ -1792,6 +1968,9 @@ body.menu-active .hamburger-line:nth-child(3) {
   .synthesis-container {
     grid-template-columns: 1fr;
   }
+  .synthesis-controls {
+    position: static;
+  }
   .explorations-grid {
     grid-template-columns: 1fr 1fr;
   }
@@ -1911,6 +2090,78 @@ body.loc-modal-locked {
 .project-card.loc-money-card:hover .loc-dragon-ambient-glow {
   transform: translate(-50%, -50%) scale(1.28);
   opacity: 1;
+}
+
+/* Lộc Learn Card & Banner Styling */
+.project-card.loc-learn-card {
+  cursor: pointer;
+  transition: transform 0.4s var(--ease-out-editorial), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.project-card.loc-learn-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 16px 36px rgba(16, 185, 129, 0.15), 0 0 30px rgba(16, 185, 129, 0.1);
+}
+
+.loc-learn-ambient-glow {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 260px;
+  height: 160px;
+  background: radial-gradient(ellipse at center, rgba(16, 185, 129, 0.42) 0%, rgba(52, 211, 153, 0.15) 45%, transparent 72%);
+  pointer-events: none;
+  filter: blur(22px);
+  z-index: 1;
+  transition: transform 0.6s var(--ease-out-editorial), opacity 0.6s ease;
+}
+
+.project-card.loc-learn-card:hover .loc-learn-ambient-glow {
+  transform: translate(-50%, -50%) scale(1.3);
+  opacity: 1;
+}
+
+.project-card.loc-learn-card .loc-dragon-hero-img {
+  object-position: center 42%;
+  transform: scale(1.06);
+}
+
+.project-card.loc-learn-card:hover .loc-dragon-hero-img {
+  transform: scale(1.15);
+  filter: contrast(1.12) brightness(1.05) drop-shadow(0 14px 34px rgba(16, 185, 129, 0.4));
+}
+
+.loc-modal-header-hero-learn {
+  background: radial-gradient(circle at 50% 20%, rgba(16, 185, 129, 0.25) 0%, #0E0D0B 80%);
+}
+
+.loc-modal-header-hero-learn .loc-modal-crest-glow {
+  box-shadow: 0 0 35px rgba(16, 185, 129, 0.55);
+}
+
+#loc-learn-modal .loc-modal-tab-btn.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.22) 0%, rgba(5, 150, 105, 0.12) 100%);
+  border-color: rgba(16, 185, 129, 0.5);
+  color: #34D399;
+}
+
+#loc-learn-modal .loc-modal-tab-btn.active::after {
+  background: #10B981;
+  box-shadow: 0 0 10px #10B981;
+}
+
+.loc-learn-screen-img {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.3s ease;
+}
+
+.loc-learn-screen-img:hover {
+  transform: scale(1.02);
 }
 
 /* The Grand Dragon Image Container */

@@ -15,8 +15,43 @@
 </head>
 <body>
 
-  <!-- Photographic Canvas Backdrop (Image 1: White Garden Roses & Marble) -->
-  <div class="site-backdrop" aria-hidden="true"></div>
+  <!-- Cinematic Multi-Stage Scroll-Driven Backdrop -->
+  <div class="site-backdrop-system" aria-hidden="true">
+    <!-- Scene 1: Hero (White Garden Roses & Marble Silk) -->
+    <div class="backdrop-scene scene-hero active" id="bg-scene-hero">
+      <div class="scene-img-layer scene-hero-img"></div>
+      <div class="scene-overlay-hero"></div>
+    </div>
+
+    <!-- Scene 2: Philosophy (Depth of Field & Golden Ambient Bokeh) -->
+    <div class="backdrop-scene scene-philosophy" id="bg-scene-philosophy">
+      <div class="scene-img-layer scene-philosophy-img"></div>
+      <div class="scene-overlay-philosophy"></div>
+      <div class="bokeh-orb bokeh-orb-1"></div>
+      <div class="bokeh-orb bokeh-orb-2"></div>
+      <div class="bokeh-orb bokeh-orb-3"></div>
+    </div>
+
+    <!-- Scene 3: Featured Works (Moody Obsidian & Champagne Gold Architectural Studio) -->
+    <div class="backdrop-scene scene-works" id="bg-scene-works">
+      <div class="scene-img-layer scene-works-img"></div>
+      <div class="scene-overlay-works"></div>
+      <div class="blueprint-grid"></div>
+    </div>
+
+    <!-- Scene 4: Synthesis & Explorations (Fluid Generative Horizon & Ambient Stardust) -->
+    <div class="backdrop-scene scene-synthesis" id="bg-scene-synthesis">
+      <canvas id="backdrop-synthesis-canvas" class="backdrop-fluid-canvas"></canvas>
+      <div class="scene-overlay-synthesis"></div>
+    </div>
+
+    <!-- Scene 5: Connect & Sanctuary (Sunset Sanctuary Garden & Ethereal Golden Hour) -->
+    <div class="backdrop-scene scene-contact" id="bg-scene-contact">
+      <div class="scene-img-layer scene-contact-img"></div>
+      <div class="scene-overlay-contact"></div>
+      <div class="contact-sanctuary-halo"></div>
+    </div>
+  </div>
 
   <!-- Fullscreen Studio Mobile Menu (Le-Lab Style) -->
   <div class="fullscreen-menu-overlay" aria-hidden="true">
@@ -34,19 +69,22 @@
     </div>
 
     <nav class="fullscreen-menu-nav">
-      <a href="#hero" class="fullscreen-menu-link">01 / Index</a>
-      <a href="#philosophy" class="fullscreen-menu-link">02 / Philosophy</a>
-      <a href="#works" class="fullscreen-menu-link">03 / Works</a>
-      <a href="#synthesis" class="fullscreen-menu-link">04 / Synthesis</a>
-      <a href="#explorations" class="fullscreen-menu-link">05 / Field Notes</a>
-      <a href="#principles" class="fullscreen-menu-link">06 / Principles</a>
-      <a href="#contact" class="fullscreen-menu-link">07 / Connect & Bio</a>
+      <a href="#hero" class="fullscreen-menu-link">01 / Index · Trang chủ</a>
+      <a href="#philosophy" class="fullscreen-menu-link">02 / Philosophy · Triết lý</a>
+      <a href="#works" class="fullscreen-menu-link">03 / Works · Dự án</a>
+      <a href="#synthesis" class="fullscreen-menu-link">04 / My Journey · Hành trình</a>
+      <a href="#explorations" class="fullscreen-menu-link">05 / Explorations · Khám phá</a>
+      <a href="#principles" class="fullscreen-menu-link">06 / Principles · Nguyên tắc</a>
+      <a href="#contact" class="fullscreen-menu-link">07 / Connect · Kết nối</a>
     </nav>
 
     <!-- Mobile Quote & Quick Socials -->
     <div style="padding: 1rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
       <div style="font-family: 'PingFang SC', serif; font-size: 0.85rem; color: var(--ink-secondary); font-style: italic;">
         “我努力不一定会成功 但我不努力一定会失败”
+      </div>
+      <div style="font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.25rem;">
+        Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.
       </div>
       <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
         <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="badge-pill">Instagram</a>
@@ -62,8 +100,8 @@
         Developer · Creator · Product Builder
       </div>
       <div style="display: flex; gap: 0.75rem;">
-        <a href="tel:0866192413" class="badge-pill">Gọi điện</a>
-        <a href="sms:0866192413" class="badge-pill">SMS</a>
+        <a href="tel:0866192413" class="badge-pill">Gọi điện · Call</a>
+        <a href="sms:0866192413" class="badge-pill">SMS · Nhắn tin</a>
       </div>
     </div>
   </div>
@@ -88,19 +126,19 @@
 
       <nav aria-label="Primary Navigation">
         <ul class="nav-links">
-          <li><a href="#philosophy" class="nav-link">Philosophy</a></li>
-          <li><a href="#works" class="nav-link">Featured Works</a></li>
-          <li><a href="#synthesis" class="nav-link">Synthesis Lens</a></li>
-          <li><a href="#explorations" class="nav-link">Explorations</a></li>
-          <li><a href="#principles" class="nav-link">Principles</a></li>
-          <li><a href="#contact" class="nav-link">Connect</a></li>
+          <li><a href="#philosophy" class="nav-link">Philosophy · Triết lý</a></li>
+          <li><a href="#works" class="nav-link">Works · Dự án</a></li>
+          <li><a href="#synthesis" class="nav-link">My Journey · Hành trình</a></li>
+          <li><a href="#explorations" class="nav-link">Explorations · Khám phá</a></li>
+          <li><a href="#principles" class="nav-link">Principles · Nguyên tắc</a></li>
+          <li><a href="#contact" class="nav-link">Connect · Kết nối</a></li>
         </ul>
       </nav>
 
       <div style="display: flex; align-items: center; gap: 1rem;">
         <div class="nav-status">
           <span class="status-dot"></span>
-          <span>Available for projects</span>
+          <span>Available for projects · Sẵn sàng cho dự án</span>
         </div>
 
         <!-- Le-Lab Signature Organic Liquid Morphing Magnetic Button -->
@@ -133,20 +171,21 @@
         <div class="hero-header">
           <div class="eyebrow hero-eyebrow">
             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-            <span>TECHNOLOGY · CREATIVITY · LIFE</span>
+            <span>TECHNOLOGY · CREATIVITY · LIFE | CÔNG NGHỆ · SÁNG TẠO · ĐỜI SỐNG</span>
           </div>
 
-          <div class="hero-title-wrap" style="margin-top: 1rem;">
+          <div class="hero-title-wrap" style="margin-top: 0.75rem;">
             <h1 class="title-hero">
               <span class="hero-title-line">Nguyễn Thành Lộc</span>
             </h1>
-            <div style="font-family: var(--font-display-studio); font-size: 0.95rem; font-weight: 700; color: var(--accent-gold); letter-spacing: 0.08em; margin-top: 0.35rem;">
-              阮城禄 · TECHNOLOGY · CREATIVITY · LIFE
+            <div style="font-family: var(--font-display-studio); font-size: 0.9rem; font-weight: 600; color: var(--accent-gold); letter-spacing: 0.12em; margin-top: 0.35rem;">
+              阮城禄
             </div>
           </div>
 
           <p class="hero-tagline">
-            A personal space for the things I build, the things I learn, and the things I love.
+            <span class="bilingual-en">A personal space for the things I build, the things I learn, and the things I love.</span>
+            <span class="bilingual-tagline-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</span>
           </p>
         </div>
 
@@ -188,6 +227,7 @@
               </div>
               <div class="hero-bio-quote">
                 “我努力不一定会成功 但我不努力一定会失败”
+                <div style="font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.2rem; font-style: normal;">Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại.</div>
               </div>
               <div class="hero-bio-socials">
                 <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="Instagram nguyenthanhloc8561">
@@ -195,7 +235,7 @@
                   <span>Instagram</span>
                 </a>
                 <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="TikTok Thành Lộc">
-                  <i data-lucide="video" style="width: 12px; height: 12px;"></i>
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
                   <span>TikTok</span>
                 </a>
                 <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="hero-bio-social-pill" title="Facebook Nguyễn Thành Lộc">
@@ -211,14 +251,14 @@
 
             <!-- Direct Line & Location -->
             <div class="hero-stat-card">
-              <div class="hero-stat-label">Direct Line & Location</div>
+              <div class="hero-stat-label">Direct Line & Location · Liên hệ & Địa điểm</div>
               <div class="hero-stat-value" style="display: flex; align-items: center; justify-content: space-between;">
                 <span style="font-size: 1.1rem;">Ho Chi Minh City, VN</span>
                 <a href="tel:0866192413" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent-gold); text-decoration: none; font-weight: 600;">0866 192 413</a>
               </div>
               <div style="font-size: var(--text-xs); color: var(--ink-secondary); margin-top: 0.35rem; display: flex; align-items: center; gap: 0.5rem;">
                 <span class="status-dot"></span>
-                <span>Available for software & design projects</span>
+                <span>Available for software & design projects · Sẵn sàng hợp tác dự án</span>
               </div>
             </div>
           </div>
@@ -228,19 +268,19 @@
         <div class="hero-bottom-bar">
           <div class="hero-bottom-location">
             <i data-lucide="map-pin" style="width: 15px; height: 15px; color: var(--accent-gold);"></i>
-            <span>Ho Chi Minh City, VN</span>
+            <span>Ho Chi Minh City, VN · TP. Hồ Chí Minh</span>
           </div>
 
           <a href="#philosophy" class="mouse-scroll-indicator" aria-label="Scroll to explore">
             <div class="mouse-body">
               <div class="mouse-dot"></div>
             </div>
-            <span class="scroll-label">Scroll</span>
+            <span class="scroll-label">Scroll · Cuộn</span>
           </a>
 
           <ul class="hero-bottom-socials">
             <li><a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" title="Instagram nguyenthanhloc8561" aria-label="Instagram"><i data-lucide="instagram" style="width: 15px; height: 15px;"></i></a></li>
-            <li><a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" title="TikTok Thành Lộc" aria-label="TikTok"><i data-lucide="video" style="width: 15px; height: 15px;"></i></a></li>
+            <li><a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" title="TikTok Thành Lộc" aria-label="TikTok"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg></a></li>
             <li><a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" title="Facebook Nguyễn Thành Lộc" aria-label="Facebook"><i data-lucide="facebook" style="width: 15px; height: 15px;"></i></a></li>
             <li><a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" title="X @Nguyễn Thành Lộc" aria-label="X"><i data-lucide="twitter" style="width: 15px; height: 15px;"></i></a></li>
             <li><a href="tel:0866192413" title="Gọi trực tiếp 0866 192 413" aria-label="Phone"><i data-lucide="phone" style="width: 15px; height: 15px;"></i></a></li>
@@ -253,55 +293,59 @@
     <div class="tech-references-section" aria-label="Disciplines and Technologies">
       <div class="tech-marquee-wrapper">
         <div class="tech-item"><span>TypeScript</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>AI Agent Workflows</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>GSAP 3 & ScrollTrigger</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Lenis Smooth Scroll</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Progressive Web Apps (PWA)</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>UI/UX Interaction Design</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Prompt Architecture</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Butter-Smooth 60 FPS</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Editorial Typography</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>AI Agent Workflows · Luồng làm việc AI</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>GSAP 3 & ScrollTrigger · Chuyển động 2.5D</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Lenis Smooth Scroll · Cuộn mượt mà</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Progressive Web Apps (PWA) · Ứng dụng Web</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>UI/UX Interaction Design · Thiết kế tương tác</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Prompt Architecture · Cấu trúc Prompt</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Butter-Smooth 60 FPS · Hiệu năng 60 FPS</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Editorial Typography · Nghệ thuật chữ</span><span class="tech-item-dot"></span></div>
         <!-- Duplicated set for seamless infinite loop -->
         <div class="tech-item"><span>TypeScript</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>AI Agent Workflows</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>GSAP 3 & ScrollTrigger</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Lenis Smooth Scroll</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Progressive Web Apps (PWA)</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>UI/UX Interaction Design</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Prompt Architecture</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Butter-Smooth 60 FPS</span><span class="tech-item-dot"></span></div>
-        <div class="tech-item"><span>Editorial Typography</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>AI Agent Workflows · Luồng làm việc AI</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>GSAP 3 & ScrollTrigger · Chuyển động 2.5D</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Lenis Smooth Scroll · Cuộn mượt mà</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Progressive Web Apps (PWA) · Ứng dụng Web</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>UI/UX Interaction Design · Thiết kế tương tác</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Prompt Architecture · Cấu trúc Prompt</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Butter-Smooth 60 FPS · Hiệu năng 60 FPS</span><span class="tech-item-dot"></span></div>
+        <div class="tech-item"><span>Editorial Typography · Nghệ thuật chữ</span><span class="tech-item-dot"></span></div>
       </div>
     </div>
 
     <!-- 2. Philosophy & Bio: Editorial Narrative & Process -->
-    <section id="philosophy" class="section">
+    <section id="philosophy" class="section section-philosophy">
       <div class="container philosophy-grid">
         <div class="philosophy-sticky">
           <div class="eyebrow" style="margin-bottom: 1rem;">
             <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-            <span>Philosophy & Practice</span>
+            <span>PERSONAL PHILOSOPHY · TRIẾT LÝ CÁ NHÂN</span>
           </div>
           <h2 class="title-section" style="margin-bottom: 1.5rem;">
-            Where code, design, and AI <span class="font-italic-accent">converge</span>.
+            Curiosity shapes the way I see the world.
+            <span class="bilingual-title-vi">Sự tò mò định hình cách tôi nhìn nhận thế giới.</span>
           </h2>
-          <p class="text-body" style="font-size: var(--text-md); line-height: 1.7;">
-            I explore the intersection of AI, software development, product design, and practical problem-solving.
-          </p>
-          <p class="text-body" style="margin-top: 1rem; line-height: 1.7;">
-            I use AI-assisted development to turn ideas into functional digital products, from product requirements and interface design to implementation, testing, and continuous iteration.
-          </p>
+          <div style="margin-bottom: 1.5rem;">
+            <p class="text-body bilingual-en" style="font-size: var(--text-md); line-height: 1.7; margin-bottom: 0.5rem;">
+              I believe in learning through experience, thinking independently, and improving a little at a time. From technology and personal projects to finance, business, and the world beyond the screen, I’m always exploring new ideas and finding ways to put them into practice.
+            </p>
+            <p class="text-body bilingual-vi" style="font-size: 0.95rem; line-height: 1.7; color: var(--ink-secondary);">
+              Tôi tin vào việc học hỏi qua trải nghiệm, tư duy độc lập và tiến bộ từng chút mỗi ngày. Từ công nghệ, các dự án cá nhân đến tài chính, kinh doanh và thế giới ngoài màn hình, tôi luôn tìm tòi những ý tưởng mới và tìm cách đưa chúng vào thực tế.
+            </p>
+          </div>
 
           <div class="interests-wrap">
-            <div class="interests-header">Core Interests & Domains</div>
+            <div class="interests-header">AREAS OF INTEREST · LĨNH VỰC QUAN TÂM</div>
             <div class="interests-grid">
-              <span class="interest-tag active">AI-assisted development</span>
-              <span class="interest-tag active">Web applications & PWA</span>
-              <span class="interest-tag active">UI/UX & interaction design</span>
-              <span class="interest-tag">Product engineering</span>
-              <span class="interest-tag">Photography & visual storytelling</span>
-              <span class="interest-tag">Trekking & outdoor exploration</span>
-              <span class="interest-tag">Chinese language learning</span>
+              <span class="interest-tag active">Technology · Công nghệ</span>
+              <span class="interest-tag active">Artificial Intelligence · Trí tuệ nhân tạo</span>
+              <span class="interest-tag active">Critical Thinking · Tư duy phản biện</span>
+              <span class="interest-tag">Discipline · Kỷ luật</span>
+              <span class="interest-tag">Personal Finance · Tài chính cá nhân</span>
+              <span class="interest-tag">Business · Kinh doanh</span>
+              <span class="interest-tag">Design & Photography · Thiết kế & Nhiếp ảnh</span>
+              <span class="interest-tag">Travel & Exploration · Du lịch & Khám phá</span>
             </div>
           </div>
         </div>
@@ -310,9 +354,12 @@
           <div class="methodology-step">
             <div class="step-num">01</div>
             <div class="step-content">
-              <h3>Requirements & Spec Crystallization</h3>
-              <p class="text-body">
-                Distilling amorphous problems into crisp architectural specifications, data schemas, and user journeys before writing a single line of production code.
+              <h3>Continuous Learning <span class="bilingual-sub">· Học hỏi liên tục</span></h3>
+              <p class="text-body bilingual-en" style="margin-bottom: 0.35rem;">
+                I learn by exploring new subjects, asking questions, and applying what I discover to real situations.
+              </p>
+              <p class="text-body bilingual-vi">
+                Tôi học bằng cách khám phá các chủ đề mới, đặt câu hỏi và ứng dụng những gì tìm thấy vào tình huống thực tế.
               </p>
             </div>
           </div>
@@ -320,9 +367,12 @@
           <div class="methodology-step">
             <div class="step-num">02</div>
             <div class="step-content">
-              <h3>Interface Architecture & Spatial Design</h3>
-              <p class="text-body">
-                Composing refined, editorial UI layouts where typography, generous whitespace, and subtle micro-interactions establish visual hierarchy without unnecessary noise.
+              <h3>Independent Thinking <span class="bilingual-sub">· Tư duy độc lập</span></h3>
+              <p class="text-body bilingual-en" style="margin-bottom: 0.35rem;">
+                I value clear reasoning, questioning assumptions, and making decisions based on evidence rather than appearances.
+              </p>
+              <p class="text-body bilingual-vi">
+                Tôi coi trọng lập luận rõ ràng, chất vấn các giả định và đưa ra quyết định dựa trên bằng chứng thay vì vẻ bề ngoài.
               </p>
             </div>
           </div>
@@ -330,9 +380,12 @@
           <div class="methodology-step">
             <div class="step-num">03</div>
             <div class="step-content">
-              <h3>AI-Augmented Engineering</h3>
-              <p class="text-body">
-                Pairing deeply with specialized AI agents and autonomous reasoning loops to accelerate code generation, type-safety verification, and edge-case testing.
+              <h3>Learning by Building <span class="bilingual-sub">· Học qua thực hành</span></h3>
+              <p class="text-body bilingual-en" style="margin-bottom: 0.35rem;">
+                I turn ideas into personal projects, experiment with different tools, and improve through practical experience.
+              </p>
+              <p class="text-body bilingual-vi">
+                Tôi biến ý tưởng thành các dự án cá nhân, thử nghiệm nhiều công cụ khác nhau và hoàn thiện qua kinh nghiệm thực tế.
               </p>
             </div>
           </div>
@@ -340,9 +393,12 @@
           <div class="methodology-step">
             <div class="step-num">04</div>
             <div class="step-content">
-              <h3>Rigorous In-Browser Verification</h3>
-              <p class="text-body">
-                Every interaction is audited across real viewports for 60fps frame pacing, accessible keyboard navigation, and honest reduced-motion safety.
+              <h3>Long-Term Growth <span class="bilingual-sub">· Phát triển bền vững</span></h3>
+              <p class="text-body bilingual-en" style="margin-bottom: 0.35rem;">
+                I believe meaningful progress comes from consistency, discipline, and the willingness to keep learning over time.
+              </p>
+              <p class="text-body bilingual-vi">
+                Tôi tin rằng sự tiến bộ có ý nghĩa đến từ tính nhất quán, tính kỷ luật và sự sẵn sàng học hỏi không ngừng theo thời gian.
               </p>
             </div>
           </div>
@@ -357,66 +413,97 @@
           <div>
             <div class="eyebrow" style="margin-bottom: 0.5rem;">
               <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
-              <span>Curated Personal Projects</span>
+              <span>CURATED PERSONAL PROJECTS · DỰ ÁN CÁ NHÂN CHỌN LỌC</span>
             </div>
-            <h2 class="title-section">Featured Works</h2>
+            <h2 class="title-section">
+              Featured Works
+              <span class="bilingual-title-vi">Dự án tiêu biểu</span>
+            </h2>
           </div>
           <div class="works-counter-badge">
             03 Flagship Projects · Interactive Previews
+            <span style="display: block; font-size: 0.75rem; color: var(--accent-gold); font-family: var(--font-serif); font-style: italic; margin-top: 0.2rem;">03 Dự án trọng tâm · Bản xem trước tương tác</span>
           </div>
         </div>
 
         <div class="projects-grid">
             
             <!-- Project 1: LỘC LEARN -->
-            <article class="project-card">
+            <article class="project-card loc-learn-card loc-learn-trigger" data-project="loc-learn" data-target-tab="tong-quan" role="button" tabindex="0" aria-label="Khám phá nền tảng học tập Lộc Learn · Explore Lộc Learn Platform">
               <div class="project-card-glare"></div>
-              <div class="project-preview">
-                <!-- Interactive HSK Flashcard Mockup -->
-                <div class="learn-mockup-card" title="Click to flip vocabulary card">
-                  <div class="learn-hanzi">知行合一</div>
-                  <div class="learn-pinyin">zhī xíng hé yī</div>
-                  <div class="learn-meaning">Unity of Knowledge & Action</div>
-                  
-                  <div class="srs-meter">
-                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--ink-muted);">SRS Retention</span>
-                    <div class="srs-track">
-                      <div class="srs-bar"></div>
-                    </div>
-                    <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--accent-gold); font-weight: 600;">94%</span>
+              <div class="project-preview loc-dragon-preview-wrap">
+                <div class="loc-dragon-hero-banner">
+                  <!-- Ambient Emerald / Jade Glow -->
+                  <div class="loc-learn-ambient-glow"></div>
+
+                  <!-- Large Jade Dragon Logo Image with feathered edges -->
+                  <div class="loc-dragon-img-container">
+                    <img src="./assets/loclearn/logo-dragon-learn.jpg" alt="Logo Lộc Learn Rồng Ngọc 3D Cầm Cuộn Sách" class="loc-dragon-hero-img" />
+                    <div class="loc-dragon-edge-fade-left"></div>
+                    <div class="loc-dragon-edge-fade-right"></div>
+                    <div class="loc-dragon-edge-fade-bottom"></div>
                   </div>
-                  <div style="margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.68rem; color: var(--ink-muted);">
-                    Click card to cycle vocabulary · Spaced repetition
+
+                  <!-- Floating Top Bar -->
+                  <div class="loc-dragon-top-dock">
+                    <div class="loc-dragon-brand-tag" style="border-color: rgba(16, 185, 129, 0.45);">
+                      <span class="loc-dragon-crest" style="color: #10B981;">✦</span>
+                      <span class="loc-dragon-name">LỘC LEARN</span>
+                    </div>
+                    <span class="badge-pill loc-live-pill">
+                      ● Live Ready
+                    </span>
+                  </div>
+
+                  <!-- Floating Bottom Bar -->
+                  <div class="loc-dragon-bottom-dock">
+                    <div class="loc-dragon-stats-row">
+                      <span class="loc-mini-glass-pill" style="color: #6EE7B7; border-color: rgba(16, 185, 129, 0.35);">8 Tính năng lõi · 8 Features</span>
+                      <span class="loc-mini-glass-pill">Multi-Domain</span>
+                    </div>
+                    <div class="loc-dragon-click-cue" style="border-color: rgba(16, 185, 129, 0.4);">
+                      <span>Khám phá · Explore</span>
+                      <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
+                    </div>
                   </div>
                 </div>
               </div>
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge">01 // PROJECT</span>
-                  <span class="project-tag">Language Learning · PWA</span>
+                  <span class="project-badge" style="color: #059669; border-color: rgba(5, 150, 105, 0.25); background: rgba(16, 185, 129, 0.08);">01 // LEARNING PLATFORM · NỀN TẢNG HỌC TẬP</span>
+                  <span class="project-tag">Personalized · Multi-Domain</span>
                 </div>
                 <h3 class="project-card-title">LỘC LEARN</h3>
-                <p class="project-desc">
-                  A language-learning application focused on HSK vocabulary, flashcards, spaced repetition, listening practice, and learning progress. Engineered to make daily retention consistent, tactile, and natural.
-                </p>
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                  <span class="badge-pill">HSK 1-6</span>
-                  <span class="badge-pill">Spaced Repetition</span>
-                  <span class="badge-pill">Audio Drills</span>
+                <div class="project-desc">
+                  <p class="bilingual-en" style="margin-bottom: 0.45rem;">
+                    An open, personalized learning platform — spanning foreign languages, music, chess, and specialized skills. Features smart flashcards, Spaced Repetition (SM-2), handwriting stroke practice, and custom lesson authoring.
+                  </p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">
+                    Nền tảng học tập mở cá nhân hóa — từ ngoại ngữ, âm nhạc, cờ vua đến kỹ năng chuyên ngành. Tích hợp Flashcard thông minh, Spaced Repetition (SM-2), luyện viết chữ và tự tạo nội dung bài học.
+                  </p>
+                </div>
+                <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.6rem;">
+                  “Learn Anything, Your Way — Không giới hạn điều bạn có thể học.”
+                </div>
+                <div style="display: flex; gap: 0.45rem; margin-top: 0.9rem; flex-wrap: wrap;">
+                  <span class="badge-pill">Lộ trình học tập · Roadmaps</span>
+                  <span class="badge-pill">Flashcard SM-2</span>
+                  <span class="badge-pill">Luyện viết &amp; Phát âm · Writing &amp; Audio</span>
+                  <span class="badge-pill">AI Bài học · AI Lessons</span>
                 </div>
               </div>
             </article>
 
             <!-- Project 2: LỘC MONEY 2 -->
-            <article class="project-card loc-money-card loc-money-trigger" data-project="loc-money" data-target-tab="tong-quan" role="button" tabindex="0" aria-label="Khám phá ứng dụng Lộc Money 2">
+            <article class="project-card loc-money-card loc-money-trigger" data-project="loc-money" data-target-tab="tong-quan" role="button" tabindex="0" aria-label="Khám phá ứng dụng Lộc Money 2 · Explore Lộc Money 2 App">
               <div class="project-card-glare"></div>
               <div class="project-preview loc-dragon-preview-wrap">
                 <div class="loc-dragon-hero-banner">
                   <!-- Ambient Gold Smoke / Aura Glow -->
                   <div class="loc-dragon-ambient-glow"></div>
 
-                  <!-- Large Dragon Logo Image with feathered/blurred edges ("mờ 2 viền bao trọn nửa phần trên") -->
+                  <!-- Large Dragon Logo Image with feathered/blurred edges -->
                   <div class="loc-dragon-img-container">
                     <img src="./assets/locmoney/logo-dragon.jpg" alt="Logo Lộc Money 2 Chrome Dragon to bản mờ hai viền" class="loc-dragon-hero-img" />
                     <div class="loc-dragon-edge-fade-left"></div>
@@ -438,11 +525,11 @@
                   <!-- Floating Bottom Bar -->
                   <div class="loc-dragon-bottom-dock">
                     <div class="loc-dragon-stats-row">
-                      <span class="loc-mini-glass-pill">5 Phân hệ lõi</span>
+                      <span class="loc-mini-glass-pill">5 Phân hệ lõi · 5 Modules</span>
                       <span class="loc-mini-glass-pill">Financial AI</span>
                     </div>
                     <div class="loc-dragon-click-cue">
-                      <span>Khám phá</span>
+                      <span>Khám phá · Explore</span>
                       <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
                     </div>
                   </div>
@@ -451,21 +538,26 @@
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge">02 // FINANCIAL SUITE</span>
+                  <span class="project-badge">02 // FINANCIAL SUITE · QUẢN TRỊ TÀI CHÍNH</span>
                   <span class="project-tag">Mobile-First · Financial Suite</span>
                 </div>
                 <h3 class="project-card-title">LỘC MONEY 2</h3>
-                <p class="project-desc">
-                  Financial Intelligence — Quản lý tiền thông minh. Kết hợp quản lý tài sản, phân tích tài chính, dự báo dòng tiền, nhật ký cuộc sống và xây dựng nền tảng tài chính bền vững.
-                </p>
-                <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.5rem;">
-                  “Hiểu tiền hôm nay. Nhìn thấy ngày mai.”
+                <div class="project-desc">
+                  <p class="bilingual-en" style="margin-bottom: 0.45rem;">
+                    Financial Intelligence — Intelligent wealth &amp; money management. Unifying asset tracking, financial analytics, cashflow forecasting, life journaling, and sustainable capital habits.
+                  </p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">
+                    Financial Intelligence — Quản lý tiền thông minh. Kết hợp quản lý tài sản, phân tích tài chính, dự báo dòng tiền, nhật ký cuộc sống và xây dựng nền tảng tài chính bền vững.
+                  </p>
+                </div>
+                <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.6rem;">
+                  “Hiểu tiền hôm nay. Nhìn thấy ngày mai. — Understand today's money. Foresee tomorrow.”
                 </div>
                 <div style="display: flex; gap: 0.45rem; margin-top: 0.9rem; flex-wrap: wrap;">
-                  <span class="badge-pill">Tổng quan & Dự báo</span>
-                  <span class="badge-pill">Giao dịch & Giỏ tiền</span>
-                  <span class="badge-pill">Nhật ký cuộc sống</span>
-                  <span class="badge-pill">Cá nhân & Streaks</span>
+                  <span class="badge-pill">Tổng quan &amp; Dự báo · Overview &amp; Forecast</span>
+                  <span class="badge-pill">Giao dịch &amp; Giỏ tiền · Transactions &amp; Jars</span>
+                  <span class="badge-pill">Nhật ký cuộc sống · Life Journal</span>
+                  <span class="badge-pill">Cá nhân &amp; Streaks · Habits &amp; Streaks</span>
                 </div>
               </div>
             </article>
@@ -505,17 +597,22 @@
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge">03 // PROJECT</span>
+                  <span class="project-badge">03 // AI PIPELINE · QUY TRÌNH AI</span>
                   <span class="project-tag">AI Workflow · Media</span>
                 </div>
                 <h3 class="project-card-title">LỘC VIDEO</h3>
-                <p class="project-desc">
-                  An AI-assisted workflow for transforming web articles into structured data, narration, visual sequences, timelines, and short MP4 videos. Synthesizes editorial text into synchronized multi-modal media.
-                </p>
-                <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
-                  <span class="badge-pill">Semantic Parser</span>
-                  <span class="badge-pill">TTS Narration</span>
-                  <span class="badge-pill">MP4 Render</span>
+                <div class="project-desc">
+                  <p class="bilingual-en" style="margin-bottom: 0.45rem;">
+                    An AI-assisted workflow for transforming web articles into structured data, narration, visual sequences, timelines, and short MP4 videos. Synthesizes editorial text into synchronized multi-modal media.
+                  </p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">
+                    Quy trình ứng dụng AI chuyển đổi bài viết web thành dữ liệu cấu trúc, kịch bản thuyết minh, phân cảnh hình ảnh, dòng thời gian và video ngắn MP4. Tổng hợp văn bản thành nội dung đa phương tiện đồng bộ.
+                  </p>
+                </div>
+                <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
+                  <span class="badge-pill">Semantic Parser · Phân tích ngữ nghĩa</span>
+                  <span class="badge-pill">TTS Narration · Thuyết minh AI</span>
+                  <span class="badge-pill">MP4 Render · Xuất video</span>
                 </div>
               </div>
             </article>
@@ -524,89 +621,471 @@
       </div>
     </section>
 
-    <!-- 4. Signature Move: The Synthesis Matrix -->
+    <!-- 4. My Journey: Hành trình, Cột mốc & Tư duy -->
     <section id="synthesis" class="section section-synthesis">
       <div class="container">
         <div class="eyebrow" style="margin-bottom: 0.5rem;">
-          <i data-lucide="terminal" style="width: 14px; height: 14px;"></i>
-          <span>The Signature Move</span>
+          <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+          <span>MY JOURNEY · HÀNH TRÌNH &amp; TRƯỞNG THÀNH</span>
         </div>
-        <h2 class="title-section">The Synthesis Matrix</h2>
-        <p class="text-body" style="max-width: 620px; margin-top: 0.5rem;">
-          Explore the three core disciplines behind my work. Switch modes to inspect how code, AI architecture, and editorial design interact in practice.
-        </p>
+        <h2 class="title-section">
+          Hành trình của tôi
+          <span class="bilingual-title-vi">My Journey</span>
+        </h2>
+        <div class="text-body" style="max-width: 660px; margin-top: 0.5rem;">
+          <p class="bilingual-en" style="margin-bottom: 0.35rem;">
+            A self-directed path from modest beginnings with technology, practical life milestones, and a first-principles thinking framework built from zero.
+          </p>
+          <p class="bilingual-vi" style="margin-bottom: 0;">
+            Quá trình tự học từ những ngày đầu chưa biết nhiều về công nghệ, các cột mốc thực tế và phương pháp tư duy tiếp cận vấn đề từ số 0.
+          </p>
+        </div>
 
         <div class="synthesis-container">
           <!-- Control Buttons -->
           <div class="synthesis-controls">
             <button class="synthesis-btn active" data-mode="code" type="button">
-              <span class="synthesis-btn-title">01 / Clean Code</span>
-              <span class="synthesis-btn-sub">TypeScript · Architecture · 60fps</span>
+              <span class="synthesis-btn-title">01 / Hành trình · My Journey</span>
+              <span class="synthesis-btn-sub">Tự học &amp; Trưởng thành · Self-Taught Growth</span>
             </button>
             <button class="synthesis-btn" data-mode="ai" type="button">
-              <span class="synthesis-btn-title">02 / AI Orchestration</span>
-              <span class="synthesis-btn-sub">Reasoning Loops · Structured Extraction</span>
+              <span class="synthesis-btn-title">02 / Cột mốc · Milestones</span>
+              <span class="synthesis-btn-sub">Từng giai đoạn thực tế · Chronological Stages</span>
             </button>
             <button class="synthesis-btn" data-mode="design" type="button">
-              <span class="synthesis-btn-title">03 / Spatial Design</span>
-              <span class="synthesis-btn-sub">Warm Editorial · Fluid Tokens · Micro-motion</span>
+              <span class="synthesis-btn-title">03 / Cách học &amp; Tư duy</span>
+              <span class="synthesis-btn-sub">How I Learn &amp; Think · Framework 5 bước</span>
             </button>
           </div>
 
           <!-- Dynamic Inspection Stage -->
           <div class="synthesis-screen">
-            <!-- View: Code -->
+            <!-- View: 01 / My Journey -->
             <div class="synthesis-view active" data-mode="code">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <span class="badge-pill">Architecture & Resilience</span>
-                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">runtime: browser / edge</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span class="badge-pill">01 // MY JOURNEY · HÀNH TRÌNH TỰ HỌC</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">self-directed development</span>
               </div>
-              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Deterministic, Composited Frontend</h3>
-              <p class="text-body" style="margin-bottom: 1.25rem;">
-                Every animation executes via GPU-accelerated <code>transform</code> and <code>opacity</code>. Frame pacing is unified into a single RAF playhead through Lenis and GSAP, avoiding layout thrashing.
-              </p>
-              <pre class="workbench-code-snippet" style="background: var(--bg-canvas-subtle); padding: 1.25rem; border-radius: var(--radius-md);"><code><span class="code-comment">// Lenis + GSAP ticker synchronization</span>
-lenis.<span class="code-fn">on</span>(<span class="code-string">'scroll'</span>, ScrollTrigger.update);
-gsap.ticker.<span class="code-fn">add</span>((t) => lenis.<span class="code-fn">raf</span>(t * <span class="code-fn">1000</span>));
-gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</span>);</code></pre>
+              <h3 style="font-size: 1.6rem; font-family: var(--font-serif); margin-bottom: 0.25rem; color: var(--ink-primary);">Hành trình của tôi · My Journey</h3>
+              <p style="font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); margin-bottom: 1.75rem; font-size: 1.05rem;">My Journey — Self-learning, reflection, and building products | Tự học, chiêm nghiệm và tạo dựng sản phẩm</p>
+
+              <!-- Block 1: Những năm đầu -->
+              <div class="journey-block" style="margin-bottom: 2rem;">
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#01</span>
+                  Những năm đầu · Early Years
+                </h4>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">I was introduced to computers during primary school. Back then, I mostly used them to play games, explore Excel, write notes, search on Google, and handle simple printing tasks. I had no clear orientation towards technology yet, but I formed an early habit of looking up information and staying curious about things I didn’t know.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Tôi được tiếp xúc với máy tính từ cấp 1. Khi đó, tôi chủ yếu sử dụng máy tính để chơi game, làm quen với Excel, ghi chú, tìm kiếm câu trả lời trên Google và thực hiện các công việc in ấn đơn giản. Tôi chưa có định hướng rõ ràng về công nghệ, nhưng đã sớm hình thành thói quen tìm kiếm thông tin và tò mò về những điều mình chưa biết.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">In secondary school, I focused more on academics and achieved solid results. Alongside studying, I began trading game accounts to earn extra income.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Lên cấp 2, tôi tập trung hơn vào việc học và đạt được những kết quả khá tốt. Bên cạnh việc học, tôi bắt đầu mua bán tài khoản game để kiếm thêm thu nhập.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">In high school, I worked part-time as a server at a spicy noodle restaurant while keeping up good academic performance. Due to the pandemic and the need for convenient commuting, I attended a school that wasn’t entirely my initial aspiration.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Đến cấp 3, tôi vừa học vừa làm phục vụ tại một quán mì cay và tiếp tục duy trì kết quả học tập tốt. Do ảnh hưởng của dịch bệnh và mong muốn thuận tiện cho việc đi lại, tôi đã theo học tại một ngôi trường không hoàn toàn đúng với nguyện vọng ban đầu.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">This was also the period when I developed a deeper interest in literature. I was inspired by how authors articulate perspectives, construct arguments, and analyze human nature, which made me curious about how people think and perceive the world. I also began studying foreign languages, starting with English.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Đây cũng là giai đoạn tôi bắt đầu quan tâm nhiều hơn đến văn học. Tôi ấn tượng với cách các tác giả diễn đạt góc nhìn, lập luận và phân tích con người, từ đó tò mò hơn về tư duy và cách mỗi người nhìn nhận thế giới. Tôi cũng bắt đầu tiếp xúc với ngoại ngữ, trước hết là tiếng Anh.</p>
+                </div>
+              </div>
+
+              <!-- Block 2: Những người ảnh hưởng đến tư duy của tôi -->
+              <div class="journey-block" style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#02</span>
+                  Những người ảnh hưởng đến tư duy · Influences on My Thinking
+                </h4>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">During my final years of school, I had many conversations with Trâm Anh. These discussions broadened my perspective on life, human character, academic thinking, emotional composure, and interpersonal conduct. She also helped reshape how I approach and research problems.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Trong những năm cuối phổ thông, tôi có cơ hội trò chuyện với chị Trâm Anh. Những cuộc trò chuyện này giúp tôi mở rộng góc nhìn về cuộc sống, cách đánh giá con người, tư duy học thuật, kiểm soát cảm xúc và ứng xử trong các tình huống khác nhau. Chị cũng góp phần thay đổi cách tôi tiếp cận và tìm hiểu một vấn đề.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Additionally, Hiếu TV became an essential reference for me. Through his discussions on personal finance, disciplined investing, and deliberate living, I gained practical knowledge to think critically about managing money, compounding wealth, and planning for the future.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Bên cạnh đó, Hiếu TV là một nguồn tham khảo quan trọng đối với tôi. Qua những nội dung về tài chính cá nhân, đầu tư và cách sống, tôi có thêm kiến thức để suy nghĩ về việc quản lý tiền bạc, tích lũy tài sản và đưa ra quyết định cho tương lai.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">I also learned from numerous writers, educators, and creators across different domains. These resources helped me understand how systems operate in the world, rather than confining my learning strictly to classroom curricula.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Ngoài ra, tôi còn học hỏi từ nhiều tác giả, giáo viên và nhà sáng tạo nội dung ở các lĩnh vực khác nhau. Những nguồn kiến thức này giúp tôi hiểu thêm về thế giới và cách các vấn đề vận hành, thay vì chỉ giới hạn việc học trong chương trình trên trường.</p>
+                </div>
+              </div>
+
+              <!-- Block 3: Giai đoạn tự học và thử nghiệm -->
+              <div class="journey-block" style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#03</span>
+                  Giai đoạn tự học và thử nghiệm · Self-Directed Learning &amp; Experiments
+                </h4>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">After graduating high school, I temporarily set aside university plans to better understand myself: what I knew, where my strengths lay, what gaps remained, and which direction I truly wanted to pursue before committing substantial time and tuition.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Sau khi tốt nghiệp phổ thông, tôi tạm gác kế hoạch học đại học để tìm hiểu rõ hơn về bản thân: mình đã biết gì, có khả năng ở đâu, còn thiếu kiến thức nào và muốn phát triển theo hướng nào trước khi quyết định đầu tư thời gian và chi phí cho việc học tiếp.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">During this time, I started learning Chinese upon Trâm Anh’s recommendation, and I continue to study it daily.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Trong giai đoạn này, tôi bắt đầu học tiếng Trung theo lời giới thiệu của chị Trâm Anh và vẫn tiếp tục học đến hiện tại.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Around age 20, having earned my own income, I began exploring business and investments. I experimented with trading second-hand phones, contributing capital to small businesses, and researching interest-bearing lending, equities, and crypto-assets. These practical ventures gave me direct exposure to capital management, yields, and risk.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Khoảng năm 20 tuổi, khi đã có thu nhập, tôi bắt đầu tìm hiểu về kinh doanh và đầu tư. Tôi thử sức với việc mua bán điện thoại cũ, góp vốn vào các hoạt động kinh doanh nhỏ, tìm hiểu mô hình cho vay có lãi, chứng khoán và tài sản tiền mã hóa. Những trải nghiệm này giúp tôi tiếp xúc trực tiếp hơn với việc quản lý vốn, lợi nhuận và rủi ro.</p>
+                </div>
+              </div>
+
+              <!-- Block 4: Tiếp cận AI và phát triển sản phẩm -->
+              <div class="journey-block" style="margin-bottom: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#04</span>
+                  Tiếp cận AI &amp; Phát triển sản phẩm · Engaging AI &amp; Building Products
+                </h4>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Around age 21, I began exploring artificial intelligence, sparked by curiosity about how ChatGPT and Gemini work under the hood. I continued learning programming foundations with Python and C++, actively applying AI to accelerate both my study and development workflows.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Khoảng năm 21 tuổi, tôi bắt đầu tìm hiểu trí tuệ nhân tạo, ban đầu từ sự tò mò về cách ChatGPT và Gemini hoạt động. Tôi tiếp tục tìm hiểu lập trình, bao gồm Python và C++, đồng thời thử ứng dụng AI vào quá trình học và thực hành.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Through months of iterative experimentation, I grew capable of harnessing AI tools to build responsive websites, functional applications, and prototypes for personal ideas. I also applied them to solve operational challenges at work.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Qua nhiều tháng thử nghiệm, tôi dần có thể sử dụng các công cụ AI để xây dựng website, ứng dụng và triển khai những ý tưởng cá nhân. Tôi cũng ứng dụng chúng vào việc giải quyết một số vấn đề trong công việc.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Along the way, I learned how to clearly prompt specifications, test candidate solutions, debug issues, and refine products through continuous iterations. While I still have plenty to learn, technology has evolved into a realm I actively craft and explore, rather than merely consume.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Trong quá trình đó, tôi học cách mô tả yêu cầu, thử nghiệm giải pháp, tìm lỗi và cải thiện sản phẩm qua từng phiên bản. Tôi vẫn còn nhiều kiến thức cần bổ sung, nhưng công nghệ đã trở thành một lĩnh vực tôi chủ động tìm hiểu và thực hành, thay vì chỉ sử dụng các sản phẩm có sẵn.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Today, I continue developing personal projects, mastering emerging technologies, and applying knowledge to solve practical real-world problems.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Hiện tại, tôi tiếp tục phát triển các dự án cá nhân, học thêm những công nghệ mới và tìm cách ứng dụng kiến thức vào các vấn đề thực tế.</p>
+                </div>
+              </div>
+
+              <!-- Block 5: Kinh nghiệm làm việc -->
+              <div class="journey-block" style="padding-top: 1.5rem; border-top: 1px solid var(--border-subtle);">
+                <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: var(--ink-primary); margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                  <span style="color: var(--accent-gold); font-family: var(--font-mono); font-size: 0.85rem; font-weight: 600;">#05</span>
+                  Kinh nghiệm làm việc &amp; Thực tế · Work Experience &amp; Grounded Practice
+                </h4>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">I spent three months working in an office environment across both Marketing and Sales roles. This experience provided direct insight into marketing campaigns, sales pipelines, and how businesses engage and convert customers.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Tôi từng có khoảng ba tháng làm việc ở môi trường văn phòng, đảm nhiệm hai vị trí Marketing và Sales. Trải nghiệm này giúp tôi tiếp xúc với hoạt động tiếp thị, bán hàng và cách doanh nghiệp tiếp cận khách hàng.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0.85rem; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">I also take freelance projects creating websites, applications, and landing pages tailored to client specifications.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Tôi cũng nhận các job làm website, ứng dụng và các trang chủ theo yêu cầu khách hàng.</p>
+                </div>
+                <div class="text-body" style="margin-bottom: 0; line-height: 1.75;">
+                  <p class="bilingual-en" style="margin-bottom: 0.35rem;">Later on, I began working as a machine operator at TRIBECO. This serves as my primary career and stable foundation today. The work anchors my finances, instills practical discipline, and affords me the autonomy to invest time in self-learning, skill development, and building personal software projects.</p>
+                  <p class="bilingual-vi" style="margin-bottom: 0;">Sau đó, tôi bắt đầu làm công việc vận hành máy tại TRIBECO. Đây là công việc chính và nguồn thu nhập ổn định của tôi hiện tại. Công việc giúp tôi duy trì tài chính, tích lũy kinh nghiệm thực tế và chủ động đầu tư thời gian cho việc tự học, phát triển kỹ năng cũng như xây dựng các dự án cá nhân.</p>
+                </div>
+              </div>
             </div>
 
-            <!-- View: AI -->
+            <!-- View: 02 / Milestones -->
             <div class="synthesis-view" data-mode="ai">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <span class="badge-pill">Structured Prompt Pipelines</span>
-                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">pipeline: multi-stage agent</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span class="badge-pill">02 // MILESTONES · CỘT MỐC PHÁT TRIỂN</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">chronological progression</span>
               </div>
-              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">From Unstructured Text to Structured Schema</h3>
-              <p class="text-body" style="margin-bottom: 1.25rem;">
-                Turning raw articles into structured timeline cues, script paragraphs, and audio prompts. Strict schemas validate outputs to prevent hallucinations and enforce deterministic processing.
-              </p>
-              <pre class="workbench-code-snippet" style="background: var(--bg-canvas-subtle); padding: 1.25rem; border-radius: var(--radius-md);"><code><span class="code-comment">// Structured Schema Extraction Schema</span>
-<span class="code-keyword">const</span> ArticleVideoSchema = z.<span class="code-fn">object</span>({
-  headline: z.<span class="code-fn">string</span>(),
-  narrativeBeats: z.<span class="code-fn">array</span>(z.<span class="code-fn">object</span>({
-    cueTime: z.<span class="code-fn">number</span>(),
-    voiceScript: z.<span class="code-fn">string</span>(),
-    visualKeywords: z.<span class="code-fn">array</span>(z.<span class="code-fn">string</span>())
-  }))
-});</code></pre>
+              <h3 style="font-size: 1.6rem; font-family: var(--font-serif); margin-bottom: 0.25rem; color: var(--ink-primary);">Những cột mốc · Milestones</h3>
+              <p style="font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); margin-bottom: 1.75rem; font-size: 1.05rem;">Cột mốc phát triển — Trải nghiệm thực tế qua từng giai đoạn | Real-world experience across each stage</p>
+
+              <div class="milestones-timeline" style="display: flex; flex-direction: column; gap: 1.25rem;">
+                <!-- 1 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">Tiểu học · Primary School</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Tiếp xúc với máy tính <span class="bilingual-sub">· First Encounters with Computers</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Familiarized myself with computers, Excel, note-taking, Google search, and basic printing tasks. Primarily used technology for entertainment, gaming, and exploring.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Làm quen với máy tính, Excel, ghi chú, Google và các công việc in ấn cơ bản. Chủ yếu sử dụng máy tính để giải trí, chơi game và khám phá.</p>
+                  </div>
+                </div>
+
+                <!-- 2 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">THCS · Lower Secondary School</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Học tập và kiếm thu nhập <span class="bilingual-sub">· Academics &amp; Early Income</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Focused on academics with strong results, while trading game accounts to generate early independent income.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Tập trung vào việc học, đạt kết quả khá tốt và bắt đầu mua bán tài khoản game để kiếm thêm thu nhập.</p>
+                  </div>
+                </div>
+
+                <!-- 3 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">THPT · Upper Secondary School</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Mở rộng góc nhìn <span class="bilingual-sub">· Broadening Perspectives</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Balanced high school studies with waitstaff work at a spicy noodle restaurant. Discovered literature, human psychology, and English. Discussions with Trâm Anh and insights from Hiếu TV fostered financial literacy, investing curiosity, and critical thinking.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Vừa học vừa làm phục vụ tại quán mì cay. Bắt đầu quan tâm đến văn học, tư duy, cách con người nhìn nhận thế giới và tiếng Anh. Những cuộc trò chuyện với chị Trâm Anh cùng các nội dung từ Hiếu TV và những nguồn học tập khác giúp tôi tiếp cận thêm kiến thức về tài chính, đầu tư và cuộc sống.</p>
+                  </div>
+                </div>
+
+                <!-- 4 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">18 tuổi · Age 18</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Tự định hướng <span class="bilingual-sub">· Self-Determination</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Upon graduating, temporarily deferred university to evaluate personal capabilities, interests, and future direction. Began studying Chinese on Trâm Anh's recommendation.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Sau khi tốt nghiệp phổ thông, tôi tạm gác kế hoạch học đại học để tìm hiểu năng lực, sở thích và định hướng của bản thân. Bắt đầu học tiếng Trung theo lời giới thiệu của chị Trâm Anh.</p>
+                  </div>
+                </div>
+
+                <!-- 5 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">19 tuổi · Age 19</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Trải nghiệm môi trường văn phòng <span class="bilingual-sub">· Corporate &amp; Commercial Exposure</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Worked for three months in Marketing and Sales, learning sales cycles, marketing execution, and client acquisition firsthand.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Làm việc khoảng ba tháng ở hai vị trí Marketing và Sales, qua đó tiếp xúc với hoạt động tiếp thị, bán hàng và cách doanh nghiệp tiếp cận khách hàng.</p>
+                  </div>
+                </div>
+
+                <!-- 6 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">20 tuổi · Age 20</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Công việc ổn định và tìm hiểu đầu tư <span class="bilingual-sub">· Stable Foundation &amp; Investing</span>
+                  </h4>
+                  <div class="text-body" style="margin-bottom: 0.5rem; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Started as a machine operator at TRIBECO, securing stable income.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Bắt đầu làm nhân viên vận hành máy tại TRIBECO. Đây là công việc chính và nguồn thu nhập ổn định của tôi.</p>
+                  </div>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Concurrently began trading used smartphones, investing in small ventures, and researching equities, crypto, and lending models to understand capital allocation and risk management.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Song song với công việc, tôi bắt đầu tích lũy, mua bán điện thoại cũ, góp vốn vào các hoạt động kinh doanh nhỏ và tìm hiểu chứng khoán, tài sản tiền mã hóa cùng các mô hình cho vay có lãi. Qua đó, tôi tiếp cận thực tế hơn với việc quản lý vốn, lợi nhuận và rủi ro.</p>
+                  </div>
+                </div>
+
+                <!-- 7 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">21 tuổi · Age 21</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Tiếp cận AI và lập trình <span class="bilingual-sub">· Embracing AI &amp; Programming</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Explored generative AI tools (ChatGPT, Gemini), learned fundamental programming in Python and C++, and integrated AI into rapid learning and problem-solving.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Bắt đầu tìm hiểu ChatGPT, Gemini và cách AI hoạt động. Học những kiến thức lập trình ban đầu với Python và C++, đồng thời thử ứng dụng AI vào quá trình học tập và giải quyết vấn đề.</p>
+                  </div>
+                </div>
+
+                <!-- 8 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--bg-surface); font-size: 0.72rem; color: var(--ink-secondary);">Phát triển sản phẩm cá nhân · Personal Projects</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Từ ý tưởng đến ứng dụng thực tế <span class="bilingual-sub">· From Ideas to Real Software</span>
+                  </h4>
+                  <div class="text-body" style="margin-bottom: 0.5rem; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Iteratively engineered LỘC LEARN, LỘC MONEY 2, and explored LỘC VIDEO. Designed personal portfolio websites, implemented features, conducted testing, and resolved bugs.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Từng bước xây dựng LỘC LEARN, LỘC MONEY 2 và khám phá ý tưởng LỘC VIDEO. Bắt đầu phát triển website cá nhân, thực hành thiết kế giao diện, triển khai tính năng, kiểm thử và sửa lỗi.</p>
+                  </div>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Continuously learning through software craftsmanship and applying technology to personal needs and operations.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Tiếp tục học hỏi thông qua việc xây dựng sản phẩm và ứng dụng công nghệ vào nhu cầu cá nhân, công việc.</p>
+                  </div>
+                </div>
+
+                <!-- 9 -->
+                <div class="milestone-item" style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); border-left: 3px solid var(--accent-gold);">
+                  <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.4rem;">
+                    <span class="badge-pill" style="background: var(--accent-gold-subtle); color: var(--accent-gold); font-size: 0.72rem;">Hiện tại · Present</span>
+                  </div>
+                  <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.4rem;">
+                    Tiếp tục học hỏi và phát triển <span class="bilingual-sub">· Continuous Growth &amp; Mastery</span>
+                  </h4>
+                  <div class="text-body" style="margin: 0; line-height: 1.65; font-size: 0.93rem;">
+                    <p class="bilingual-en" style="margin-bottom: 0.35rem;">Balancing machine operations at TRIBECO with daily foreign language study, deepening technology expertise, and refining personal digital products.</p>
+                    <p class="bilingual-vi" style="margin-bottom: 0;">Duy trì công việc vận hành máy tại TRIBECO, đồng thời tiếp tục học ngoại ngữ, tìm hiểu công nghệ và cải thiện các dự án cá nhân.</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <!-- View: Design -->
+            <!-- View: 03 / How I Learn & Think -->
             <div class="synthesis-view" data-mode="design">
-              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                <span class="badge-pill">Warm Editorial Studio</span>
-                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">palette: ivory & champagne</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 0.5rem;">
+                <span class="badge-pill">03 // THINKING FRAMEWORK</span>
+                <span style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">method: 5-step inquiry &amp; verification</span>
               </div>
-              <h3 style="font-size: 1.4rem; margin-bottom: 0.5rem;">Quiet Luxury & Meaningful Restraint</h3>
-              <p class="text-body" style="margin-bottom: 1.25rem;">
-                Replacing generic dark themes with warm ivory tones, serif italic flair, refined hair-thin borders, and gentle spring physics that reward interaction without overwhelming the reader.
-              </p>
-              <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem;">
-                <div style="background: #FAF7F2; border: 1px solid var(--border-medium); padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#FAF7F2 Ivory</div>
-                <div style="background: #F4EFE6; border: 1px solid var(--border-medium); padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#F4EFE6 Cream</div>
-                <div style="background: #1C1A17; color: white; padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#1C1A17 Ink</div>
-                <div style="background: #B88E38; color: white; padding: 0.75rem; border-radius: var(--radius-sm); text-align: center; font-family: var(--font-mono); font-size: 0.7rem;">#B88E38 Gold</div>
+              <h3 style="font-size: 1.6rem; font-family: var(--font-serif); margin-bottom: 0.25rem; color: var(--ink-primary);">How I Learn &amp; Think</h3>
+              <p style="font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); margin-bottom: 1.25rem; font-size: 1.05rem;">Cách tôi học và tư duy — A structured set of questions</p>
+
+              <!-- Intro Statement -->
+              <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); border-left: 3px solid var(--accent-gold); margin-bottom: 2rem;">
+                <p style="font-size: 0.95rem; line-height: 1.65; color: var(--ink-primary); font-weight: 500; margin-bottom: 0.4rem;">
+                  I use a structured set of questions to understand new subjects, verify information, apply knowledge, and evaluate results.
+                </p>
+                <p class="text-body" style="margin: 0; font-size: 0.92rem; line-height: 1.65;">
+                  Tôi sử dụng một hệ thống câu hỏi để hiểu vấn đề mới, kiểm chứng thông tin, ứng dụng kiến thức và đánh giá kết quả.
+                </p>
+              </div>
+
+              <!-- 5 Steps Container -->
+              <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-bottom: 2rem;">
+                <!-- Step 01 -->
+                <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-gold);">01</span>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin: 0;">Understand | Hiểu</h4>
+                  </div>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• What is it? — Nó là gì?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• What problem does it solve? — Nó giải quyết vấn đề gì?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• Why does it exist? — Nó tồn tại để làm gì?</li>
+                  </ul>
+                  <p class="text-body" style="margin: 0 0 0.35rem 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-secondary);">
+                    Identify the core concept, purpose, components, and boundaries of the subject.
+                  </p>
+                  <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-muted);">
+                    Xác định khái niệm cốt lõi, mục đích, các thành phần và phạm vi của vấn đề.
+                  </p>
+                </div>
+
+                <!-- Step 02 -->
+                <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-gold);">02</span>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin: 0;">Investigate | Tìm hiểu</h4>
+                  </div>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• How does it work? — Nó hoạt động như thế nào?</li>
+                  </ul>
+                  <p class="text-body" style="margin: 0 0 0.35rem 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-secondary);">
+                    Examine its mechanisms, processes, underlying principles, and relationships between components.
+                  </p>
+                  <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-muted);">
+                    Tìm hiểu cơ chế, quy trình, nguyên lý nền tảng và mối liên hệ giữa các thành phần.
+                  </p>
+                </div>
+
+                <!-- Step 03 -->
+                <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-gold);">03</span>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin: 0;">Verify | Kiểm chứng</h4>
+                  </div>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• Is this information reliable? — Thông tin này có đáng tin cậy không?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• What evidence supports it? — Bằng chứng nào hỗ trợ nhận định này?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• What could prove my understanding wrong? — Điều gì có thể chứng minh rằng tôi đang hiểu sai?</li>
+                  </ul>
+                  <p class="text-body" style="margin: 0 0 0.35rem 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-secondary);">
+                    Check sources, test assumptions, consider alternative explanations, and distinguish facts from opinions or hypotheses.
+                  </p>
+                  <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-muted);">
+                    Kiểm tra nguồn thông tin, thử nghiệm các giả định, xem xét cách giải thích khác và phân biệt sự thật với ý kiến hoặc giả thuyết.
+                  </p>
+                </div>
+
+                <!-- Step 04 -->
+                <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-gold);">04</span>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin: 0;">Apply | Ứng dụng</h4>
+                  </div>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• How can I use this knowledge? — Tôi có thể ứng dụng kiến thức này như thế nào?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• In what situations is it useful? — Nó hữu ích trong những tình huống nào?</li>
+                  </ul>
+                  <p class="text-body" style="margin: 0 0 0.35rem 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-secondary);">
+                    Apply knowledge to practical situations, conduct experiments, and observe the results.
+                  </p>
+                  <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-muted);">
+                    Áp dụng kiến thức vào thực tế, tiến hành thử nghiệm và quan sát kết quả.
+                  </p>
+                </div>
+
+                <!-- Step 05 -->
+                <div style="background: var(--bg-canvas-subtle); padding: 1.25rem 1.4rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle);">
+                  <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem;">
+                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 600; color: var(--accent-gold);">05</span>
+                    <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin: 0;">Evaluate &amp; Improve | Đánh giá và cải tiến</h4>
+                  </div>
+                  <ul style="list-style: none; padding: 0; margin: 0 0 0.75rem 0; display: flex; flex-direction: column; gap: 0.35rem;">
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• Did the result meet the goal? — Kết quả có đạt mục tiêu không?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• What are the limitations? — Những hạn chế nằm ở đâu?</li>
+                    <li style="font-size: 0.92rem; color: var(--ink-primary); font-weight: 500;">• Is there a better approach? — Có phương án nào phù hợp hơn không?</li>
+                  </ul>
+                  <p class="text-body" style="margin: 0 0 0.35rem 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-secondary);">
+                    Evaluate outcomes, identify errors and limitations, compare alternatives, and make evidence-based improvements.
+                  </p>
+                  <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.6; color: var(--ink-muted);">
+                    Đánh giá kết quả, xác định lỗi và hạn chế, so sánh các phương án và cải tiến dựa trên bằng chứng.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Critical Thinking Box -->
+              <div style="background: var(--bg-canvas-elevated); padding: 1.25rem 1.5rem; border-radius: var(--radius-md); margin-bottom: 2rem; border-left: 3px solid var(--ink-primary);">
+                <h4 style="font-family: var(--font-serif); font-size: 1.15rem; color: var(--ink-primary); margin-bottom: 0.5rem;">Critical Thinking | Tư duy phản biện</h4>
+                <p style="font-size: 0.92rem; line-height: 1.65; color: var(--ink-primary); margin-bottom: 0.35rem; font-weight: 500;">
+                  Question assumptions, verify evidence, consider alternative explanations, and remain willing to revise your conclusions.
+                </p>
+                <p class="text-body" style="margin: 0; font-size: 0.88rem; line-height: 1.65;">
+                  Chất vấn các giả định, kiểm tra bằng chứng, xem xét những cách giải thích khác và sẵn sàng điều chỉnh kết luận khi có thông tin mới.
+                </p>
+              </div>
+
+              <!-- Practical Example Box -->
+              <div style="border: 1px dashed var(--border-medium); padding: 1.35rem 1.5rem; border-radius: var(--radius-md); background: var(--bg-surface);">
+                <span class="badge-pill" style="margin-bottom: 0.5rem; display: inline-block;">PRACTICAL EXAMPLE</span>
+                <h4 style="font-family: var(--font-serif); font-size: 1.2rem; color: var(--ink-primary); margin-bottom: 0.25rem;">
+                  Topic: How a flashcard review system works
+                </h4>
+                <p style="font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); margin-bottom: 1rem; font-size: 0.95rem;">
+                  Chủ đề: Cách hệ thống ôn tập bằng flashcard hoạt động
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.85rem; font-size: 0.9rem;">
+                  <div style="padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-weight: 600; color: var(--accent-gold); margin-bottom: 0.2rem;">01 — Understand | Hiểu</div>
+                    <div style="color: var(--ink-primary); font-weight: 500;">What is spaced repetition, and what problem does it solve?</div>
+                    <div style="color: var(--ink-muted); font-size: 0.85rem;">Lặp lại ngắt quãng là gì và phương pháp này giải quyết vấn đề gì?</div>
+                  </div>
+                  <div style="padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-weight: 600; color: var(--accent-gold); margin-bottom: 0.2rem;">02 — Investigate | Tìm hiểu</div>
+                    <div style="color: var(--ink-primary); font-weight: 500;">How does the system schedule reviews based on recall and forgetting?</div>
+                    <div style="color: var(--ink-muted); font-size: 0.85rem;">Hệ thống sắp xếp lịch ôn tập dựa trên khả năng ghi nhớ và quên kiến thức như thế nào?</div>
+                  </div>
+                  <div style="padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-weight: 600; color: var(--accent-gold); margin-bottom: 0.2rem;">03 — Verify | Kiểm chứng</div>
+                    <div style="color: var(--ink-primary); font-weight: 500;">Does the scheduling logic work as intended? Are the results measured correctly?</div>
+                    <div style="color: var(--ink-muted); font-size: 0.85rem;">Logic lập lịch có hoạt động đúng như dự kiến không? Kết quả có được đo lường chính xác không?</div>
+                  </div>
+                  <div style="padding-bottom: 0.6rem; border-bottom: 1px solid var(--border-subtle);">
+                    <div style="font-weight: 600; color: var(--accent-gold); margin-bottom: 0.2rem;">04 — Apply | Ứng dụng</div>
+                    <div style="color: var(--ink-primary); font-weight: 500;">Use the system to review vocabulary and record recall performance.</div>
+                    <div style="color: var(--ink-muted); font-size: 0.85rem;">Sử dụng hệ thống để ôn từ vựng và ghi nhận khả năng ghi nhớ.</div>
+                  </div>
+                  <div>
+                    <div style="font-weight: 600; color: var(--accent-gold); margin-bottom: 0.2rem;">05 — Evaluate &amp; Improve | Đánh giá và cải tiến</div>
+                    <div style="color: var(--ink-primary); font-weight: 500;">Review weak points, inspect incorrect answers, and adjust the study process based on results.</div>
+                    <div style="color: var(--ink-muted); font-size: 0.85rem;">Xem lại những điểm yếu, phân tích câu trả lời sai và điều chỉnh phương pháp học dựa trên kết quả.</div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -619,12 +1098,20 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
       <div class="container">
         <div class="eyebrow" style="margin-bottom: 0.5rem;">
           <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-          <span>Field Notes & Perspectives</span>
+          <span>FIELD NOTES &amp; PERSPECTIVES · GHI CHÉP &amp; GÓC NHÌN</span>
         </div>
-        <h2 class="title-section">Explorations Outside the Screen</h2>
-        <p class="text-body" style="max-width: 640px; margin-top: 0.5rem;">
-          Inspiration drawn from physical nature, visual observation, and ancient linguistic nuances.
-        </p>
+        <h2 class="title-section">
+          Explorations Outside the Screen
+          <span class="bilingual-title-vi">Những khám phá ngoài màn hình</span>
+        </h2>
+        <div class="text-body" style="max-width: 640px; margin-top: 0.5rem;">
+          <p class="bilingual-en" style="margin-bottom: 0.35rem;">
+            Inspiration drawn from physical nature, visual observation, and ancient linguistic nuances.
+          </p>
+          <p class="bilingual-vi" style="margin-bottom: 0;">
+            Cảm hứng chắt lọc từ thiên nhiên, quan sát thị giác và những tầng sâu ngôn ngữ cổ điển.
+          </p>
+        </div>
 
         <div class="explorations-grid">
           <!-- Card 1: Photography -->
@@ -633,9 +1120,10 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
               <img src="/assets/loc-banner.jpg" alt="White garden roses on marble table" class="exploration-real-img">
             </div>
             <div class="exploration-content">
-              <h3>Photography & Visual Storytelling</h3>
-              <p>Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.</p>
-              <span class="exploration-coord">Still Life & Drapery · Visual Balance</span>
+              <h3>Photography &amp; Visual Storytelling <span class="bilingual-sub">· Nhiếp ảnh &amp; Kể chuyện thị giác</span></h3>
+              <p class="bilingual-en" style="margin-bottom: 0.35rem;">Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.</p>
+              <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Quan sát hình khối, ánh sáng tự nhiên, nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.</p>
+              <span class="exploration-coord">Still Life &amp; Drapery · Tĩnh vật &amp; Ánh sáng</span>
             </div>
           </article>
 
@@ -647,9 +1135,10 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
               </svg>
             </div>
             <div class="exploration-content">
-              <h3>Trekking & Outdoors</h3>
-              <p>Seeking clarity and endurance across highland trails, foggy ridges, and quiet mountain forests.</p>
-              <span class="exploration-coord">Highland Trails · Physical Endurance</span>
+              <h3>Trekking &amp; Outdoors <span class="bilingual-sub">· Đi bộ đường dài &amp; Thiên nhiên</span></h3>
+              <p class="bilingual-en" style="margin-bottom: 0.35rem;">Seeking clarity and endurance across highland trails, foggy ridges, and quiet mountain forests.</p>
+              <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Tìm kiếm sự tĩnh tâm và bền bỉ qua những cung đường cao nguyên, triền sương mù và rừng thông tĩnh lặng.</p>
+              <span class="exploration-coord">Highland Trails · Sức bền &amp; Tĩnh tâm</span>
             </div>
           </article>
 
@@ -662,9 +1151,10 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
               </div>
             </div>
             <div class="exploration-content">
-              <h3>Chinese Language & Philosophy</h3>
-              <p>Studying HSK characters and philosophical expressions where language mirrors worldview: <em>“我努力不一定会成功 但我不努力一定会失败”</em>.</p>
-              <span class="exploration-coord">HSK Studies · Hanzi Calligraphy</span>
+              <h3>Chinese Language &amp; Philosophy <span class="bilingual-sub">· Ngôn ngữ &amp; Triết lý Hán tự</span></h3>
+              <p class="bilingual-en" style="margin-bottom: 0.35rem;">Studying HSK characters and philosophical expressions where language mirrors worldview: <em>“我努力不一定会成功 但我不努力一定会失败”</em>.</p>
+              <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Học chữ Hán HSK và những câu nói triết lý nơi ngôn ngữ phản chiếu nhân sinh quan: <em>“Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại”</em>.</p>
+              <span class="exploration-coord">HSK Studies · Hanzi Calligraphy · Hán tự</span>
             </div>
           </article>
         </div>
@@ -676,40 +1166,55 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
       <div class="container">
         <div class="eyebrow" style="margin-bottom: 0.5rem;">
           <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
-          <span>Standards & Ethos</span>
+          <span>STANDARDS &amp; ETHOS · TIÊU CHUẨN &amp; TINH THẦN KỸ THUẬT</span>
         </div>
-        <h2 class="title-section">Engineering Principles</h2>
+        <h2 class="title-section">
+          Engineering Principles
+          <span class="bilingual-title-vi">Nguyên tắc kỹ thuật &amp; Triết lý chế tác</span>
+        </h2>
 
         <div class="principles-grid">
           <div class="principle-card">
-            <div class="principle-num">01 / HONESTY</div>
-            <h3>Zero Slop & Honest Claims</h3>
-            <p>
+            <div class="principle-num">01 / HONESTY · CHÂN THỰC</div>
+            <h3>Zero Slop &amp; Honest Claims <span class="bilingual-sub">· Không sáo rỗng &amp; Trình bày chân thực</span></h3>
+            <p class="bilingual-en" style="margin-bottom: 0.35rem;">
               Personal projects are presented for what they are: practical, thoughtful software. No fabricated user counts, false venture metrics, or inflated marketing jargon.
             </p>
+            <p class="bilingual-vi" style="margin-bottom: 0;">
+              Dự án cá nhân được trình bày đúng với bản chất: phần mềm thực tế, được xây dựng chỉn chu. Không ngụy tạo số liệu người dùng, không báo cáo ảo, không thuật ngữ tiếp thị phóng đại.
+            </p>
           </div>
 
           <div class="principle-card">
-            <div class="principle-num">02 / PERFORMANCE</div>
-            <h3>Butter-Smooth 60 FPS</h3>
-            <p>
+            <div class="principle-num">02 / PERFORMANCE · HIỆU NĂNG</div>
+            <h3>Butter-Smooth 60 FPS <span class="bilingual-sub">· Mượt mà chuẩn 60 FPS</span></h3>
+            <p class="bilingual-en" style="margin-bottom: 0.35rem;">
               Every visual motion is computed via composited GPU properties. Zero layout thrashing, single unified requestAnimationFrame loop, and minimal bundle footprint.
             </p>
-          </div>
-
-          <div class="principle-card">
-            <div class="principle-num">03 / PURPOSE</div>
-            <h3>Restrained, Meaningful Motion</h3>
-            <p>
-              Animation is choreography, not decoration. Every transition clarifies spatial hierarchy and guides the user's attention to what matters most.
+            <p class="bilingual-vi" style="margin-bottom: 0;">
+              Mọi chuyển động hình ảnh đều tối ưu qua tầng composited GPU. Không gây layout thrashing, điều phối qua một vòng lặp requestAnimationFrame thống nhất và kích thước mã nguồn tối giản.
             </p>
           </div>
 
           <div class="principle-card">
-            <div class="principle-num">04 / ACCESSIBILITY</div>
-            <h3>Accessible & Motion-Safe</h3>
-            <p>
+            <div class="principle-num">03 / PURPOSE · MỤC ĐÍCH</div>
+            <h3>Restrained, Meaningful Motion <span class="bilingual-sub">· Chuyển động có chủ đích</span></h3>
+            <p class="bilingual-en" style="margin-bottom: 0.35rem;">
+              Animation is choreography, not decoration. Every transition clarifies spatial hierarchy and guides the user's attention to what matters most.
+            </p>
+            <p class="bilingual-vi" style="margin-bottom: 0;">
+              Chuyển động là nghệ thuật dẫn dắt thị giác, không phải phụ kiện trang trí thừa thãi. Mọi hiệu ứng chuyển cảnh đều làm rõ cấu trúc không gian và hướng sự chú ý vào nội dung trọng tâm.
+            </p>
+          </div>
+
+          <div class="principle-card">
+            <div class="principle-num">04 / ACCESSIBILITY · TIẾP CẬN</div>
+            <h3>Accessible &amp; Motion-Safe <span class="bilingual-sub">· Thân thiện &amp; An toàn chuyển động</span></h3>
+            <p class="bilingual-en" style="margin-bottom: 0.35rem;">
               Full support for <code>prefers-reduced-motion</code>, semantic HTML structure, high-contrast typography, and visible keyboard focus management.
+            </p>
+            <p class="bilingual-vi" style="margin-bottom: 0;">
+              Hỗ trợ toàn diện chế độ <code>prefers-reduced-motion</code>, cấu trúc HTML chuẩn ngữ nghĩa, độ tương phản văn bản cao và điều hướng bàn phím rõ ràng.
             </p>
           </div>
         </div>
@@ -722,14 +1227,15 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
         <div class="contact-wrap">
           <div class="eyebrow" style="margin-bottom: 0.75rem; justify-content: center;">
             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-            <span>Authentic Identity // Connect</span>
+            <span>AUTHENTIC IDENTITY // CONNECT · DANH TÍNH &amp; KẾT NỐI</span>
           </div>
           <h2 class="title-section" style="margin-bottom: 0.5rem;">
             Nguyễn Thành Lộc <span class="font-italic-accent">(阮城禄)</span>
           </h2>
-          <p class="text-body" style="font-size: var(--text-md); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
-            Building useful products with code, AI and design. Kết nối qua mạng xã hội hoặc liên hệ trực tiếp đến tôi.
-          </p>
+          <div class="text-body" style="font-size: var(--text-md); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+            <p class="bilingual-en" style="margin-bottom: 0.35rem;">Building useful products with code, AI and design. Connect across socials or reach out directly.</p>
+            <p class="bilingual-vi" style="margin-bottom: 0;">Xây dựng những sản phẩm hữu ích với code, AI và thiết kế. Kết nối qua mạng xã hội hoặc liên hệ trực tiếp đến tôi.</p>
+          </div>
 
           <!-- Carrd Signature Frosted Profile Card -->
           <div class="carrd-profile-card">
@@ -754,7 +1260,12 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
               <!-- Motto Quote -->
               <div class="carrd-quote-box">
                 <div class="carrd-quote-chinese">“ 我努力不一定会成功 但我不努力一定会失败 ”</div>
-                <div class="carrd-quote-vi">Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.</div>
+                <div class="bilingual-en" style="font-size: 0.85rem; font-style: italic; color: var(--accent-gold); margin-bottom: 0.25rem;">
+                  “Effort does not guarantee success, but lack of effort guarantees failure.”
+                </div>
+                <div class="carrd-quote-vi">
+                  Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.
+                </div>
               </div>
 
               <!-- 4 Social Link Buttons (Exact Carrd Channels) -->
@@ -818,17 +1329,17 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
 
               <!-- Direct Contact Dock (Call, SMS, Copy) -->
               <div class="carrd-dock">
-                <a href="tel:0866192413" class="carrd-dock-btn" title="Gọi trực tiếp 0866 192 413">
+                <a href="tel:0866192413" class="carrd-dock-btn" title="Gọi trực tiếp 0866 192 413 · Direct Call">
                   <i data-lucide="phone-call" style="width: 15px; height: 15px;"></i>
                   <span>0866 192 413</span>
                 </a>
-                <a href="sms:0866192413" class="carrd-dock-btn" title="Gửi tin nhắn SMS">
+                <a href="sms:0866192413" class="carrd-dock-btn" title="Gửi tin nhắn SMS · Send SMS">
                   <i data-lucide="message-square" style="width: 15px; height: 15px;"></i>
                   <span>SMS Message</span>
                 </a>
-                <button type="button" class="carrd-dock-btn copy-phone-trigger" data-phone="0866192413" title="Sao chép số điện thoại">
+                <button type="button" class="carrd-dock-btn copy-phone-trigger" data-phone="0866192413" title="Sao chép số điện thoại · Copy Phone Number">
                   <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
-                  <span class="copy-label">Sao chép SĐT</span>
+                  <span class="copy-label">Sao chép SĐT · Copy</span>
                 </button>
               </div>
             </div>
@@ -838,25 +1349,25 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
         <!-- Toast Notification -->
         <div class="toast-notice" role="alert" aria-live="polite">
           <i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-gold);"></i>
-          <span class="toast-msg">Đã sao chép SĐT: 0866192413</span>
+          <span class="toast-msg">Đã sao chép SĐT: 0866192413 · Phone copied</span>
         </div>
 
         <div class="colophon-footer">
           <div>
-            © 2026 Nguyễn Thành Lộc (阮城禄). All rights reserved.
+            © 2026 Nguyễn Thành Lộc (阮城禄). All rights reserved · Bảo lưu mọi quyền.
           </div>
           <div class="time-badge">
             <i data-lucide="clock" style="width: 13px; height: 13px; color: var(--accent-gold);"></i>
             <span id="live-time">Loading local time...</span>
           </div>
           <div>
-            Direct Contact: <a href="tel:0866192413" style="color: var(--accent-gold); text-decoration: none;">0866 192 413</a> · Ho Chi Minh City, VN
+            Direct Contact: <a href="tel:0866192413" style="color: var(--accent-gold); text-decoration: none;">0866 192 413</a> · Ho Chi Minh City, VN (TP. Hồ Chí Minh)
           </div>
         </div>
         <!-- Discrete Floating Scroll-to-Top Pill -->
-        <button type="button" class="scroll-top-btn" aria-label="Cuộn lên đầu trang">
+        <button type="button" class="scroll-top-btn" aria-label="Cuộn lên đầu trang · Back to top">
           <i data-lucide="arrow-up" style="width: 14px; height: 14px;"></i>
-          <span>Lên đầu</span>
+          <span>Lên đầu · Top</span>
         </button>
       </div>
     </section>
@@ -899,30 +1410,30 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
       </div>
 
       <!-- Segmented Navigation Tabs -->
-      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Money 2">
+      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Money 2 · Lộc Money 2 Modules">
         <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-loc-tab="tong-quan">
           <i data-lucide="wallet" style="width: 14px; height: 14px;"></i>
-          <span>Tổng quan</span>
+          <span>Tổng quan · Overview</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="thong-ke">
           <i data-lucide="trending-up" style="width: 14px; height: 14px;"></i>
-          <span>Thống kê & Dự báo</span>
+          <span>Thống kê · Analytics</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="giao-dich">
           <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i>
-          <span>Giao dịch (Composer)</span>
+          <span>Giao dịch · Composer</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="nhat-ky">
           <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
-          <span>Nhật ký cuộc sống</span>
+          <span>Nhật ký · Life Journal</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="can-han">
           <i data-lucide="user-check" style="width: 14px; height: 14px;"></i>
-          <span>Cá nhân & Star Money</span>
+          <span>Cá nhân · Habits</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="triet-ly">
           <i data-lucide="shield-check" style="width: 14px; height: 14px;"></i>
-          <span>Tầm nhìn & Triết lý</span>
+          <span>Tầm nhìn · Vision</span>
         </button>
       </nav>
 
@@ -1305,6 +1816,325 @@ gsap.ticker.<span class="code-fn">lagSmoothing</span>(<span class="code-fn">0</s
             </p>
             <div style="font-family: var(--font-serif); font-style: italic; font-size: 1.05rem; color: var(--accent-gold); margin-top: 1rem; text-align: center;">
               “LỘC MONEY 2 — Hiểu tiền hôm nay. Nhìn thấy ngày mai.”
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- LỘC LEARN: Interactive Inspector Modal -->
+  <div id="loc-learn-modal" class="loc-modal" role="dialog" aria-modal="true" aria-labelledby="loc-learn-modal-title" hidden>
+    <div class="loc-modal-backdrop" aria-hidden="true"></div>
+    <div class="loc-modal-container">
+      
+      <!-- Modal Header with Cinematic Banner -->
+      <div class="loc-modal-header loc-modal-header-hero loc-modal-header-hero-learn">
+        <div class="loc-modal-header-backdrop">
+          <img src="./assets/loclearn/logo-dragon-learn.jpg" alt="" class="loc-modal-header-bg-img" aria-hidden="true" />
+          <div class="loc-modal-header-fade-left"></div>
+          <div class="loc-modal-header-fade-right"></div>
+          <div class="loc-modal-header-fade-bottom"></div>
+        </div>
+
+        <div class="loc-modal-header-brand">
+          <div class="loc-modal-header-crest-wrap">
+            <img src="./assets/loclearn/logo-dragon-learn.jpg" alt="Lộc Learn Jade Dragon Logo" class="loc-modal-header-logo" />
+            <div class="loc-modal-crest-glow"></div>
+          </div>
+          <div class="loc-modal-header-text">
+            <div style="display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap;">
+              <h3 id="loc-learn-modal-title">LỘC LEARN</h3>
+              <span class="badge-pill" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35); background: rgba(16, 185, 129, 0.12); font-size: 0.65rem;">
+                ● Live Ready
+              </span>
+            </div>
+            <p>Learn Anything, Your Way — Nền tảng học tập cá nhân hóa & không giới hạn</p>
+            <div class="loc-modal-header-slogan">“Không giới hạn điều bạn có thể học.”</div>
+          </div>
+        </div>
+
+        <button type="button" class="loc-modal-close" aria-label="Đóng bảng chi tiết Lộc Learn">
+          <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+        </button>
+      </div>
+
+      <!-- Segmented Navigation Tabs -->
+      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Learn · Lộc Learn Modules">
+        <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-learn-tab="tong-quan">
+          <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
+          <span>Tổng quan · Overview</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="lo-trinh">
+          <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
+          <span>Lộ trình &amp; SM-2 · Roadmaps</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="luyen-tap">
+          <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+          <span>Luyện tập &amp; Thi · Practice</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="thu-vien">
+          <i data-lucide="terminal" style="width: 14px; height: 14px;"></i>
+          <span>Thư viện · Library</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="hanh-trinh">
+          <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
+          <span>Hành trình &amp; AI · Future</span>
+        </button>
+      </nav>
+
+      <!-- Modal Body Tab Panes -->
+      <div class="loc-modal-body">
+        
+        <!-- PANE 1: TỔNG QUAN & TẦM NHÌN -->
+        <div class="loc-modal-tab-pane active" data-learn-pane="tong-quan">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/loclearn/screen_khoahoc.jpg" alt="Màn hình Danh sách khóa học Lộc Learn" loading="lazy" />
+              </div>
+              <div class="loc-phone-caption">Giao diện Đa khóa học: Tiếng Trung, Piano, Tiếng Anh, AI</div>
+            </div>
+
+            <div class="loc-module-desc-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+                  <i data-lucide="book-open" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 01 // Nền tảng học tập mở</span>
+                </div>
+                <h3 class="loc-module-title">LỘC LEARN — Learn Anything, Your Way</h3>
+                <p class="loc-module-subtitle">Một nền tảng học tập cá nhân hóa. Một kho kiến thức không giới hạn. Học mọi thứ theo cách của bạn.</p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>Mục Tiêu Phát Triển</h4>
+                <p>
+                  LỘC LEARN là dự án học tập được phát triển với mục tiêu xây dựng một ứng dụng miễn phí, nơi người dùng có thể tiếp nhận, tổ chức và ghi nhớ kiến thức từ nhiều nguồn khác nhau. Thay vì giới hạn việc học trong một môn học hay một bộ giáo trình cố định, LỘC LEARN hướng đến một hệ thống mở, nơi bất kỳ lĩnh vực nào cũng có thể trở thành nội dung học tập — từ ngoại ngữ, âm nhạc, cờ vua đến những kỹ năng và kiến thức chuyên ngành khác.
+                </p>
+                <p style="margin-top: 0.65rem;">
+                  Ý tưởng ban đầu chỉ là một website học tập đơn giản. Qua nhiều lần phát triển và cải tiến, dự án dần trở thành một ứng dụng với hệ thống học tập đa chức năng, giao diện riêng và các cơ chế hỗ trợ ghi nhớ kiến thức.
+                </p>
+              </div>
+
+              <div class="loc-blueprint-card">
+                <h4>Tầm Nhìn Dự Án</h4>
+                <p>
+                  LỘC LEARN được xây dựng từ một câu hỏi đơn giản: <em>Nếu có thể học bất cứ điều gì, tại sao chúng ta phải giới hạn việc học trong những ứng dụng chỉ dành cho một lĩnh vực?</em>
+                </p>
+                <p style="margin-top: 0.65rem;">
+                  Một ngôn ngữ mới, một bản nhạc piano, một khai cuộc cờ vua hay một kiến thức chuyên ngành — tất cả đều có thể được tổ chức thành nội dung học tập. LỘC LEARN hướng đến việc đưa các công cụ ghi nhớ, luyện tập và tổ chức kiến thức vào một nền tảng thống nhất, để người dùng có thể tự xây dựng con đường học tập của chính mình.
+                </p>
+                <div style="font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: #10B981; margin-top: 0.85rem; text-align: center; font-weight: 600;">
+                  “LỘC LEARN — Không giới hạn điều bạn có thể học.”
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: LỘ TRÌNH & FLASHCARD SM-2 -->
+        <div class="loc-modal-tab-pane" data-learn-pane="lo-trinh">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/loclearn/screen_lotrinh.jpg" alt="Màn hình Lộ trình học tập Lộc Learn" loading="lazy" />
+              </div>
+              <div class="loc-phone-caption">Lộ trình học tập phân chặng rõ ràng với thanh tiến độ thấu triệt</div>
+            </div>
+
+            <div class="loc-module-desc-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+                  <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 02 // Spaced Repetition & Flashcards</span>
+                </div>
+                <h3 class="loc-module-title">Lộ Trình Từng Chặng & Flashcard Thông Minh</h3>
+                <p class="loc-module-subtitle">Cơ chế ôn tập lặp lại ngắt quãng (SM-2) tập trung tối đa vào phần chưa nắm vững.</p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>1. Lộ Trình Học Tập Bài Bản</h4>
+                <p>
+                  Tổ chức kiến thức thành các cấp độ, bài học và chặng học cụ thể. Người dùng có thể theo dõi tiến độ, xác định nội dung đã hoàn thành và tiếp tục học từ vị trí trước đó một cách liền mạch.
+                </p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>2. Flashcard Thông Minh</h4>
+                <p>
+                  Hệ thống thẻ ghi nhớ hỗ trợ học từ vựng và nhiều dạng kiến thức khác nhau. Người học có thể đánh dấu nội dung <strong>chưa thuộc</strong>, <strong>yêu thích</strong> hoặc <strong>đã thành thạo</strong>.
+                </p>
+                <p style="margin-top: 0.65rem;">
+                  Cơ chế luyện tập phân loại theo kết quả: những nội dung trả lời sai được tự động đưa trở lại để ôn luyện, giúp người học tập trung vào phần còn yếu thay vì liên tục học lại những gì đã nắm vững.
+                </p>
+              </div>
+
+              <div class="loc-blueprint-card">
+                <h4>3. Ôn Tập Cách Quãng — Spaced Repetition (SM-2)</h4>
+                <p>
+                  LỘC LEARN tích hợp cơ chế ôn tập hỗ trợ củng cố kiến thức theo thời gian. Mục tiêu là giúp người học ghi nhớ lâu hơn, loại bỏ việc học dồn và tối ưu hóa thời gian học tập hiệu quả.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: LUYỆN VIẾT & KIỂM TRA -->
+        <div class="loc-modal-tab-pane" data-learn-pane="luyen-tap">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/loclearn/screen_kiemtra.jpg" alt="Màn hình Kiểm tra trắc nghiệm Lộc Learn" loading="lazy" />
+              </div>
+              <div class="loc-phone-caption">Hệ thống bài thi trắc nghiệm bấm giờ theo chuẩn đề thi Hanban</div>
+            </div>
+
+            <div class="loc-module-desc-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+                  <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 03 // Luyện tập & Đánh giá năng lực</span>
+                </div>
+                <h3 class="loc-module-title">Luyện Viết Chữ, Phát Âm & Kiểm Tra Đánh Giá</h3>
+                <p class="loc-module-subtitle">Kết hợp đa giác quan: Nghe, nói, viết tay và thi thử thực chiến.</p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>4. Luyện Viết & Phát Âm Trực Quan</h4>
+                <ul class="loc-flow-list">
+                  <li>
+                    <span class="loc-flow-dot"></span>
+                    <div><strong>Luyện viết chữ Hán:</strong> Thực hành viết chữ trực tiếp trên màn hình, làm quen với cấu trúc và thứ tự nét, theo dõi từng bước quá trình luyện tập.</div>
+                  </li>
+                  <li>
+                    <span class="loc-flow-dot"></span>
+                    <div><strong>Luyện phát âm chuẩn:</strong> Tích hợp các chức năng âm thanh chuẩn bản ngữ phục vụ xuyên suốt quá trình học.</div>
+                  </li>
+                  <li>
+                    <span class="loc-flow-dot"></span>
+                    <div><strong>Học qua nghe:</strong> Hỗ trợ phát âm từ vựng và luyện phản xạ nghe thông qua hệ thống audio tích hợp trong ứng dụng.</div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="loc-blueprint-card">
+                <h4>5. Kiểm Tra & Đánh Giá Năng Lực</h4>
+                <p>
+                  Hệ thống bài kiểm tra thử giúp người học tự đánh giá mức độ hiểu bài, kiểm tra kiến thức và nhận biết những phần cần cải thiện với bộ đề trắc nghiệm chuẩn chỉnh, thời gian làm bài đếm ngược và bảng điểm chi tiết.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 4: THƯ VIỆN & TỰ TẠO NỘI DUNG -->
+        <div class="loc-modal-tab-pane" data-learn-pane="thu-vien">
+          <div class="loc-split-layout">
+            <div class="loc-phone-mockup">
+              <div class="loc-phone-island"></div>
+              <div class="loc-phone-screen">
+                <img src="./assets/loclearn/screen_thehoc.jpg" alt="Màn hình Thẻ học Flashcard Lộc Learn" loading="lazy" />
+              </div>
+              <div class="loc-phone-caption">Thẻ từ vựng sinh động với hình ảnh minh họa và phiên âm chuẩn</div>
+            </div>
+
+            <div class="loc-module-desc-col">
+              <div class="loc-module-header">
+                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+                  <i data-lucide="terminal" style="width: 13px; height: 13px;"></i>
+                  <span>Phân hệ 04 // Quản lý & Cá nhân hóa</span>
+                </div>
+                <h3 class="loc-module-title">Thư Viện Kiến Thức & Tự Tạo Nội Dung</h3>
+                <p class="loc-module-subtitle">Không giới hạn trong giáo trình có sẵn — biến mọi tài liệu thành bài học của riêng bạn.</p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>6. Thư Viện Kiến Thức Cá Nhân</h4>
+                <p>
+                  Người dùng có thể tổ chức nội dung thành các học phần, thư mục và nhóm học tập riêng biệt. Thư viện hỗ trợ quản lý các bộ thẻ linh hoạt, tìm kiếm kiến thức tức thì và xây dựng kho tài liệu phù hợp với mục tiêu cá nhân.
+                </p>
+              </div>
+
+              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
+                <h4>7. Tự Tạo Nội Dung Học Tập</h4>
+                <p>
+                  Người dùng có thể tự thêm từ vựng hoặc thuật ngữ thủ công, nhập phiên âm, nghĩa tiếng Việt, câu ví dụ, hình ảnh minh họa và phân loại theo cấp độ.
+                </p>
+                <p style="margin-top: 0.65rem;">
+                  Điều này giúp LỘC LEARN không phụ thuộc hoàn toàn vào nội dung có sẵn. Người dùng hoàn toàn chủ động xây dựng bộ tài liệu của riêng mình từ những gì đang học, đọc hoặc nghiên cứu ngoài đời thực.
+                </p>
+              </div>
+
+              <div class="loc-blueprint-card">
+                <h4>8. Giao Diện & Trải Nghiệm Á Đông Tối Giản</h4>
+                <p>
+                  Ứng dụng được thiết kế theo phong cách tối giản kết hợp các yếu tố thẩm mỹ Á Đông (giấy dó, ngọc bích, mực xạ), với hệ thống màu sắc trang nhã, thẻ nội dung nổi khối, hiệu ứng chuyển động mượt mà và thanh điều hướng tối ưu cho điện thoại.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 5: HÀNH TRÌNH & AI TƯƠNG LAI -->
+        <div class="loc-modal-tab-pane" data-learn-pane="hanh-trinh">
+          <div class="loc-module-header" style="margin-bottom: 1.5rem;">
+            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+              <i data-lucide="cpu" style="width: 13px; height: 13px;"></i>
+              <span>Product Roadmap // Evolution & AI Integration</span>
+            </div>
+            <h3 class="loc-module-title">Hành Trình Phát Triển & Định Hướng AI</h3>
+            <p class="loc-module-subtitle">Từ website tĩnh ban đầu đến nền tảng thông minh tạo bài học tự động bằng Trí tuệ Nhân tạo.</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            <div class="loc-blueprint-card">
+              <h4>Hành Trình Đã Đi Qua</h4>
+              <ul class="loc-flow-list">
+                <li>
+                  <span class="loc-flow-dot" style="background: #10B981;"></span>
+                  <div><strong>Giai đoạn đầu:</strong> Xây dựng nền tảng web và các chức năng học tập cơ bản.</div>
+                </li>
+                <li>
+                  <span class="loc-flow-dot" style="background: #10B981;"></span>
+                  <div><strong>Giai đoạn 2.0:</strong> Mở rộng thành ứng dụng hoàn chỉnh, phát triển thêm các tính năng và xử lý những bài toán kỹ thuật phức tạp, đặc biệt là hệ thống âm thanh thời gian thực.</div>
+                </li>
+                <li>
+                  <span class="loc-flow-dot" style="background: #10B981;"></span>
+                  <div><strong>Giai đoạn hiện tại:</strong> Hoàn thiện các cơ chế flashcard, thuật toán ôn tập SM-2, quản lý thư viện, tạo nội dung thủ công, luyện viết chữ và kiểm tra kiến thức.</div>
+                </li>
+              </ul>
+            </div>
+
+            <div class="loc-blueprint-card">
+              <h4>Định Hướng AI Tương Lai</h4>
+              <ul class="loc-flow-list">
+                <li>
+                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
+                  <div><strong>Phân tích văn bản bằng AI:</strong> Cho phép nhập văn bản tùy ý hoặc dùng AI tách từ vựng, phân tích ngữ pháp, giải thích cấu trúc câu và tự sinh bài học từ đoạn văn hoàn chỉnh.</div>
+                </li>
+                <li>
+                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
+                  <div><strong>Chuyển video thành bài học:</strong> Phân tích nội dung video, nhận diện những phần kiến thức quan trọng và chuyển đổi chúng thành tài liệu học tập có cấu trúc.</div>
+                </li>
+                <li>
+                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
+                  <div><strong>Xây dựng bài học tự động:</strong> Tự động hóa toàn bộ quy trình: trích xuất nội dung → phân loại kiến thức → tạo câu hỏi luyện tập → xuất flashcard hoàn chỉnh.</div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="loc-blueprint-card" style="margin-top: 1.25rem;">
+            <h4>Tầm Nhìn Chung</h4>
+            <p>
+              Tầm nhìn là giúp người dùng tận dụng tối đa những nguồn tài liệu mình đã có thay vì phải tạo lại mọi thứ từ đầu. LỘC LEARN hướng đến việc đưa các công cụ ghi nhớ, luyện tập và tổ chức kiến thức vào một nền tảng thống nhất, để người dùng có thể tự xây dựng con đường học tập của chính mình.
+            </p>
+            <div style="font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: #10B981; margin-top: 1rem; text-align: center; font-weight: 700;">
+              “LỘC LEARN — Không giới hạn điều bạn có thể học.”
             </div>
           </div>
         </div>

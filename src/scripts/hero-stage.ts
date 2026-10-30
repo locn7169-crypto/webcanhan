@@ -11,38 +11,41 @@ export function initHeroStage() {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
   tl.from('.hero-eyebrow', {
-    y: -12,
+    y: -10,
     opacity: 0,
-    duration: 0.6,
-    delay: 0.2,
+    duration: 0.5,
+    delay: 0.1,
+    clearProps: 'all',
   })
     .from(
       '.hero-title-line',
       {
-        yPercent: 110,
+        y: 15,
         opacity: 0,
-        duration: 0.9,
-        stagger: 0.08,
+        duration: 0.6,
+        clearProps: 'all',
       },
-      '-=0.3'
+      '-=0.2'
     )
     .from(
       '.hero-tagline',
       {
-        y: 20,
+        y: 15,
         opacity: 0,
-        duration: 0.7,
+        duration: 0.6,
+        clearProps: 'all',
       },
-      '-=0.5'
+      '-=0.3'
     )
     .from(
       '.hero-stage',
       {
-        y: 40,
+        y: 30,
         opacity: 0,
-        duration: 0.9,
+        duration: 0.7,
+        clearProps: 'all',
       },
-      '-=0.5'
+      '-=0.3'
     );
 
   // 2.5D Subtle Pointer Parallax on Hero Stage Planes
@@ -75,17 +78,4 @@ export function initHeroStage() {
       moveAsideY(0);
     });
   }
-
-  // Scroll Parallax: Title transforms gently as the reader scrolls past the hero
-  gsap.to('.hero-title-wrap', {
-    yPercent: -20,
-    opacity: 0.25,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: '.section-hero',
-      start: 'top top',
-      end: 'bottom top',
-      scrub: true,
-    },
-  });
 }

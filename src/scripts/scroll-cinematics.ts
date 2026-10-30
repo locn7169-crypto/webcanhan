@@ -82,10 +82,6 @@ function setupHeroScrollScrub() {
     },
   });
 
-  if (heroTitle) {
-    heroTl.to(heroTitle, { yPercent: -35, opacity: 0.12, ease: 'none' }, 0);
-  }
-
   if (workbench) {
     heroTl.to(
       workbench,
