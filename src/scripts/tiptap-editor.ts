@@ -817,48 +817,20 @@ function closeTiptapComposerModal() {
   modal?.classList.remove('is-open');
 }
 
-// Setup Visible Floating Toggle Pill (Always accessible on screen!)
-function setupVisibleTogglePill() {
-  if (document.getElementById('tiptap-fab-toggle')) return;
-
-  const pill = document.createElement('button');
-  pill.id = 'tiptap-fab-toggle';
-  pill.type = 'button';
-  pill.className = 'tiptap-fab-toggle';
-  pill.setAttribute('aria-label', 'Bật / Tắt Trình Soạn Thảo Tiptap');
-  pill.innerHTML = `
-    <div class="tiptap-fab-pulse"></div>
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3">
-      <path d="M12 20h9"/>
-      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
-    </svg>
-    <span class="tiptap-fab-label">Biên tập Tiptap</span>
-    <kbd class="tiptap-fab-kbd">⌥E</kbd>
-  `;
-
-  document.body.appendChild(pill);
-
-  pill.addEventListener('click', () => {
-    toggleTiptapEditMode(!isEditMode);
-  });
-}
-
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
   isEditMode = enable;
   const dock = document.getElementById('visual-editor-dock');
-  const pill = document.getElementById('tiptap-fab-toggle');
 
   if (enable) {
     document.body.classList.add('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.remove('hidden');
-    pill?.classList.add('is-editing');
 
     // Auto tag elements across the site
     document.querySelectorAll<HTMLElement>(
       'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .principle-card h3, .principle-card p, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi'
     ).forEach((el, idx) => {
-      if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, #tiptap-fab-toggle, .toast-notice, script, style, svg')) return;
+      if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, script, style, svg')) return;
       if (!el.getAttribute('data-edit-key')) {
         const secId = el.closest('section[id], div[id]')?.id || 'doc';
         const tag = el.tagName.toLowerCase();
@@ -872,7 +844,6 @@ export function toggleTiptapEditMode(enable: boolean) {
   } else {
     document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.add('hidden');
-    pill?.classList.remove('is-editing');
     closeTiptapComposerModal();
 
     if (activeEditor && activeTargetEl) {
@@ -898,7 +869,6 @@ export function initTiptapEditor() {
   restoreSavedContent();
   setupBubbleMenuDOM();
   setupTiptapDock();
-  setupVisibleTogglePill();
   setupImageUploadInput();
 
   // Listen to clicks on editable elements to attach Tiptap
@@ -906,7 +876,7 @@ export function initTiptapEditor() {
     if (!isEditMode) return;
     const target = e.target as HTMLElement;
 
-    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, #tiptap-fab-toggle, .toast-notice')) {
+    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice')) {
       return;
     }
 
@@ -940,5 +910,5 @@ export function initTiptapEditor() {
     }
   });
 
-  console.info('[Tiptap] Rich Text Engine ready. Press Option + E or click FAB to activate.');
+  console.info('[Tiptap] Rich Text Engine ready. Press Option + E to activate.');
 }

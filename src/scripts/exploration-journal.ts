@@ -1182,9 +1182,13 @@ export function initExplorationJournal() {
   const modal = document.getElementById('exploration-journal-modal');
   if (!modal) return;
 
-  // Close triggers
-  modal.querySelectorAll('[data-journal-close]').forEach((el) => {
-    el.addEventListener('click', () => closeExplorationJournal());
+  // Close triggers (delegated + direct on all [data-journal-close] elements)
+  modal.addEventListener('click', (e) => {
+    const target = e.target as HTMLElement | null;
+    if (target?.closest('[data-journal-close]')) {
+      e.preventDefault();
+      closeExplorationJournal();
+    }
   });
 
   // Tab switching
