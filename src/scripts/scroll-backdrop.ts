@@ -1,11 +1,15 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { initLivingRoseBackdrop } from './living-rose-backdrop';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function initScrollBackdrop() {
   const backdropContainer = document.querySelector<HTMLElement>('.site-backdrop-system');
   if (!backdropContainer) return;
+
+  // Initialize Living Animated Rose Canvas (Engine ported from nen-web-dong-hoa-hong.html)
+  initLivingRoseBackdrop();
 
   const scenes = {
     hero: document.getElementById('bg-scene-hero'),
@@ -52,24 +56,6 @@ export function initScrollBackdrop() {
       onEnterBack: () => activateScene(sceneKey),
     });
   });
-
-  // Parallax zoom / gentle drift on inner image layers
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!prefersReduced) {
-    document.querySelectorAll<HTMLElement>('.scene-img-layer').forEach((imgLayer) => {
-      gsap.to(imgLayer, {
-        scale: 1.06,
-        yPercent: 3,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: document.body,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: 0.8,
-        },
-      });
-    });
-  }
 
   // Setup generative canvas for Scene Synthesis
   initSynthesisBackdropCanvas();

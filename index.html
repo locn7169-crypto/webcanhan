@@ -17,24 +17,29 @@
 
   <!-- Cinematic Multi-Stage Scroll-Driven Backdrop -->
   <div class="site-backdrop-system" aria-hidden="true">
-    <!-- Scene 1: Hero (White Garden Roses & Marble Silk) -->
+    <!-- Living Animated Rose Canvas Engine (Replaces all static backgrounds) -->
+    <div class="rose-backdrop-stage" id="rose-backdrop-stage">
+      <canvas id="living-rose-canvas" class="living-rose-canvas"></canvas>
+      <div class="rose-sunbeams"></div>
+      <div class="rose-cursor-glow" id="rose-cursor-glow"></div>
+      <div class="rose-vignette"></div>
+    </div>
+
+    <!-- Scene 1: Hero (Atmospheric Warmth & Clarity) -->
     <div class="backdrop-scene scene-hero active" id="bg-scene-hero">
-      <div class="scene-img-layer scene-hero-img"></div>
       <div class="scene-overlay-hero"></div>
     </div>
 
     <!-- Scene 2: Philosophy (Depth of Field & Golden Ambient Bokeh) -->
     <div class="backdrop-scene scene-philosophy" id="bg-scene-philosophy">
-      <div class="scene-img-layer scene-philosophy-img"></div>
       <div class="scene-overlay-philosophy"></div>
       <div class="bokeh-orb bokeh-orb-1"></div>
       <div class="bokeh-orb bokeh-orb-2"></div>
       <div class="bokeh-orb bokeh-orb-3"></div>
     </div>
 
-    <!-- Scene 3: Featured Works (Moody Obsidian & Champagne Gold Architectural Studio) -->
+    <!-- Scene 3: Featured Works (Editorial Focus & Architectural Studio) -->
     <div class="backdrop-scene scene-works" id="bg-scene-works">
-      <div class="scene-img-layer scene-works-img"></div>
       <div class="scene-overlay-works"></div>
       <div class="blueprint-grid"></div>
     </div>
@@ -47,7 +52,6 @@
 
     <!-- Scene 5: Connect & Sanctuary (Sunset Sanctuary Garden & Ethereal Golden Hour) -->
     <div class="backdrop-scene scene-contact" id="bg-scene-contact">
-      <div class="scene-img-layer scene-contact-img"></div>
       <div class="scene-overlay-contact"></div>
       <div class="contact-sanctuary-halo"></div>
     </div>

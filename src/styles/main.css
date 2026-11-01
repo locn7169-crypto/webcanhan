@@ -52,7 +52,77 @@ body::before {
   pointer-events: none;
   z-index: 0;
   overflow: hidden;
-  background-color: var(--bg-canvas);
+  background-color: #181615;
+}
+
+/* Living Animated Rose Backdrop Stage (From nen-web-dong-hoa-hong.html) */
+.rose-backdrop-stage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.living-rose-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Vệt nắng chiều ấm áp chiếu xiên từ khung cửa bên trái */
+.rose-sunbeams {
+  position: absolute;
+  inset: -15%;
+  width: 130%;
+  height: 130%;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.38;
+  background:
+    repeating-linear-gradient(
+      118deg,
+      rgba(255, 232, 195, 0.22) 0px,
+      rgba(255, 232, 195, 0.22) 55px,
+      rgba(255, 232, 195, 0.03) 95px,
+      transparent 170px
+    ),
+    radial-gradient(ellipse 55% 70% at 22% 28%, rgba(255, 226, 180, 0.45), transparent 75%);
+  filter: blur(26px);
+  animation: roseBeamSway 10s ease-in-out infinite alternate;
+}
+
+@keyframes roseBeamSway {
+  0% {
+    transform: translate3d(-1.5%, -1%, 0) rotate(-1.2deg) scale(1);
+  }
+  100% {
+    transform: translate3d(1.5%, 1%, 0) rotate(1.2deg) scale(1.05);
+  }
+}
+
+/* Vùng sáng ấm đi theo con trỏ chuột */
+.rose-cursor-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    580px circle at var(--mx, 50%) var(--my, 48%),
+    rgba(255, 240, 215, 0.22),
+    rgba(248, 210, 216, 0.06) 42%,
+    rgba(15, 13, 12, 0.28) 100%
+  );
+}
+
+/* Viền tối điện ảnh tạo chiều sâu */
+.rose-vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 160px rgba(12, 10, 9, 0.52);
 }
 
 .backdrop-scene {
@@ -64,6 +134,7 @@ body::before {
   visibility: hidden;
   transition: opacity 1s cubic-bezier(0.22, 1, 0.36, 1), visibility 1s ease;
   will-change: opacity;
+  z-index: 2;
 }
 
 .backdrop-scene.active {
@@ -71,45 +142,22 @@ body::before {
   visibility: visible;
 }
 
-.scene-img-layer {
-  position: absolute;
-  inset: -4%;
-  width: 108%;
-  height: 108%;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  will-change: transform;
-}
-
-/* 1. Scene Hero: White Garden Roses & Marble Silk */
-.scene-hero-img {
-  background-image: url('/assets/loc-bg.jpg');
-  background-position: center right;
-}
-
+/* 1. Scene Hero Overlays */
 .scene-overlay-hero {
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(to right, rgba(250, 247, 242, 0.88) 0%, rgba(250, 247, 242, 0.62) 50%, rgba(250, 247, 242, 0.32) 100%),
-    linear-gradient(180deg, rgba(250, 247, 242, 0.15) 0%, rgba(250, 247, 242, 0.75) 100%);
+    linear-gradient(to right, rgba(250, 247, 242, 0.72) 0%, rgba(250, 247, 242, 0.45) 50%, rgba(250, 247, 242, 0.15) 100%),
+    linear-gradient(180deg, rgba(250, 247, 242, 0.12) 0%, rgba(250, 247, 242, 0.55) 100%);
 }
 
-/* 2. Scene Philosophy: Depth of Field & Golden Ambient Bokeh */
-.scene-philosophy-img {
-  background-image: url('/assets/loc-bg.jpg');
-  background-position: 60% center;
-  filter: blur(4px);
-  transform: scale(1.08);
-}
-
+/* 2. Scene Philosophy Overlays */
 .scene-overlay-philosophy {
   position: absolute;
   inset: 0;
   background: 
-    radial-gradient(ellipse at 80% 40%, rgba(184, 142, 56, 0.12) 0%, transparent 60%),
-    linear-gradient(135deg, rgba(250, 247, 242, 0.94) 0%, rgba(244, 239, 230, 0.75) 60%, rgba(250, 247, 242, 0.88) 100%);
+    radial-gradient(ellipse at 80% 40%, rgba(184, 142, 56, 0.1) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(250, 247, 242, 0.78) 0%, rgba(244, 239, 230, 0.55) 60%, rgba(250, 247, 242, 0.72) 100%);
 }
 
 /* Floating Golden Bokeh Orbs */
@@ -156,18 +204,13 @@ body::before {
   100% { transform: translate(-20px, 25px) scale(0.95); }
 }
 
-/* 3. Scene Works: Moody Obsidian & Champagne Gold Architectural Studio */
-.scene-works-img {
-  background-image: url('/assets/backdrop-works.jpg');
-  background-position: center center;
-}
-
+/* 3. Scene Works: Editorial Focus & Architectural Studio */
 .scene-overlay-works {
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(135deg, rgba(250, 247, 242, 0.88) 0%, rgba(244, 239, 230, 0.65) 50%, rgba(28, 26, 23, 0.25) 100%),
-    radial-gradient(circle at 75% 30%, rgba(184, 142, 56, 0.15) 0%, transparent 60%);
+    linear-gradient(135deg, rgba(250, 247, 242, 0.75) 0%, rgba(244, 239, 230, 0.52) 50%, rgba(28, 26, 23, 0.15) 100%),
+    radial-gradient(circle at 75% 30%, rgba(184, 142, 56, 0.12) 0%, transparent 60%);
 }
 
 .blueprint-grid {
@@ -198,17 +241,12 @@ body::before {
 }
 
 /* 5. Scene Contact: Sunset Sanctuary Garden & Ethereal Golden Hour */
-.scene-contact-img {
-  background-image: url('/assets/backdrop-contact.jpg');
-  background-position: center center;
-}
-
 .scene-overlay-contact {
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(180deg, rgba(250, 247, 242, 0.65) 0%, rgba(250, 247, 242, 0.45) 50%, rgba(250, 247, 242, 0.85) 100%),
-    radial-gradient(circle at 50% 55%, rgba(212, 175, 55, 0.18) 0%, transparent 60%);
+    linear-gradient(180deg, rgba(250, 247, 242, 0.55) 0%, rgba(250, 247, 242, 0.35) 50%, rgba(250, 247, 242, 0.7) 100%),
+    radial-gradient(circle at 50% 55%, rgba(212, 175, 55, 0.16) 0%, transparent 60%);
 }
 
 .contact-sanctuary-halo {
@@ -4622,8 +4660,90 @@ body.visual-editor-active .tiptap-bubble-menu {
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(184, 150, 90, 0.25);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
   max-width: 96vw;
+  touch-action: none;
+}
+
+.visual-editor-dock.is-dragging {
+  cursor: grabbing !important;
+  user-select: none !important;
+  transition: none !important;
+  box-shadow: 0 32px 68px rgba(0, 0, 0, 0.9), 0 0 40px rgba(184, 150, 90, 0.5);
+  transform: scale(1.01) !important;
+}
+
+/* Drag Bar at the top of Dock */
+.editor-dock-drag-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4px 6px 4px;
+  cursor: grab;
+  user-select: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 4px;
+}
+
+.editor-dock-drag-bar:active {
+  cursor: grabbing;
+}
+
+.editor-dock-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.editor-dock-drag-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--ink-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.editor-dock-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.editor-dock-ctrl-btn {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.editor-dock-ctrl-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--accent-gold);
+  border-color: var(--accent-gold);
+}
+
+/* Collapsed Dock State */
+.visual-editor-dock.is-collapsed {
+  padding: 8px 14px;
+}
+
+.visual-editor-dock.is-collapsed .editor-format-bar,
+.visual-editor-dock.is-collapsed .editor-status-hint {
+  display: none !important;
+}
+
+.visual-editor-dock.is-collapsed .editor-dock-drag-bar {
+  margin-bottom: 0;
+  border-bottom: none;
 }
 
 .visual-editor-dock.hidden {

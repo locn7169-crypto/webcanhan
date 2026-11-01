@@ -484,6 +484,10 @@ function setupImageUploadInput() {
   });
 }
 
+// Global state for dock position and collapse
+let savedDockCoords: { x: number; y: number } | null = null;
+let isDockCollapsed = false;
+
 // Setup Master Tiptap Control Dock
 function setupTiptapDock() {
   if (document.getElementById('visual-editor-dock')) return;
@@ -494,8 +498,32 @@ function setupTiptapDock() {
   dock.setAttribute('role', 'region');
   dock.setAttribute('aria-label', 'Trình soạn thảo Tiptap trực quan');
 
+  if (savedDockCoords) {
+    dock.style.transform = 'none';
+    dock.style.bottom = 'auto';
+    dock.style.left = `${savedDockCoords.x}px`;
+    dock.style.top = `${savedDockCoords.y}px`;
+  }
+
+  if (isDockCollapsed) {
+    dock.classList.add('is-collapsed');
+  }
+
   dock.innerHTML = `
     <div class="editor-dock-container">
+      <!-- Drag Bar & Collapse Handle -->
+      <div class="editor-dock-drag-bar" id="tt-dock-drag-bar" title="Nhấp giữ và kéo để di chuyển thanh công cụ">
+        <div class="editor-dock-drag-handle">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor" style="opacity: 0.65;"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></svg>
+          <span class="editor-dock-drag-label">Kéo để di chuyển</span>
+        </div>
+        <div class="editor-dock-header-controls">
+          <button type="button" class="editor-dock-ctrl-btn" id="tt-dock-collapse-btn" title="Thu nhỏ / Mở rộng thanh công cụ">
+            <svg class="icon-dock-toggle" viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+      </div>
+
       <!-- Tiptap Studio Toolbar -->
       <div class="editor-format-bar">
         <!-- Brand / Engine Pill -->
@@ -699,6 +727,99 @@ function setupTiptapDock() {
   document.getElementById('tt-export-btn')?.addEventListener('click', exportTiptapContent);
   document.getElementById('tt-reset-btn')?.addEventListener('click', resetTiptapContent);
   document.getElementById('tt-close-btn')?.addEventListener('click', () => toggleTiptapEditMode(false));
+
+  // Enable Smooth Dragging & Collapse
+  setupDockDragging(dock);
+}
+
+// Setup Dragging & Collapsing for the Dock
+function setupDockDragging(dock: HTMLElement) {
+  const dragBar = dock.querySelector<HTMLElement>('#tt-dock-drag-bar');
+  const collapseBtn = dock.querySelector<HTMLButtonElement>('#tt-dock-collapse-btn');
+
+  // Collapse / Expand Toggle
+  collapseBtn?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    isDockCollapsed = !isDockCollapsed;
+    dock.classList.toggle('is-collapsed', isDockCollapsed);
+    const icon = collapseBtn.querySelector('.icon-dock-toggle');
+    if (icon) {
+      icon.innerHTML = isDockCollapsed
+        ? '<path d="m18 15-6-6-6 6"/>'
+        : '<path d="m6 9 6 6 6-6"/>';
+    }
+  });
+
+  // Dragging logic
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+  let initialLeft = 0;
+  let initialTop = 0;
+
+  const onPointerDown = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest('button, input, select, textarea, [data-tt-action], .editor-color-btn')) {
+      return;
+    }
+
+    isDragging = true;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    const rect = dock.getBoundingClientRect();
+    initialLeft = rect.left;
+    initialTop = rect.top;
+
+    dock.classList.add('is-dragging');
+    dock.style.transform = 'none';
+    dock.style.bottom = 'auto';
+    dock.style.left = `${initialLeft}px`;
+    dock.style.top = `${initialTop}px`;
+
+    try {
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    } catch {}
+  };
+
+  const onPointerMove = (e: PointerEvent) => {
+    if (!isDragging) return;
+
+    const deltaX = e.clientX - startX;
+    const deltaY = e.clientY - startY;
+
+    let newX = initialLeft + deltaX;
+    let newY = initialTop + deltaY;
+
+    const minX = 8;
+    const maxX = window.innerWidth - dock.offsetWidth - 8;
+    const minY = 8;
+    const maxY = window.innerHeight - dock.offsetHeight - 8;
+
+    newX = Math.max(minX, Math.min(newX, Math.max(minX, maxX)));
+    newY = Math.max(minY, Math.min(newY, Math.max(minY, maxY)));
+
+    dock.style.left = `${newX}px`;
+    dock.style.top = `${newY}px`;
+
+    savedDockCoords = { x: newX, y: newY };
+  };
+
+  const onPointerUp = (e: PointerEvent) => {
+    if (!isDragging) return;
+    isDragging = false;
+    dock.classList.remove('is-dragging');
+    try {
+      (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    } catch {}
+  };
+
+  if (dragBar) {
+    dragBar.addEventListener('pointerdown', onPointerDown);
+    dragBar.addEventListener('pointermove', onPointerMove);
+    dragBar.addEventListener('pointerup', onPointerUp);
+    dragBar.addEventListener('pointercancel', onPointerUp);
+  }
 }
 
 // Fullscreen Tiptap Studio Pro Composer Modal
