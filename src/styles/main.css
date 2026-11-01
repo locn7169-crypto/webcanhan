@@ -4969,6 +4969,116 @@ body.visual-editor-active [data-editable-active="true"]:focus {
   background: rgba(212, 175, 55, 0.12);
 }
 
+/* Tiptap Always-Visible Floating Action Button (FAB) */
+.tiptap-fab-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9998;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.95rem;
+  background: rgba(22, 20, 18, 0.88);
+  border: 1.5px solid var(--accent-gold);
+  border-radius: var(--radius-full);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.4), 0 0 18px rgba(184, 150, 90, 0.3);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  user-select: none;
+}
+
+.tiptap-fab-toggle:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.5), 0 0 25px rgba(184, 150, 90, 0.5);
+  background: rgba(28, 25, 22, 0.96);
+  color: var(--accent-gold);
+}
+
+.tiptap-fab-pulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  box-shadow: 0 0 8px var(--accent-gold);
+  animation: pulse-live 1.8s infinite ease-in-out;
+}
+
+.tiptap-fab-kbd {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  padding: 0.15rem 0.35rem;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  color: var(--accent-gold);
+}
+
+.tiptap-fab-toggle.is-editing {
+  background: rgba(5, 150, 105, 0.92);
+  border-color: #34d399;
+  box-shadow: 0 10px 28px rgba(5, 150, 105, 0.4), 0 0 20px rgba(52, 211, 153, 0.4);
+}
+
+.tiptap-fab-toggle.is-editing .tiptap-fab-pulse {
+  background: #fff;
+  box-shadow: 0 0 8px #fff;
+}
+
+/* ProseMirror Task List Styles */
+ul[data-type="taskList"] {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+}
+
+ul[data-type="taskList"] li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.4rem;
+}
+
+ul[data-type="taskList"] li > label {
+  user-select: none;
+  margin-top: 0.2rem;
+}
+
+ul[data-type="taskList"] li > label input[type="checkbox"] {
+  cursor: pointer;
+  accent-color: var(--accent-gold);
+  width: 15px;
+  height: 15px;
+}
+
+ul[data-type="taskList"] li > div {
+  flex: 1;
+}
+
+/* ProseMirror Image Styles */
+.ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-md);
+  margin: 1.25rem 0;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ProseMirror Highlight Mark */
+.ProseMirror mark {
+  background-color: #fef08a;
+  color: #1c1a17;
+  padding: 0.1rem 0.3rem;
+  border-radius: 3px;
+}
+
 @media (max-width: 900px) {
   .visual-editor-dock {
     bottom: 12px;
@@ -4983,5 +5093,11 @@ body.visual-editor-active [data-editable-active="true"]:focus {
   .editor-tool-btn {
     padding: 0.25rem 0.45rem;
     font-size: 0.7rem;
+  }
+  .tiptap-fab-toggle {
+    bottom: 18px;
+    right: 18px;
+    padding: 0.4rem 0.75rem;
+    font-size: 0.76rem;
   }
 }

@@ -1,10 +1,14 @@
 import { Editor, Extension } from '@tiptap/core';
 import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
 import TextAlign from '@tiptap/extension-text-align';
 import { Color } from '@tiptap/extension-color';
 import { TextStyle } from '@tiptap/extension-text-style';
 import BubbleMenu from '@tiptap/extension-bubble-menu';
+import Image from '@tiptap/extension-image';
+import Highlight from '@tiptap/extension-highlight';
+import TaskList from '@tiptap/extension-task-list';
+import TaskItem from '@tiptap/extension-task-item';
+import CharacterCount from '@tiptap/extension-character-count';
 
 // Custom Tiptap Extension for dynamic Font Size scaling
 export const FontSize = Extension.create({
@@ -61,13 +65,14 @@ declare module '@tiptap/core' {
 }
 
 // Storage Key for persisted content
-const STORAGE_KEY = 'loc_portfolio_tiptap_v1';
+const STORAGE_KEY = 'loc_portfolio_tiptap_v2';
 
 // Global Tiptap State
 let activeEditor: Editor | null = null;
 let activeTargetEl: HTMLElement | null = null;
 let isEditMode = false;
 let modalComposerEditor: Editor | null = null;
+let imageUploadInput: HTMLInputElement | null = null;
 
 export function getActiveTiptapEditor(): Editor | null {
   return activeEditor;
@@ -99,11 +104,26 @@ function getStandardExtensions(bubbleMenuEl?: HTMLElement) {
         levels: [1, 2, 3, 4],
       },
       horizontalRule: {},
+      link: {
+        openOnClick: false,
+      },
+      underline: {},
     }),
-    Underline,
     TextStyle,
     Color,
     FontSize,
+    Image.configure({
+      inline: false,
+      allowBase64: true,
+    }),
+    Highlight.configure({
+      multicolor: true,
+    }),
+    TaskList,
+    TaskItem.configure({
+      nested: true,
+    }),
+    CharacterCount,
     TextAlign.configure({
       types: ['heading', 'paragraph'],
     }),
@@ -128,7 +148,7 @@ function restoreSavedContent() {
   try {
     let saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) {
-      saved = localStorage.getItem('loc_portfolio_edits_v4') || localStorage.getItem('loc_portfolio_edits_v3');
+      saved = localStorage.getItem('loc_portfolio_tiptap_v1') || localStorage.getItem('loc_portfolio_edits_v4') || localStorage.getItem('loc_portfolio_edits_v3');
     }
     if (!saved) return;
 
@@ -155,10 +175,8 @@ function restoreSavedContent() {
 // Save all content to localStorage
 export function saveAllTiptapContent() {
   if (activeEditor && activeTargetEl) {
-    const key = activeTargetEl.getAttribute('data-edit-key');
-    if (key) {
-      activeTargetEl.innerHTML = activeEditor.getHTML();
-    }
+    const html = activeEditor.getHTML();
+    activeTargetEl.innerHTML = html;
   }
 
   const edits: Record<string, { html: string; style: Record<string, string> }> = {};
@@ -171,8 +189,15 @@ export function saveAllTiptapContent() {
       if (el.style.textAlign) styleObj.textAlign = el.style.textAlign;
       if (el.style.lineHeight) styleObj.lineHeight = el.style.lineHeight;
 
+      // Extract inner content without ProseMirror wrapper if active
+      let htmlContent = el.innerHTML;
+      const pm = el.querySelector<HTMLElement>('.ProseMirror');
+      if (pm && activeEditor && activeTargetEl === el) {
+        htmlContent = activeEditor.getHTML();
+      }
+
       edits[key] = {
-        html: el.innerHTML,
+        html: htmlContent,
         style: styleObj,
       };
     }
@@ -226,6 +251,7 @@ export function resetTiptapContent() {
   }
   try {
     localStorage.removeItem(STORAGE_KEY);
+    localStorage.removeItem('loc_portfolio_tiptap_v1');
     localStorage.removeItem('loc_portfolio_edits_v4');
     localStorage.removeItem('loc_portfolio_edits_v3');
     showToast('🔄 Đang khôi phục nội dung gốc...');
@@ -237,7 +263,7 @@ export function resetTiptapContent() {
   }
 }
 
-// Attach Tiptap Editor instance to clicked element
+// Cleanly attach Tiptap Editor instance to clicked element
 function attachTiptapToElement(targetEl: HTMLElement) {
   if (activeTargetEl === targetEl && activeEditor) {
     return;
@@ -245,9 +271,10 @@ function attachTiptapToElement(targetEl: HTMLElement) {
 
   // Commit previous active editor
   if (activeEditor && activeTargetEl) {
-    activeTargetEl.innerHTML = activeEditor.getHTML();
+    const prevHTML = activeEditor.getHTML();
     activeEditor.destroy();
     activeEditor = null;
+    activeTargetEl.innerHTML = prevHTML;
     activeTargetEl.classList.remove('tiptap-active-node');
   }
 
@@ -255,13 +282,16 @@ function attachTiptapToElement(targetEl: HTMLElement) {
   targetEl.classList.add('tiptap-active-node');
 
   const bubbleMenuEl = document.getElementById('tiptap-bubble-menu') || undefined;
+  const initialContent = targetEl.innerHTML;
 
-  // Initialize Tiptap on target
+  // Clear target so Tiptap ProseMirror mounts as sole child
+  targetEl.innerHTML = '';
+
   activeEditor = new Editor({
     element: targetEl,
     extensions: getStandardExtensions(bubbleMenuEl),
-    content: targetEl.innerHTML,
-    autofocus: true,
+    content: initialContent,
+    autofocus: 'end',
     editable: true,
     onUpdate: () => {
       updateDockButtonStates();
@@ -287,7 +317,9 @@ function updateDockButtonStates() {
   const isH3 = activeEditor.isActive('heading', { level: 3 });
   const isBulletList = activeEditor.isActive('bulletList');
   const isOrderedList = activeEditor.isActive('orderedList');
+  const isTaskList = activeEditor.isActive('taskList');
   const isBlockquote = activeEditor.isActive('blockquote');
+  const isHighlight = activeEditor.isActive('highlight');
 
   const dock = document.getElementById('visual-editor-dock');
   if (!dock) return;
@@ -301,7 +333,9 @@ function updateDockButtonStates() {
   dock.querySelector('[data-tt-action="h3"]')?.classList.toggle('active', isH3);
   dock.querySelector('[data-tt-action="bulletList"]')?.classList.toggle('active', isBulletList);
   dock.querySelector('[data-tt-action="orderedList"]')?.classList.toggle('active', isOrderedList);
+  dock.querySelector('[data-tt-action="taskList"]')?.classList.toggle('active', isTaskList);
   dock.querySelector('[data-tt-action="blockquote"]')?.classList.toggle('active', isBlockquote);
+  dock.querySelector('[data-tt-action="highlight"]')?.classList.toggle('active', isHighlight);
 
   // Floating bubble states
   const bubble = document.getElementById('tiptap-bubble-menu');
@@ -310,6 +344,7 @@ function updateDockButtonStates() {
     bubble.querySelector('[data-tt-action="italic"]')?.classList.toggle('active', isItalic);
     bubble.querySelector('[data-tt-action="underline"]')?.classList.toggle('active', isUnderline);
     bubble.querySelector('[data-tt-action="strike"]')?.classList.toggle('active', isStrike);
+    bubble.querySelector('[data-tt-action="highlight"]')?.classList.toggle('active', isHighlight);
   }
 }
 
@@ -326,6 +361,7 @@ function setupBubbleMenuDOM(): HTMLElement {
         <button type="button" class="tt-btn" data-tt-action="italic" title="In nghiêng (Cmd+I)"><em>I</em></button>
         <button type="button" class="tt-btn" data-tt-action="underline" title="Gạch chân (Cmd+U)"><u>U</u></button>
         <button type="button" class="tt-btn" data-tt-action="strike" title="Gạch ngang"><s>S</s></button>
+        <button type="button" class="tt-btn" data-tt-action="highlight" title="Dạ quang">🖍️</button>
       </div>
 
       <div class="tt-sep"></div>
@@ -366,6 +402,7 @@ function setupBubbleMenuDOM(): HTMLElement {
     menu.querySelector('[data-tt-action="italic"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleItalic().run());
     menu.querySelector('[data-tt-action="underline"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleUnderline().run());
     menu.querySelector('[data-tt-action="strike"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleStrike().run());
+    menu.querySelector('[data-tt-action="highlight"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleHighlight({ color: '#fef08a' }).run());
 
     menu.querySelector('[data-tt-action="font-down"]')?.addEventListener('click', () => adjustActiveFontSize(-2));
     menu.querySelector('[data-tt-action="font-up"]')?.addEventListener('click', () => adjustActiveFontSize(2));
@@ -415,6 +452,34 @@ function adjustActiveFontSize(delta: number) {
   showToast(`🔠 Tiptap Cỡ chữ: ${targetSize}px`);
 }
 
+// Setup File Input for Tiptap Image Insert
+function setupImageUploadInput() {
+  imageUploadInput = document.createElement('input');
+  imageUploadInput.type = 'file';
+  imageUploadInput.accept = 'image/*';
+  imageUploadInput.style.display = 'none';
+  document.body.appendChild(imageUploadInput);
+
+  imageUploadInput.addEventListener('change', () => {
+    const file = imageUploadInput?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      if (activeEditor) {
+        activeEditor.chain().focus().setImage({ src: dataUrl }).run();
+        showToast('🖼️ Tiptap: Đã chèn ảnh vào văn bản!');
+      } else if (modalComposerEditor) {
+        modalComposerEditor.chain().focus().setImage({ src: dataUrl }).run();
+        showToast('🖼️ Tiptap Composer: Đã chèn ảnh!');
+      }
+    };
+    reader.readAsDataURL(file);
+    if (imageUploadInput) imageUploadInput.value = '';
+  });
+}
+
 // Setup Master Tiptap Control Dock
 function setupTiptapDock() {
   if (document.getElementById('visual-editor-dock')) return;
@@ -430,9 +495,9 @@ function setupTiptapDock() {
       <!-- Tiptap Studio Toolbar -->
       <div class="editor-format-bar">
         <!-- Brand / Engine Pill -->
-        <div class="tiptap-engine-pill" title="Trình chỉnh sửa được cung cấp bởi Tiptap (ProseMirror engine)">
+        <div class="tiptap-engine-pill" title="Trình chỉnh sửa được cung cấp bởi Tiptap (GitHub: ueberdosis/tiptap)">
           <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M4 4h16v4h-6v12h-4V8H4V4z"/></svg>
-          <span>Tiptap Engine</span>
+          <span>Tiptap v3 Engine</span>
         </div>
 
         <div class="editor-tool-sep"></div>
@@ -443,6 +508,7 @@ function setupTiptapDock() {
           <button type="button" class="editor-tool-btn" data-tt-action="italic" title="In nghiêng (Cmd+I)"><em>I</em></button>
           <button type="button" class="editor-tool-btn" data-tt-action="underline" title="Gạch chân (Cmd+U)"><u>U</u></button>
           <button type="button" class="editor-tool-btn" data-tt-action="strike" title="Gạch ngang"><s>S</s></button>
+          <button type="button" class="editor-tool-btn" data-tt-action="highlight" title="Dạ quang">🖍️</button>
         </div>
 
         <div class="editor-tool-sep"></div>
@@ -458,6 +524,7 @@ function setupTiptapDock() {
           <button type="button" class="editor-tool-btn" data-tt-action="orderedList" title="Danh sách số">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="10" y1="6" x2="21" y2="6"/><line x1="10" y1="12" x2="21" y2="12"/><line x1="10" y1="18" x2="21" y2="18"/><path d="M4 6h1v4"/><path d="M4 10h2"/></svg>
           </button>
+          <button type="button" class="editor-tool-btn" data-tt-action="taskList" title="Danh sách công việc (Checkbox)">☑️</button>
           <button type="button" class="editor-tool-btn" data-tt-action="blockquote" title="Khối trích dẫn">”</button>
         </div>
 
@@ -487,8 +554,9 @@ function setupTiptapDock() {
 
         <div class="editor-tool-sep"></div>
 
-        <!-- Insert & Divider -->
-        <div class="editor-tool-group" title="Chèn dòng & Phân cách">
+        <!-- Insert & Media -->
+        <div class="editor-tool-group" title="Chèn dòng, ảnh & Phân cách">
+          <button type="button" class="editor-tool-btn" data-tt-action="insert-image" title="Chèn ảnh từ máy">🖼️ Chèn ảnh</button>
           <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="hr" title="Chèn vạch ngăn cách (Horizontal Rule)">— Vạch ngăn</button>
           <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="composer-open" title="Mở Trình Soạn Bài Tiptap Chuyên Sâu">✨ Soạn thảo Pro</button>
         </div>
@@ -554,6 +622,7 @@ function setupTiptapDock() {
   dock.querySelector('[data-tt-action="italic"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleItalic().run());
   dock.querySelector('[data-tt-action="underline"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleUnderline().run());
   dock.querySelector('[data-tt-action="strike"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleStrike().run());
+  dock.querySelector('[data-tt-action="highlight"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleHighlight({ color: '#fef08a' }).run());
 
   dock.querySelector('[data-tt-action="h1"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleHeading({ level: 1 }).run());
   dock.querySelector('[data-tt-action="h2"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleHeading({ level: 2 }).run());
@@ -561,6 +630,7 @@ function setupTiptapDock() {
 
   dock.querySelector('[data-tt-action="bulletList"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleBulletList().run());
   dock.querySelector('[data-tt-action="orderedList"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleOrderedList().run());
+  dock.querySelector('[data-tt-action="taskList"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleTaskList().run());
   dock.querySelector('[data-tt-action="blockquote"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleBlockquote().run());
 
   dock.querySelector('[data-tt-action="font-down"]')?.addEventListener('click', () => adjustActiveFontSize(-2));
@@ -581,6 +651,10 @@ function setupTiptapDock() {
     else if (current === '2.2') next = '1.45';
     activeTargetEl.style.lineHeight = next;
     showToast(`↕️ Giãn dòng: ${next}`);
+  });
+
+  dock.querySelector('[data-tt-action="insert-image"]')?.addEventListener('click', () => {
+    imageUploadInput?.click();
   });
 
   dock.querySelector('[data-tt-action="hr"]')?.addEventListener('click', () => {
@@ -636,7 +710,7 @@ function openTiptapComposerModal() {
         <div class="tiptap-composer-header">
           <div class="tiptap-composer-title-group">
             <span class="tiptap-badge">Tiptap Studio Pro</span>
-            <h3>Trình Soạn Thảo Văn Bản Toàn Năng</h3>
+            <h3>Trình Soạn Thảo Văn Bản Toàn Năng (ProseMirror Engine)</h3>
           </div>
           <button type="button" class="tiptap-composer-close" aria-label="Đóng">✕</button>
         </div>
@@ -646,6 +720,7 @@ function openTiptapComposerModal() {
           <button type="button" class="tt-tool-btn" data-cm="italic"><em>I</em></button>
           <button type="button" class="tt-tool-btn" data-cm="underline"><u>U</u></button>
           <button type="button" class="tt-tool-btn" data-cm="strike"><s>S</s></button>
+          <button type="button" class="tt-tool-btn" data-cm="highlight">🖍️ Dạ quang</button>
           <div class="tt-sep"></div>
           <button type="button" class="tt-tool-btn" data-cm="h1">H1</button>
           <button type="button" class="tt-tool-btn" data-cm="h2">H2</button>
@@ -653,8 +728,10 @@ function openTiptapComposerModal() {
           <div class="tt-sep"></div>
           <button type="button" class="tt-tool-btn" data-cm="bullet">Bullet</button>
           <button type="button" class="tt-tool-btn" data-cm="number">Number</button>
+          <button type="button" class="tt-tool-btn" data-cm="task">☑️ Task</button>
           <button type="button" class="tt-tool-btn" data-cm="quote">Quote</button>
-          <button type="button" class="tt-tool-btn" data-cm="hr">Divider</button>
+          <button type="button" class="tt-tool-btn" data-cm="image">🖼️ Chèn ảnh</button>
+          <button type="button" class="tt-tool-btn" data-cm="hr">— Divider</button>
           <div class="tt-sep"></div>
           <button type="button" class="tt-tool-btn" data-cm="undo">↩ Undo</button>
           <button type="button" class="tt-tool-btn" data-cm="redo">↪ Redo</button>
@@ -663,7 +740,9 @@ function openTiptapComposerModal() {
         <div class="tiptap-composer-canvas" id="tiptap-composer-canvas"></div>
 
         <div class="tiptap-composer-footer">
-          <span class="tiptap-composer-hint">ProseMirror engine active · Soạn bài thoải mái, tự động format chuẩn HTML</span>
+          <div class="tiptap-composer-meta">
+            <span class="tiptap-composer-count" id="tiptap-composer-count">0 từ · 0 ký tự</span>
+          </div>
           <div class="tiptap-composer-actions">
             <button type="button" class="btn btn-secondary tiptap-composer-cancel">Hủy</button>
             <button type="button" class="btn btn-primary tiptap-composer-apply">Áp dụng vào phần đang chọn</button>
@@ -697,24 +776,34 @@ function openTiptapComposerModal() {
     modal.querySelector('[data-cm="italic"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleItalic().run());
     modal.querySelector('[data-cm="underline"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleUnderline().run());
     modal.querySelector('[data-cm="strike"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleStrike().run());
+    modal.querySelector('[data-cm="highlight"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleHighlight({ color: '#fef08a' }).run());
     modal.querySelector('[data-cm="h1"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleHeading({ level: 1 }).run());
     modal.querySelector('[data-cm="h2"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleHeading({ level: 2 }).run());
     modal.querySelector('[data-cm="h3"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleHeading({ level: 3 }).run());
     modal.querySelector('[data-cm="bullet"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleBulletList().run());
     modal.querySelector('[data-cm="number"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleOrderedList().run());
+    modal.querySelector('[data-cm="task"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleTaskList().run());
     modal.querySelector('[data-cm="quote"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().toggleBlockquote().run());
+    modal.querySelector('[data-cm="image"]')?.addEventListener('click', () => imageUploadInput?.click());
     modal.querySelector('[data-cm="hr"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().setHorizontalRule().run());
     modal.querySelector('[data-cm="undo"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().undo().run());
     modal.querySelector('[data-cm="redo"]')?.addEventListener('click', () => modalComposerEditor?.chain().focus().redo().run());
   }
 
   const canvas = modal.querySelector('#tiptap-composer-canvas') as HTMLElement;
+  const countEl = modal.querySelector('#tiptap-composer-count') as HTMLElement;
+
   if (!modalComposerEditor && canvas) {
     modalComposerEditor = new Editor({
       element: canvas,
       extensions: getStandardExtensions(),
       content: activeTargetEl?.innerHTML || '<h2>Tiêu đề bài viết mới</h2><p>Bắt đầu viết những dòng suy nghĩ, triết lý hoặc ghi chép hành trình của bạn tại đây với sức mạnh của Tiptap...</p>',
       autofocus: true,
+      onUpdate: ({ editor }) => {
+        const words = editor.storage.characterCount.words();
+        const chars = editor.storage.characterCount.characters();
+        if (countEl) countEl.textContent = `${words} từ · ${chars} ký tự`;
+      },
     });
   } else if (modalComposerEditor && activeTargetEl) {
     modalComposerEditor.commands.setContent(activeTargetEl.innerHTML);
@@ -728,20 +817,48 @@ function closeTiptapComposerModal() {
   modal?.classList.remove('is-open');
 }
 
+// Setup Visible Floating Toggle Pill (Always accessible on screen!)
+function setupVisibleTogglePill() {
+  if (document.getElementById('tiptap-fab-toggle')) return;
+
+  const pill = document.createElement('button');
+  pill.id = 'tiptap-fab-toggle';
+  pill.type = 'button';
+  pill.className = 'tiptap-fab-toggle';
+  pill.setAttribute('aria-label', 'Bật / Tắt Trình Soạn Thảo Tiptap');
+  pill.innerHTML = `
+    <div class="tiptap-fab-pulse"></div>
+    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.3">
+      <path d="M12 20h9"/>
+      <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>
+    </svg>
+    <span class="tiptap-fab-label">Biên tập Tiptap</span>
+    <kbd class="tiptap-fab-kbd">⌥E</kbd>
+  `;
+
+  document.body.appendChild(pill);
+
+  pill.addEventListener('click', () => {
+    toggleTiptapEditMode(!isEditMode);
+  });
+}
+
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
   isEditMode = enable;
   const dock = document.getElementById('visual-editor-dock');
+  const pill = document.getElementById('tiptap-fab-toggle');
 
   if (enable) {
     document.body.classList.add('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.remove('hidden');
+    pill?.classList.add('is-editing');
 
-    // Auto tag elements if needed
+    // Auto tag elements across the site
     document.querySelectorAll<HTMLElement>(
       'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .principle-card h3, .principle-card p, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi'
     ).forEach((el, idx) => {
-      if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, script, style, svg')) return;
+      if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, #tiptap-fab-toggle, .toast-notice, script, style, svg')) return;
       if (!el.getAttribute('data-edit-key')) {
         const secId = el.closest('section[id], div[id]')?.id || 'doc';
         const tag = el.tagName.toLowerCase();
@@ -755,12 +872,14 @@ export function toggleTiptapEditMode(enable: boolean) {
   } else {
     document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.add('hidden');
+    pill?.classList.remove('is-editing');
     closeTiptapComposerModal();
 
     if (activeEditor && activeTargetEl) {
-      activeTargetEl.innerHTML = activeEditor.getHTML();
+      const finalHTML = activeEditor.getHTML();
       activeEditor.destroy();
       activeEditor = null;
+      activeTargetEl.innerHTML = finalHTML;
       activeTargetEl.classList.remove('tiptap-active-node');
       activeTargetEl = null;
     }
@@ -779,13 +898,15 @@ export function initTiptapEditor() {
   restoreSavedContent();
   setupBubbleMenuDOM();
   setupTiptapDock();
+  setupVisibleTogglePill();
+  setupImageUploadInput();
 
   // Listen to clicks on editable elements to attach Tiptap
   document.addEventListener('click', (e) => {
     if (!isEditMode) return;
     const target = e.target as HTMLElement;
 
-    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice')) {
+    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, #tiptap-fab-toggle, .toast-notice')) {
       return;
     }
 
@@ -795,7 +916,7 @@ export function initTiptapEditor() {
     }
   });
 
-  // Listen for Option + E
+  // Listen for Option + E (or Alt + E)
   window.addEventListener('keydown', (e) => {
     const isEKey =
       e.code === 'KeyE' ||
@@ -819,5 +940,5 @@ export function initTiptapEditor() {
     }
   });
 
-  console.info('[Tiptap] Rich Text Engine ready. Press Option + E to activate.');
+  console.info('[Tiptap] Rich Text Engine ready. Press Option + E or click FAB to activate.');
 }
