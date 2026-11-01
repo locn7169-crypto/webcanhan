@@ -44,6 +44,7 @@ import { initPinnedProjects } from './pinned-projects';
 import { initSynthesisMatrix } from './synthesis-matrix';
 import { initLocMoneyModal } from './loc-money-modal';
 import { initLocLearnModal } from './loc-learn-modal';
+import { initExplorationJournal } from './exploration-journal';
 import { initScrollCinematics } from './scroll-cinematics';
 import { initHeroAmbientConstellation } from '../threeui/hero-constellation';
 import { initVisualEditor } from './visual-editor';
@@ -223,6 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initSynthesisMatrix();
   initLocMoneyModal();
   initLocLearnModal();
+  initExplorationJournal();
   initScrollCinematics();
   initHeroAmbientConstellation();
   initScrollBackdrop();

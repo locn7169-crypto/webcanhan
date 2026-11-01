@@ -967,46 +967,57 @@
 
         <div class="explorations-grid">
           <!-- Card 1: Photography -->
-          <article class="exploration-card tilt-target">
+          <article class="exploration-card tilt-target" data-exploration-id="photography" role="button" tabindex="0" aria-label="Xem nhật ký Nhiếp ảnh & Kể chuyện thị giác">
             <div class="exploration-visual">
-              <img src="/assets/loc-banner.jpg" alt="White garden roses on marble table" class="exploration-real-img">
+              <img src="/assets/loc-banner.jpg" alt="White garden roses on marble table" class="exploration-real-img" id="exp-cover-photography">
+              <span class="exploration-click-badge"><i data-lucide="book-open" style="width: 13px; height: 13px;"></i> Nhật ký &amp; Ảnh</span>
             </div>
             <div class="exploration-content">
               <h3>Photography &amp; Visual Storytelling <span class="bilingual-sub">· Nhiếp ảnh &amp; Kể chuyện thị giác</span></h3>
               <p class="bilingual-en" style="margin-bottom: 0.35rem;">Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.</p>
               <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Quan sát hình khối, ánh sáng tự nhiên, nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.</p>
-              <span class="exploration-coord">Still Life &amp; Drapery · Tĩnh vật &amp; Ánh sáng</span>
+              <div class="exploration-footer-row">
+                <span class="exploration-coord">Still Life &amp; Drapery · Tĩnh vật &amp; Ánh sáng</span>
+                <span class="exploration-view-link">Mở nhật ký →</span>
+              </div>
             </div>
           </article>
 
           <!-- Card 2: Trekking -->
-          <article class="exploration-card tilt-target">
-            <div class="exploration-visual" style="background: linear-gradient(135deg, #DFD8CB 0%, #C8BFB0 100%);">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#685E51" stroke-width="1.5">
-                <path d="m8 3 4 8 5-5 5 15H2L8 3z"/>
-              </svg>
+          <article class="exploration-card tilt-target" data-exploration-id="trekking" role="button" tabindex="0" aria-label="Xem nhật ký Trekking & Thiên nhiên">
+            <div class="exploration-visual">
+              <img src="/assets/backdrop-works.jpg" alt="Highland trekking trail" class="exploration-real-img" id="exp-cover-trekking">
+              <span class="exploration-click-badge"><i data-lucide="compass" style="width: 13px; height: 13px;"></i> Nhật ký &amp; Ảnh</span>
             </div>
             <div class="exploration-content">
               <h3>Trekking &amp; Outdoors <span class="bilingual-sub">· Đi bộ đường dài &amp; Thiên nhiên</span></h3>
               <p class="bilingual-en" style="margin-bottom: 0.35rem;">Seeking clarity and endurance across highland trails, foggy ridges, and quiet mountain forests.</p>
               <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Tìm kiếm sự tĩnh tâm và bền bỉ qua những cung đường cao nguyên, triền sương mù và rừng thông tĩnh lặng.</p>
-              <span class="exploration-coord">Highland Trails · Sức bền &amp; Tĩnh tâm</span>
+              <div class="exploration-footer-row">
+                <span class="exploration-coord">Highland Trails · Sức bền &amp; Tĩnh tâm</span>
+                <span class="exploration-view-link">Mở nhật ký →</span>
+              </div>
             </div>
           </article>
 
           <!-- Card 3: Chinese Language -->
-          <article class="exploration-card tilt-target">
+          <article class="exploration-card tilt-target" data-exploration-id="chinese" role="button" tabindex="0" aria-label="Xem nhật ký Ngôn ngữ & Triết lý Hán tự">
             <div class="exploration-visual" style="background: linear-gradient(135deg, #E6DDD0 0%, #D4C7B5 100%);">
-              <div class="exploration-chinese-box">
+              <div class="exploration-chinese-box" id="exp-cover-chinese-box">
                 <span class="exploration-chinese-glyph">知行合一</span>
                 <span class="exploration-chinese-sub">阮城禄 · 语言与心智</span>
               </div>
+              <img src="/assets/loclearn/screen_lotrinh.jpg" alt="Chinese study notes" class="exploration-real-img" id="exp-cover-chinese" style="display: none;">
+              <span class="exploration-click-badge"><i data-lucide="book-open" style="width: 13px; height: 13px;"></i> Nhật ký &amp; Ảnh</span>
             </div>
             <div class="exploration-content">
               <h3>Chinese Language &amp; Philosophy <span class="bilingual-sub">· Ngôn ngữ &amp; Triết lý Hán tự</span></h3>
               <p class="bilingual-en" style="margin-bottom: 0.35rem;">Studying HSK characters and philosophical expressions where language mirrors worldview: <em>“我努力不一定会成功 但我不努力一定会失败”</em>.</p>
               <p class="bilingual-vi" style="margin-bottom: 0.75rem;">Học chữ Hán HSK và những câu nói triết lý nơi ngôn ngữ phản chiếu nhân sinh quan: <em>“Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại”</em>.</p>
-              <span class="exploration-coord">HSK Studies · Hanzi Calligraphy · Hán tự</span>
+              <div class="exploration-footer-row">
+                <span class="exploration-coord">HSK Studies · Hanzi Calligraphy · Hán tự</span>
+                <span class="exploration-view-link">Mở nhật ký →</span>
+              </div>
             </div>
           </article>
         </div>
@@ -1992,6 +2003,90 @@
         </div>
 
       </div>
+    </div>
+  </div>
+
+  <!-- EXPLORATION JOURNAL: Interactive Field Notes & Photo Diary Modal -->
+  <div id="exploration-journal-modal" class="loc-modal journal-modal" role="dialog" aria-modal="true" aria-labelledby="journal-modal-title" hidden>
+    <div class="loc-modal-backdrop journal-modal-backdrop" aria-hidden="true"></div>
+    <div class="loc-modal-container journal-modal-container">
+      
+      <!-- Modal Top Bar -->
+      <div class="journal-modal-topbar">
+        <div class="journal-modal-breadcrumbs">
+          <span class="journal-pill-tag">✦ FIELD NOTES · BẢN NHẬT KÝ &amp; GHI CHÉP</span>
+          <span class="journal-shortcut-hint">(Bật <code>Option + E</code> để sửa nội dung, đổi ảnh bìa, thêm bài viết)</span>
+        </div>
+        <div class="journal-modal-top-actions">
+          <button type="button" class="btn btn-secondary journal-modal-save-btn" style="display: none;" title="Lưu các ghi chép">
+            <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+            <span>Lưu nhật ký</span>
+          </button>
+          <button type="button" class="loc-modal-close journal-modal-close" aria-label="Đóng nhật ký (Esc)">
+            <i data-lucide="x" style="width: 18px; height: 18px;"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Switcher Tabs -->
+      <nav class="journal-modal-tabs" aria-label="Chủ đề nhật ký">
+        <button type="button" class="journal-tab-btn active" data-journal-tab="photography">
+          <i data-lucide="palette" style="width: 15px; height: 15px;"></i>
+          <span>01 / Nhiếp ảnh &amp; Thị giác</span>
+        </button>
+        <button type="button" class="journal-tab-btn" data-journal-tab="trekking">
+          <i data-lucide="compass" style="width: 15px; height: 15px;"></i>
+          <span>02 / Trekking &amp; Thiên nhiên</span>
+        </button>
+        <button type="button" class="journal-tab-btn" data-journal-tab="chinese">
+          <i data-lucide="book-open" style="width: 15px; height: 15px;"></i>
+          <span>03 / Hán tự &amp; Triết lý</span>
+        </button>
+      </nav>
+
+      <!-- Scrollable Journal Content Area -->
+      <div class="journal-modal-scroll">
+        
+        <!-- Category Cover Banner -->
+        <div class="journal-cover-hero">
+          <img src="/assets/loc-banner.jpg" alt="Cover" class="journal-cover-bg">
+          <div class="journal-cover-overlay"></div>
+          
+          <!-- Edit Cover Photo Action (Only in Option + E) -->
+          <button type="button" class="journal-change-cover-btn" style="display: none;" title="Đổi ảnh bìa cho mục này">
+            <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+            <span>📷 Thay ảnh bìa</span>
+          </button>
+
+          <div class="journal-cover-content">
+            <span class="journal-cover-coord">Still Life &amp; Drapery · Tĩnh vật &amp; Ánh sáng</span>
+            <h3 class="journal-cover-title-vi" id="journal-modal-title">Nhiếp ảnh &amp; Kể chuyện thị giác</h3>
+            <p class="journal-cover-title-en">Photography &amp; Visual Storytelling</p>
+            <p class="journal-cover-sub-vi">Quan sát hình khối, ánh sáng tự nhiên, nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.</p>
+          </div>
+        </div>
+
+        <!-- Add Entry Bar (Only in Option + E mode) -->
+        <div class="journal-add-entry-bar" style="display: none;">
+          <div class="journal-add-entry-info">
+            <span class="journal-add-pulse"></span>
+            <span>Chế độ biên tập nhật ký đang bật (Option + E)</span>
+          </div>
+          <button type="button" class="btn btn-primary journal-add-entry-btn">
+            <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
+            <span>+ Thêm bài viết / nhật ký mới</span>
+          </button>
+        </div>
+
+        <!-- Timeline Entries Container -->
+        <div class="journal-timeline-section">
+          <div class="journal-timeline-list">
+            <!-- Dynamically populated by renderJournalModal -->
+          </div>
+        </div>
+
+      </div>
+
     </div>
   </div>
 

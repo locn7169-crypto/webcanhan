@@ -24,7 +24,7 @@ export function initVisualEditor() {
     }
   }
 
-  // Auto-tag key elements if not already tagged
+  // Auto-tag key elements across the entire website so all text can be edited
   function ensureEditKeys() {
     const defaultSelectors: [string, string][] = [
       ['.hero-eyebrow span', 'hero-eyebrow'],
@@ -54,7 +54,7 @@ export function initVisualEditor() {
       }
     });
 
-    // Also tag project card titles & descriptions
+    // Tag project card titles & descriptions
     document.querySelectorAll('.project-card').forEach((card, idx) => {
       const title = card.querySelector('.project-card-title');
       const desc = card.querySelector('.project-desc');
@@ -66,14 +66,30 @@ export function initVisualEditor() {
       }
     });
 
-    // Also tag exploration cards
+    // Tag exploration cards
     document.querySelectorAll('.exploration-card').forEach((card, idx) => {
       const h3 = card.querySelector('h3');
-      const p = card.querySelector('p');
+      const pList = card.querySelectorAll('p');
       const coord = card.querySelector('.exploration-coord');
       if (h3 && !h3.getAttribute('data-edit-key')) h3.setAttribute('data-edit-key', `exp-h3-${idx}`);
-      if (p && !p.getAttribute('data-edit-key')) p.setAttribute('data-edit-key', `exp-p-${idx}`);
+      pList.forEach((p, pIdx) => {
+        if (!p.getAttribute('data-edit-key')) p.setAttribute('data-edit-key', `exp-p-${idx}-${pIdx}`);
+      });
       if (coord && !coord.getAttribute('data-edit-key')) coord.setAttribute('data-edit-key', `exp-coord-${idx}`);
+    });
+
+    // Universally tag all remaining text elements so Option + E can edit ANY text on the website
+    const candidates = document.querySelectorAll<HTMLElement>(
+      'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .principle-card h3, .principle-card p, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi'
+    );
+
+    candidates.forEach((el, idx) => {
+      if (el.closest('#visual-editor-dock, .toast-notice, script, style, svg')) return;
+      if (!el.getAttribute('data-edit-key')) {
+        const secId = el.closest('section[id], div[id]')?.id || 'doc';
+        const tag = el.tagName.toLowerCase();
+        el.setAttribute('data-edit-key', `auto-${secId}-${tag}-${idx}`);
+      }
     });
   }
 
@@ -137,6 +153,9 @@ export function initVisualEditor() {
       document.body.classList.add('visual-editor-active');
       dock?.classList.remove('hidden');
 
+      // Ensure any newly added elements are tagged
+      ensureEditKeys();
+
       // Make all tagged elements editable
       document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
         el.contentEditable = 'true';
@@ -144,6 +163,7 @@ export function initVisualEditor() {
         el.setAttribute('data-editable-active', 'true');
       });
 
+      window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: true } }));
       showToast('✏️ Đã bật chế độ Chỉnh Sửa! Bấm vào bất kỳ chữ nào để sửa.');
     } else {
       document.body.classList.remove('visual-editor-active');
@@ -155,6 +175,7 @@ export function initVisualEditor() {
         el.removeAttribute('data-editable-active');
       });
 
+      window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: false } }));
       showToast('✕ Đã thoát chế độ chỉnh sửa.');
     }
   }
@@ -171,6 +192,8 @@ export function initVisualEditor() {
 
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
+      // Notify journal or other components to save as well
+      window.dispatchEvent(new CustomEvent('loc-save-all-requested'));
       showToast('💾 Đã lưu thay đổi thành công vào máy của anh!');
     } catch (e) {
       console.error('[VisualEditor] Save error:', e);
