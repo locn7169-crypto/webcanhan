@@ -4525,7 +4525,13 @@ body.loc-modal-locked {
 
 /* Tiptap Floating Bubble Menu */
 .tiptap-bubble-menu {
-  display: flex;
+  position: fixed;
+  top: -9999px;
+  left: -9999px;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  display: none !important;
   align-items: center;
   gap: 0.35rem;
   padding: 5px 8px;
@@ -4536,6 +4542,13 @@ body.loc-modal-locked {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 100000;
+}
+
+body.visual-editor-active .tiptap-bubble-menu {
+  display: flex !important;
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .tt-bubble-group {
@@ -4614,6 +4627,7 @@ body.loc-modal-locked {
 }
 
 .visual-editor-dock.hidden {
+  display: none !important;
   opacity: 0;
   pointer-events: none;
   transform: translateX(-50%) translateY(35px);

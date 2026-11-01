@@ -773,5 +773,5 @@ export function initVisualEditor() {
   createEditorDock();
   createFloatingBubbleToolbar();
 
-  console.info('[VisualEditor] Rich Text Studio loaded. Press Option + E to open.');
+  console.info('[VisualEditor] Rich Text Studio ready.');
 }

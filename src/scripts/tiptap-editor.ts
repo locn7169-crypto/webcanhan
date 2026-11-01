@@ -355,6 +355,10 @@ function setupBubbleMenuDOM(): HTMLElement {
     menu = document.createElement('div');
     menu.id = 'tiptap-bubble-menu';
     menu.className = 'tiptap-bubble-menu';
+    menu.style.position = 'fixed';
+    menu.style.top = '-9999px';
+    menu.style.left = '-9999px';
+    menu.style.display = 'none';
     menu.innerHTML = `
       <div class="tt-bubble-group">
         <button type="button" class="tt-btn" data-tt-action="bold" title="In đậm (Cmd+B)"><strong>B</strong></button>
@@ -820,9 +824,13 @@ function closeTiptapComposerModal() {
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
   isEditMode = enable;
-  const dock = document.getElementById('visual-editor-dock');
 
   if (enable) {
+    setupBubbleMenuDOM();
+    setupTiptapDock();
+    setupImageUploadInput();
+
+    const dock = document.getElementById('visual-editor-dock');
     document.body.classList.add('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.remove('hidden');
 
@@ -843,7 +851,15 @@ export function toggleTiptapEditMode(enable: boolean) {
     showToast('✨ Tiptap Studio: Đã kích hoạt! Nhấp vào bất kỳ đoạn chữ nào để bắt đầu.');
   } else {
     document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
-    dock?.classList.add('hidden');
+    
+    // Completely remove bubble menu from DOM
+    const bubbleMenu = document.getElementById('tiptap-bubble-menu');
+    bubbleMenu?.remove();
+
+    // Completely remove dock from DOM
+    const dock = document.getElementById('visual-editor-dock');
+    dock?.remove();
+
     closeTiptapComposerModal();
 
     if (activeEditor && activeTargetEl) {
@@ -867,9 +883,8 @@ export function toggleTiptapEditMode(enable: boolean) {
 // Initialize Tiptap Visual Editor
 export function initTiptapEditor() {
   restoreSavedContent();
-  setupBubbleMenuDOM();
-  setupTiptapDock();
-  setupImageUploadInput();
+  // Do NOT mount any editor toolbars or bubble menus on initial page load!
+  // They are strictly spawned on demand via Option + E.
 
   // Listen to clicks on editable elements to attach Tiptap
   document.addEventListener('click', (e) => {
@@ -910,5 +925,5 @@ export function initTiptapEditor() {
     }
   });
 
-  console.info('[Tiptap] Rich Text Engine ready. Press Option + E to activate.');
+  console.info('[Tiptap] Rich Text Engine ready.');
 }

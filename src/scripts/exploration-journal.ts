@@ -830,7 +830,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
           <span class="insta-stat-pill">Cập nhật: <strong>${currentCat.entries[0]?.date || 'Gần đây'}</strong></span>
           ${
             isEditing
-              ? '<span class="insta-edit-indicator">✏️ Đang bật Option + E (Bấm ô nét đứt để chọn nhiều ảnh và tạo bài)</span>'
+              ? '<span class="insta-edit-indicator">✏️ Chế độ biên tập (Bấm ô nét đứt để chọn ảnh và tạo bài)</span>'
               : '<span class="insta-stat-pill insta-stat-hint">✨ Nhấp vào ảnh để xem chi tiết</span>'
           }
         </div>
