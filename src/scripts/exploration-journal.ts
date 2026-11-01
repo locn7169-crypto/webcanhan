@@ -31,7 +31,7 @@ export function getEntryPhotos(entry: JournalEntry): string[] {
   if (entry.photos && Array.isArray(entry.photos) && entry.photos.length > 0) {
     return entry.photos;
   }
-  return entry.photoUrl ? [entry.photoUrl] : ['/assets/loc-banner.jpg'];
+  return entry.photoUrl ? [entry.photoUrl] : ['./assets/loc-banner.jpg'];
 }
 
 // Default initial data matching Loc's real interests with rich multi-photo albums
@@ -43,7 +43,7 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
     subtitleEn: 'Seeking clarity and endurance across highland trails, foggy ridges, and quiet mountain forests.',
     subtitleVi: 'Tìm kiếm sự tĩnh tâm và bền bỉ qua những cung đường cao nguyên, triền sương mù và rừng thông tĩnh lặng.',
     coord: 'Highland Trails · Sức bền & Tĩnh tâm',
-    coverUrl: '/assets/backdrop-works.jpg',
+    coverUrl: './assets/backdrop-works.jpg',
     entries: [
       {
         id: 'trek-1',
@@ -51,8 +51,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Một mình đi núi — Cung đường cao nguyên sương mù',
         story:
           'Hôm 6/9 tôi đi núi 1 mình. Bắt đầu từ 5h sáng khi sương mù còn giăng kín các sườn thông. Không sóng điện thoại, chỉ có tiếng gió, tiếng suối và nhịp bước chân của chính mình. Cảm giác vượt qua sự mệt mỏi thể xác để đổi lấy sự tĩnh lặng của tâm trí là một trải nghiệm không thể nào quên.',
-        photoUrl: '/assets/backdrop-works.jpg',
-        photos: ['/assets/backdrop-works.jpg', '/assets/backdrop-contact.jpg', '/assets/loc-bg.jpg'],
+        photoUrl: './assets/backdrop-works.jpg',
+        photos: ['./assets/backdrop-works.jpg', './assets/backdrop-contact.jpg', './assets/loc-bg.jpg'],
         caption: 'Triền dốc buổi sớm khi sương bắt đầu tan, nhìn xuống thung lũng mây mù trải dài vô tận.',
         likes: 28,
         isLiked: false,
@@ -63,8 +63,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Hành trình rèn luyện sức bền và sự điềm tĩnh',
         story:
           'Mỗi chuyến đi bộ đường dài là một bài học sâu sắc về sự kiên nhẫn. Khi đối diện với những con dốc cao gập ghềnh, bạn học cách không nhìn lên đỉnh núi để thấy nản lòng, mà chỉ tập trung vào từng bước chân vững chắc ngay trước mắt. Về đích không chỉ là chạm tới độ cao, mà là chiến thắng sự lười biếng của chính bản thân.',
-        photoUrl: '/assets/backdrop-contact.jpg',
-        photos: ['/assets/backdrop-contact.jpg', '/assets/backdrop-works.jpg'],
+        photoUrl: './assets/backdrop-contact.jpg',
+        photos: ['./assets/backdrop-contact.jpg', './assets/backdrop-works.jpg'],
         caption: 'Cột mốc cao độ và ánh hoàng hôn trải dài trên triền cỏ cao nguyên.',
         likes: 19,
         isLiked: false,
@@ -78,7 +78,7 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
     subtitleEn: 'Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.',
     subtitleVi: 'Quan sát hình khối, ánh sáng tự nhiên, nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.',
     coord: 'Still Life & Drapery · Tĩnh vật & Ánh sáng',
-    coverUrl: '/assets/loc-banner.jpg',
+    coverUrl: './assets/loc-banner.jpg',
     entries: [
       {
         id: 'photo-1',
@@ -86,8 +86,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Tĩnh vật hoa trắng & Ánh sáng tự nhiên',
         story:
           'Quan sát cấu trúc hình khối của từng đóa hoa hồng trắng dưới nguồn sáng tự nhiên từ ô cửa sổ. Nhiếp ảnh tĩnh vật rèn cho tôi khả năng chậm lại, chú ý đến những chi tiết nhỏ nhất của bóng đổ, kết cấu và sự cân bằng không gian.',
-        photoUrl: '/assets/loc-banner.jpg',
-        photos: ['/assets/loc-banner.jpg', '/assets/loc-bg.jpg', '/assets/backdrop-works.jpg'],
+        photoUrl: './assets/loc-banner.jpg',
+        photos: ['./assets/loc-banner.jpg', './assets/loc-bg.jpg', './assets/backdrop-works.jpg'],
         caption: 'Bình hoa hồng trắng trên phiến đá cẩm thạch — Nét tĩnh lặng của buổi sớm mai.',
         likes: 42,
         isLiked: true,
@@ -98,8 +98,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Kể chuyện qua những khoảng lặng thị giác',
         story:
           'Một bức ảnh có chiều sâu không nhất thiết phải chứa nhiều chi tiết. Đôi khi, chính khoảng trắng và sự tối giản trong khung hình lại mở ra nhiều cảm xúc nhất cho người xem. Bức ảnh là một ghi chép thị giác không lời, lưu giữ khoảnh khắc thời gian ngưng đọng.',
-        photoUrl: '/assets/loc-bg.jpg',
-        photos: ['/assets/loc-bg.jpg', '/assets/loc-banner.jpg'],
+        photoUrl: './assets/loc-bg.jpg',
+        photos: ['./assets/loc-bg.jpg', './assets/loc-banner.jpg'],
         caption: 'Ánh sáng dịu nhẹ và những khối hình học hài hòa trong không gian tĩnh lặng.',
         likes: 31,
         isLiked: false,
@@ -113,7 +113,7 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
     subtitleEn: 'Studying HSK characters and philosophical expressions where language mirrors worldview.',
     subtitleVi: 'Học chữ Hán HSK và những câu nói triết lý nơi ngôn ngữ phản chiếu nhân sinh quan.',
     coord: 'HSK Studies · Hanzi Calligraphy · Hán tự',
-    coverUrl: '/assets/loclearn/screen_lotrinh.jpg',
+    coverUrl: './assets/loclearn/screen_lotrinh.jpg',
     entries: [
       {
         id: 'chinese-1',
@@ -121,8 +121,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Chiêm nghiệm “Tri hành hợp nhất” (知行合一)',
         story:
           'Chữ “Tri” là hiểu biết, “Hành” là thực hành. Người xưa dạy rằng biết mà không làm thì chưa phải là biết thật sự. Trong việc tự học lập trình hay xây dựng sản phẩm, mỗi ngày tôi đều nhắc nhở bản thân đưa kiến thức vào thực tế thay vì chỉ dừng lại ở lý thuyết suông.',
-        photoUrl: '/assets/locmoney/module_nhatky.png',
-        photos: ['/assets/locmoney/module_nhatky.png', '/assets/loclearn/screen_thehoc.jpg', '/assets/loclearn/screen_lotrinh.jpg'],
+        photoUrl: './assets/locmoney/module_nhatky.png',
+        photos: ['./assets/locmoney/module_nhatky.png', './assets/loclearn/screen_thehoc.jpg', './assets/loclearn/screen_lotrinh.jpg'],
         caption: 'Sổ tay ghi chép những câu danh ngôn và nét chữ Hán tự thực hành mỗi ngày.',
         likes: 37,
         isLiked: false,
@@ -133,8 +133,8 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
         title: 'Học Hán tự — Rèn luyện sự kiên định bền bỉ',
         story:
           'Học chữ Hán từ con số 0 đòi hỏi tính kỷ luật rất cao. Thứ tự từng nét bút, bộ thủ và cấu trúc chữ nhắc nhở tôi về sự chỉn chu. Câu nói tâm đắc: “Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại” (我努力不一定会成功 但我不努力一定会失败).',
-        photoUrl: '/assets/loclearn/screen_thehoc.jpg',
-        photos: ['/assets/loclearn/screen_thehoc.jpg', '/assets/loclearn/screen_lotrinh.jpg'],
+        photoUrl: './assets/loclearn/screen_thehoc.jpg',
+        photos: ['./assets/loclearn/screen_thehoc.jpg', './assets/loclearn/screen_lotrinh.jpg'],
         caption: 'Thẻ ghi nhớ và phương pháp lặp lại ngắt quãng củng cố từ vựng bền bỉ.',
         likes: 25,
         isLiked: false,
@@ -193,6 +193,20 @@ function loadJournalData() {
           parsed[catKey].entries.forEach((it: any) => {
             if (!it.photos || !Array.isArray(it.photos) || it.photos.length === 0) {
               it.photos = it.photoUrl ? [it.photoUrl] : [];
+            }
+          });
+        }
+      });
+      // Normalize any legacy '/assets/' to './assets/'
+      Object.keys(parsed).forEach((catKey) => {
+        if (parsed[catKey]?.coverUrl?.startsWith('/assets/')) {
+          parsed[catKey].coverUrl = '.' + parsed[catKey].coverUrl;
+        }
+        if (parsed[catKey]?.entries) {
+          parsed[catKey].entries.forEach((it: any) => {
+            if (it.photoUrl?.startsWith('/assets/')) it.photoUrl = '.' + it.photoUrl;
+            if (Array.isArray(it.photos)) {
+              it.photos = it.photos.map((p: string) => p.startsWith('/assets/') ? '.' + p : p);
             }
           });
         }
@@ -258,7 +272,7 @@ function updateMainPageCardCovers() {
   const chineseBox = document.querySelector<HTMLElement>('#exp-cover-chinese-box');
   if (chineseCard && categories.chinese?.coverUrl) {
     chineseCard.src = categories.chinese.coverUrl;
-    if (categories.chinese.coverUrl !== '/assets/loclearn/screen_lotrinh.jpg') {
+    if (categories.chinese.coverUrl !== './assets/loclearn/screen_lotrinh.jpg') {
       chineseCard.style.display = 'block';
       if (chineseBox) chineseBox.style.display = 'none';
     }
@@ -521,7 +535,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
             <!-- Author Header with Heart Like Button -->
             <div class="insta-author-row">
               <div class="insta-author-left">
-                <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="insta-avatar">
+                <img src="./assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="insta-avatar">
                 <div class="insta-author-meta">
                   <span class="insta-author-name">Nguyễn Thành Lộc</span>
                   <span class="insta-category-tag">${currentCat.titleVi}</span>
