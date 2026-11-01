@@ -4446,41 +4446,48 @@ body.loc-modal-locked {
 
 
 /* ==========================================================================
-   IN-PLACE VISUAL EDITOR & RICH TEXT STUDIO (Live Click-to-Edit Mode)
+   TIPTAP RICH TEXT STUDIO & VISUAL EDITOR (ProseMirror Engine)
    ========================================================================== */
 
-/* Floating Contextual Bubble Toolbar (Notion/Medium style) */
-.editor-floating-toolbar {
-  position: absolute;
-  z-index: 100000;
+/* Tiptap Engine Indicator Badge */
+.tiptap-engine-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: var(--radius-full);
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+/* Tiptap Floating Bubble Menu */
+.tiptap-bubble-menu {
   display: flex;
   align-items: center;
   gap: 0.35rem;
   padding: 5px 8px;
-  background: rgba(18, 16, 14, 0.95);
-  border: 1px solid rgba(184, 150, 90, 0.5);
+  background: rgba(18, 16, 14, 0.96);
+  border: 1px solid rgba(184, 150, 90, 0.55);
   border-radius: var(--radius-full);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), 0 0 16px rgba(184, 150, 90, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), 0 0 18px rgba(184, 150, 90, 0.3);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  pointer-events: auto;
-  user-select: none;
+  z-index: 100000;
 }
 
-.editor-floating-toolbar.hidden {
-  opacity: 0;
-  pointer-events: none;
-  transform: translateY(6px) scale(0.95);
-}
-
-.bubble-btn-group {
+.tt-bubble-group {
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
 
-.bubble-btn {
+.tt-btn {
   width: 28px;
   height: 28px;
   border-radius: var(--radius-full);
@@ -4497,13 +4504,19 @@ body.loc-modal-locked {
   padding: 0;
 }
 
-.bubble-btn:hover {
+.tt-btn:hover {
   background: rgba(184, 150, 90, 0.25);
   border-color: var(--accent-gold);
   color: var(--accent-gold);
 }
 
-.bubble-color-dot {
+.tt-btn.active {
+  background: var(--accent-gold);
+  color: #181614;
+  font-weight: 700;
+}
+
+.tt-color-dot {
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -4513,12 +4526,12 @@ body.loc-modal-locked {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.bubble-color-dot:hover {
+.tt-color-dot:hover {
   transform: scale(1.3);
   box-shadow: 0 0 8px currentColor;
 }
 
-.bubble-divider {
+.tt-sep {
   width: 1px;
   height: 16px;
   background: rgba(255, 255, 255, 0.18);
@@ -4532,15 +4545,15 @@ body.loc-modal-locked {
   left: 50%;
   transform: translateX(-50%);
   z-index: 99999;
-  background: rgba(18, 16, 14, 0.94);
-  border: 1px solid rgba(184, 150, 90, 0.45);
+  background: rgba(18, 16, 14, 0.95);
+  border: 1px solid rgba(184, 150, 90, 0.5);
   border-radius: var(--radius-lg);
   padding: 10px 16px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.65), 0 0 30px rgba(184, 150, 90, 0.2);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.7), 0 0 30px rgba(184, 150, 90, 0.25);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-  max-width: 95vw;
+  max-width: 96vw;
 }
 
 .visual-editor-dock.hidden {
@@ -4594,6 +4607,13 @@ body.loc-modal-locked {
   background: rgba(184, 150, 90, 0.22);
   border-color: var(--accent-gold);
   color: var(--accent-gold);
+}
+
+.editor-tool-btn.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #181614;
+  font-weight: 700;
 }
 
 .editor-font-btn {
@@ -4738,20 +4758,196 @@ body.loc-modal-locked {
   color: #fff;
 }
 
-/* User Custom Insert Elements */
-.editor-custom-paragraph {
-  margin: 0.85rem 0;
-  line-height: 1.8;
-  color: var(--ink-primary);
-  font-size: 1rem;
+/* Active Tiptap Node Highlighting */
+.tiptap-active-node {
+  outline: 2px solid var(--accent-gold) !important;
+  box-shadow: 0 0 18px rgba(184, 150, 90, 0.3) !important;
+  background: rgba(184, 150, 90, 0.08) !important;
 }
 
-.editor-custom-divider {
+/* ProseMirror Core Styles inside Editable Nodes */
+.ProseMirror {
+  outline: none;
+}
+
+.ProseMirror-focused {
+  outline: none;
+}
+
+.ProseMirror blockquote {
+  border-left: 3px solid var(--accent-gold);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--ink-secondary);
+  font-style: italic;
+}
+
+.ProseMirror hr {
   border: none;
   border-top: 1px solid var(--accent-gold);
-  margin: 1.75rem auto;
-  width: 60%;
-  opacity: 0.65;
+  margin: 1.5rem 0;
+  opacity: 0.6;
+}
+
+.ProseMirror ul,
+.ProseMirror ol {
+  padding-left: 1.5rem;
+  margin: 0.75rem 0;
+}
+
+/* Fullscreen Tiptap Studio Pro Composer Modal */
+.tiptap-composer-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.tiptap-composer-modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.tiptap-composer-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 10, 9, 0.88);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.tiptap-composer-window {
+  position: relative;
+  z-index: 2;
+  width: 92vw;
+  max-width: 860px;
+  height: 85vh;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-medium);
+  border-radius: var(--radius-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+}
+
+.tiptap-composer-header {
+  padding: 1.15rem 1.6rem;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tiptap-composer-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.tiptap-badge {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  background: var(--accent-gold-subtle);
+  padding: 0.2rem 0.55rem;
+  border-radius: var(--radius-full);
+}
+
+.tiptap-composer-header h3 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  margin: 0;
+  color: var(--ink-primary);
+}
+
+.tiptap-composer-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-canvas-subtle);
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tiptap-composer-close:hover {
+  background: #ef4444;
+  color: #fff;
+  border-color: #ef4444;
+}
+
+.tiptap-composer-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1.6rem;
+  background: var(--bg-canvas-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+}
+
+.tt-tool-btn {
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--ink-primary);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tt-tool-btn:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+}
+
+.tiptap-composer-canvas {
+  flex: 1;
+  padding: 2rem 2.5rem;
+  overflow-y: auto;
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--ink-primary);
+}
+
+.tiptap-composer-canvas .ProseMirror {
+  min-height: 100%;
+}
+
+.tiptap-composer-footer {
+  padding: 1rem 1.6rem;
+  border-top: 1px solid var(--border-subtle);
+  background: var(--bg-canvas-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.tiptap-composer-hint {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--ink-muted);
+}
+
+.tiptap-composer-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
 }
 
 /* Highlighting during Visual Edit Mode */

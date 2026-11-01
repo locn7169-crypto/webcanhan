@@ -47,7 +47,7 @@ import { initLocLearnModal } from './loc-learn-modal';
 import { initExplorationJournal } from './exploration-journal';
 import { initScrollCinematics } from './scroll-cinematics';
 import { initHeroAmbientConstellation } from '../threeui/hero-constellation';
-import { initVisualEditor } from './visual-editor';
+import { initTiptapEditor } from './tiptap-editor';
 import { initScrollBackdrop } from './scroll-backdrop';
 
 // Initialize Lucide icons
@@ -228,7 +228,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollCinematics();
   initHeroAmbientConstellation();
   initScrollBackdrop();
-  initVisualEditor();
+  initTiptapEditor();
 
   console.info('[Loc Portfolio] Experience initialized with craft & precision.');
 });

@@ -9,6 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tiptap/core": "^3.32.2",
+    "@tiptap/extension-bubble-menu": "^3.32.2",
+    "@tiptap/extension-color": "^3.32.2",
+    "@tiptap/extension-text-align": "^3.32.2",
+    "@tiptap/extension-text-style": "^3.32.2",
+    "@tiptap/extension-underline": "^3.32.2",
+    "@tiptap/starter-kit": "^3.32.2",
     "@types/three": "^0.186.0",
     "gsap": "^3.12.7",
     "lenis": "^1.1.20",
