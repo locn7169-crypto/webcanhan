@@ -21,9 +21,9 @@ export interface ExplorationCategory {
   entries: JournalEntry[];
 }
 
-const STORAGE_KEY = 'loc_exploration_journals_v2';
+const STORAGE_KEY = 'loc_exploration_journals_v3';
 
-// Initial default data matching Loc's real life & interests
+// Default initial data matching Loc's real interests
 const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
   trekking: {
     id: 'trekking',
@@ -117,15 +117,14 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
 // Global module state
 let categories: Record<string, ExplorationCategory> = JSON.parse(JSON.stringify(DEFAULT_CATEGORIES));
 let currentCatId: 'photography' | 'trekking' | 'chinese' = 'photography';
+let activePostId: string | null = null; // null = Gallery Grid; string = Single Post Inspector
 let isJournalOpen = false;
-let activeEditingEntryId: string | null = null;
-let activeTriggerEl: HTMLElement | null = null;
 
 // File input elements
 let coverFileInput: HTMLInputElement | null = null;
 let photoFileInput: HTMLInputElement | null = null;
+let newPostFileInput: HTMLInputElement | null = null;
 
-// Helpers
 function isEditModeActive(): boolean {
   return document.body.classList.contains('visual-editor-active');
 }
@@ -159,75 +158,57 @@ function loadJournalData() {
     console.warn('[Journal] Load failed, using defaults:', e);
   }
 
-  // Update main page card cover images
   updateMainPageCardCovers();
 }
 
 // Save data to localStorage
 export function saveJournalData() {
   try {
-    // Capture any in-progress contentEditable text in the open modal
-    syncModalContentToState();
-
+    syncActivePostToState();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
     updateMainPageCardCovers();
-    showToast('💾 Đã lưu toàn bộ nhật ký & ảnh khám phá!');
+    showToast('💾 Đã lưu dữ liệu nhật ký & ảnh thành công!');
   } catch (e) {
     console.error('[Journal] Save failed:', e);
     showToast('⚠️ Không thể lưu nhật ký vào bộ nhớ.');
   }
 }
 
-// Sync DOM contenteditable back to state
-function syncModalContentToState() {
-  const modal = document.getElementById('exploration-journal-modal');
-  if (!modal || !isJournalOpen) return;
-
+// Sync active post text if in edit mode
+function syncActivePostToState() {
+  if (!activePostId) return;
   const currentCat = categories[currentCatId];
   if (!currentCat) return;
 
-  // Title & subtitles
-  const titleEnEl = modal.querySelector<HTMLElement>('.journal-cover-title-en');
-  const titleViEl = modal.querySelector<HTMLElement>('.journal-cover-title-vi');
-  const subViEl = modal.querySelector<HTMLElement>('.journal-cover-sub-vi');
-  if (titleEnEl) currentCat.titleEn = titleEnEl.innerText.trim();
-  if (titleViEl) currentCat.titleVi = titleViEl.innerText.trim();
-  if (subViEl) currentCat.subtitleVi = subViEl.innerText.trim();
+  const entry = currentCat.entries.find((it) => it.id === activePostId);
+  if (!entry) return;
 
-  // Entries
-  const entryEls = modal.querySelectorAll<HTMLElement>('.journal-entry-card');
-  entryEls.forEach((el) => {
-    const id = el.getAttribute('data-entry-id');
-    const entry = currentCat.entries.find((it) => it.id === id);
-    if (entry) {
-      const dateEl = el.querySelector<HTMLElement>('.journal-entry-date');
-      const titleEl = el.querySelector<HTMLElement>('.journal-entry-title');
-      const storyEl = el.querySelector<HTMLElement>('.journal-entry-story');
-      const captionEl = el.querySelector<HTMLElement>('.journal-entry-caption');
+  const modal = document.getElementById('exploration-journal-modal');
+  if (!modal) return;
 
-      if (dateEl) entry.date = dateEl.innerText.trim();
-      if (titleEl) entry.title = titleEl.innerText.trim();
-      if (storyEl) entry.story = storyEl.innerText.trim();
-      if (captionEl) entry.caption = captionEl.innerText.trim();
-    }
-  });
+  const dateEl = modal.querySelector<HTMLElement>('.insta-post-date');
+  const titleEl = modal.querySelector<HTMLElement>('.insta-post-title');
+  const storyEl = modal.querySelector<HTMLElement>('.insta-post-story');
+  const captionEl = modal.querySelector<HTMLElement>('.insta-post-caption');
+
+  if (dateEl) entry.date = dateEl.innerText.trim();
+  if (titleEl) entry.title = titleEl.innerText.trim();
+  if (storyEl) entry.story = storyEl.innerText.trim();
+  if (captionEl) entry.caption = captionEl.innerText.trim();
 }
 
 // Update card cover visuals in the main page #explorations section
 function updateMainPageCardCovers() {
-  // Photography
   const photoCard = document.querySelector<HTMLImageElement>('#exp-cover-photography');
   if (photoCard && categories.photography?.coverUrl) {
     photoCard.src = categories.photography.coverUrl;
   }
 
-  // Trekking
   const trekCard = document.querySelector<HTMLImageElement>('#exp-cover-trekking');
   if (trekCard && categories.trekking?.coverUrl) {
     trekCard.src = categories.trekking.coverUrl;
   }
 
-  // Chinese
   const chineseCard = document.querySelector<HTMLImageElement>('#exp-cover-chinese');
   const chineseBox = document.querySelector<HTMLElement>('#exp-cover-chinese-box');
   if (chineseCard && categories.chinese?.coverUrl) {
@@ -239,7 +220,7 @@ function updateMainPageCardCovers() {
   }
 }
 
-// Render the Journal Modal Contents
+// Render Main Journal Screen: Either Instagram Grid OR Single Post View
 function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
   currentCatId = catId;
   const modal = document.getElementById('exploration-journal-modal');
@@ -258,190 +239,365 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
     btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
   });
 
-  // Cover Image
-  const coverImg = modal.querySelector<HTMLImageElement>('.journal-cover-bg');
-  if (coverImg) {
-    coverImg.src = currentCat.coverUrl;
-    coverImg.alt = currentCat.titleVi;
-  }
+  const scrollContainer = modal.querySelector<HTMLElement>('.journal-modal-scroll');
+  if (!scrollContainer) return;
 
-  // Cover Texts
-  const titleEnEl = modal.querySelector<HTMLElement>('.journal-cover-title-en');
-  const titleViEl = modal.querySelector<HTMLElement>('.journal-cover-title-vi');
-  const subViEl = modal.querySelector<HTMLElement>('.journal-cover-sub-vi');
-  const coordEl = modal.querySelector<HTMLElement>('.journal-cover-coord');
+  // View A: Single Post View (Instagram Style Modal View)
+  if (activePostId) {
+    const entryIndex = currentCat.entries.findIndex((it) => it.id === activePostId);
+    const entry = currentCat.entries[entryIndex] || currentCat.entries[0];
+    if (!entry) {
+      activePostId = null;
+      renderJournalModal(catId);
+      return;
+    }
 
-  if (titleEnEl) {
-    titleEnEl.textContent = currentCat.titleEn;
-    titleEnEl.contentEditable = isEditing ? 'true' : 'false';
-  }
-  if (titleViEl) {
-    titleViEl.textContent = currentCat.titleVi;
-    titleViEl.contentEditable = isEditing ? 'true' : 'false';
-  }
-  if (subViEl) {
-    subViEl.textContent = currentCat.subtitleVi;
-    subViEl.contentEditable = isEditing ? 'true' : 'false';
-  }
-  if (coordEl) {
-    coordEl.textContent = currentCat.coord;
-  }
+    const prevEntry = entryIndex > 0 ? currentCat.entries[entryIndex - 1] : null;
+    const nextEntry = entryIndex < currentCat.entries.length - 1 ? currentCat.entries[entryIndex + 1] : null;
 
-  // Change Cover Button
-  const changeCoverBtn = modal.querySelector<HTMLElement>('.journal-change-cover-btn');
-  if (changeCoverBtn) {
-    changeCoverBtn.style.display = isEditing ? 'inline-flex' : 'none';
-  }
+    scrollContainer.innerHTML = `
+      <div class="insta-post-view">
+        <!-- Back Navigation Bar -->
+        <div class="insta-post-nav-bar">
+          <button type="button" class="btn btn-secondary insta-back-btn" title="Quay lại danh mục ảnh">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i>
+            <span>← Quay lại danh mục</span>
+          </button>
 
-  // Add New Entry Button
-  const addEntryBar = modal.querySelector<HTMLElement>('.journal-add-entry-bar');
-  if (addEntryBar) {
-    addEntryBar.style.display = isEditing ? 'flex' : 'none';
-  }
+          <div class="insta-pagination-group">
+            <span class="insta-counter">Khoảnh khắc ${entryIndex + 1} / ${currentCat.entries.length}</span>
+            <div class="insta-arrows">
+              <button type="button" class="insta-arrow-btn insta-prev-btn" ${!prevEntry ? 'disabled' : ''} title="Bài trước">
+                <i data-lucide="chevron-left" style="width: 16px; height: 16px;"></i>
+              </button>
+              <button type="button" class="insta-arrow-btn insta-next-btn" ${!nextEntry ? 'disabled' : ''} title="Bài tiếp theo">
+                <i data-lucide="chevron-right" style="width: 16px; height: 16px;"></i>
+              </button>
+            </div>
+          </div>
+        </div>
 
-  // Save changes button in modal header
-  const modalSaveBtn = modal.querySelector<HTMLElement>('.journal-modal-save-btn');
-  if (modalSaveBtn) {
-    modalSaveBtn.style.display = isEditing ? 'inline-flex' : 'none';
-  }
+        <!-- Main Instagram Card Layout: Left Photo + Right Story -->
+        <article class="insta-card">
+          <!-- Left: Photo Stage -->
+          <div class="insta-photo-stage">
+            <img src="${entry.photoUrl}" alt="${entry.title}" class="insta-main-photo">
+            ${
+              isEditing
+                ? `<button type="button" class="btn btn-secondary insta-change-photo-btn" data-action="change-photo" data-entry-id="${entry.id}">
+                     <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+                     <span>Đổi ảnh này</span>
+                   </button>`
+                : ''
+            }
+          </div>
 
-  // Timeline Entries
-  const timelineContainer = modal.querySelector<HTMLElement>('.journal-timeline-list');
-  if (!timelineContainer) return;
+          <!-- Right: Author & Story Panel -->
+          <div class="insta-detail-panel">
+            <!-- Author Header -->
+            <div class="insta-author-row">
+              <div class="insta-author-left">
+                <img src="/assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="insta-avatar">
+                <div class="insta-author-meta">
+                  <span class="insta-author-name">Nguyễn Thành Lộc</span>
+                  <span class="insta-category-tag">${currentCat.titleVi}</span>
+                </div>
+              </div>
+              <span class="insta-post-date" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.date}</span>
+            </div>
 
-  if (currentCat.entries.length === 0) {
-    timelineContainer.innerHTML = `
-      <div class="journal-empty-state">
-        <p>Chưa có ghi chép nhật ký nào trong mục này.</p>
-        ${
-          isEditing
-            ? '<button type="button" class="btn btn-secondary journal-add-first-btn">+ Thêm bài viết đầu tiên</button>'
-            : '<span style="font-size: 0.9rem; color: var(--ink-muted);">Bật Option + E để thêm ghi chép & ảnh của bạn.</span>'
-        }
+            <!-- Scrollable Content Body -->
+            <div class="insta-detail-body">
+              <h3 class="insta-post-title" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.title}</h3>
+              
+              <div class="insta-story-box">
+                <p class="insta-post-story" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.story}</p>
+              </div>
+
+              <div class="insta-caption-box">
+                <span class="insta-caption-label">Chú thích ảnh:</span>
+                <p class="insta-post-caption" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.caption || 'Nhấp để nhập chú thích ảnh...'}</p>
+              </div>
+            </div>
+
+            <!-- Footer Action Panel -->
+            <div class="insta-detail-footer">
+              ${
+                isEditing
+                  ? `
+                <div class="insta-edit-actions-row">
+                  <button type="button" class="btn btn-secondary btn-danger-subtle insta-delete-btn" data-action="delete" data-entry-id="${entry.id}">
+                    <i data-lucide="trash-2" style="width: 14px; height: 14px;"></i>
+                    <span>Xóa bài này</span>
+                  </button>
+                  <button type="button" class="btn btn-primary insta-save-post-btn">
+                    <i data-lucide="check" style="width: 14px; height: 14px;"></i>
+                    <span>Lưu bài viết</span>
+                  </button>
+                </div>
+              `
+                  : `
+                <div class="insta-hint-row">
+                  <span class="insta-hint-text">Ghi chép hành trình thực tế của Nguyễn Thành Lộc</span>
+                </div>
+              `
+              }
+            </div>
+          </div>
+        </article>
       </div>
     `;
 
-    timelineContainer.querySelector('.journal-add-first-btn')?.addEventListener('click', () => {
-      addNewEntry();
+    // Bind Single Post Actions
+    scrollContainer.querySelector('.insta-back-btn')?.addEventListener('click', () => {
+      syncActivePostToState();
+      activePostId = null;
+      renderJournalModal(currentCatId);
     });
+
+    scrollContainer.querySelector('.insta-prev-btn')?.addEventListener('click', () => {
+      if (prevEntry) {
+        syncActivePostToState();
+        activePostId = prevEntry.id;
+        renderJournalModal(currentCatId);
+      }
+    });
+
+    scrollContainer.querySelector('.insta-next-btn')?.addEventListener('click', () => {
+      if (nextEntry) {
+        syncActivePostToState();
+        activePostId = nextEntry.id;
+        renderJournalModal(currentCatId);
+      }
+    });
+
+    scrollContainer.querySelector('[data-action="change-photo"]')?.addEventListener('click', () => {
+      photoFileInput?.click();
+    });
+
+    scrollContainer.querySelector('[data-action="delete"]')?.addEventListener('click', () => {
+      if (confirm('Anh có chắc muốn xóa khoảnh khắc này không?')) {
+        currentCat.entries = currentCat.entries.filter((it) => it.id !== entry.id);
+        activePostId = null;
+        renderJournalModal(currentCatId);
+        saveJournalData();
+      }
+    });
+
+    scrollContainer.querySelector('.insta-save-post-btn')?.addEventListener('click', () => {
+      saveJournalData();
+    });
+
     return;
   }
 
-  let entriesHtml = '';
-  currentCat.entries.forEach((entry, idx) => {
-    entriesHtml += `
-      <article class="journal-entry-card" data-entry-id="${entry.id}">
-        <!-- Timeline Spine Dot -->
-        <div class="journal-timeline-node">
-          <div class="journal-node-dot"></div>
-          <span class="journal-node-line"></span>
+  // View B: Instagram Gallery Grid View
+  let gridItemsHtml = '';
+
+  // 1. If in Edit Mode: First card is "+ Tạo bài viết mới"
+  if (isEditing) {
+    gridItemsHtml += `
+      <div class="insta-create-card" role="button" tabindex="0" title="Tạo bài viết & thêm ảnh mới vào mục này">
+        <div class="insta-create-inner">
+          <div class="insta-create-icon-wrap">
+            <i data-lucide="plus" style="width: 24px; height: 24px;"></i>
+          </div>
+          <span class="insta-create-title">+ Tạo bài viết mới</span>
+          <span class="insta-create-sub">Thêm ảnh &amp; ghi chép bối cảnh</span>
         </div>
+      </div>
+    `;
+  }
 
-        <div class="journal-entry-inner">
-          <header class="journal-entry-header">
-            <div class="journal-entry-meta">
-              <span class="journal-entry-num">Mục #${currentCat.entries.length - idx}</span>
-              <span class="journal-entry-date" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.date}</span>
-            </div>
-
-            ${
-              isEditing
-                ? `<div class="journal-entry-actions">
-                     <button type="button" class="journal-btn-change-photo" data-action="change-photo" data-entry-id="${entry.id}" title="Đổi ảnh cho bài viết này">
-                       <i data-lucide="image" style="width: 14px; height: 14px;"></i>
-                       <span>Đổi ảnh</span>
-                     </button>
-                     <button type="button" class="journal-btn-delete-entry" data-action="delete" data-entry-id="${entry.id}" title="Xóa bài viết này">
-                       <i data-lucide="x" style="width: 14px; height: 14px;"></i>
-                       <span>Xóa</span>
-                     </button>
-                   </div>`
-                : ''
-            }
-          </header>
-
-          <h4 class="journal-entry-title" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.title}</h4>
-
-          <!-- Photo Container -->
-          ${
-            entry.photoUrl
-              ? `
-            <figure class="journal-entry-figure">
-              <div class="journal-photo-wrapper">
-                <img src="${entry.photoUrl}" alt="${entry.title}" class="journal-entry-img" loading="lazy">
-              </div>
-              <figcaption class="journal-entry-caption" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.caption || 'Nhấp để nhập mô tả ảnh...'}</figcaption>
-            </figure>
-          `
-              : ''
-          }
-
-          <!-- Story Text -->
-          <div class="journal-entry-story-wrap">
-            <p class="journal-entry-story" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.story}</p>
+  // 2. Existing Post Tiles
+  currentCat.entries.forEach((entry, idx) => {
+    gridItemsHtml += `
+      <article class="insta-grid-item" data-entry-id="${entry.id}" role="button" tabindex="0" aria-label="${entry.title}">
+        <div class="insta-tile-media">
+          <img src="${entry.photoUrl}" alt="${entry.title}" class="insta-tile-img" loading="lazy">
+          <div class="insta-tile-overlay">
+            <span class="insta-tile-date">${entry.date}</span>
+            <h5 class="insta-tile-title">${entry.title}</h5>
+            <span class="insta-tile-badge">Xem chi tiết →</span>
           </div>
         </div>
       </article>
     `;
   });
 
-  timelineContainer.innerHTML = entriesHtml;
+  scrollContainer.innerHTML = `
+    <!-- Category Profile Header (Instagram style) -->
+    <div class="insta-profile-header">
+      <div class="insta-profile-cover">
+        <img src="${currentCat.coverUrl}" alt="${currentCat.titleVi}" class="insta-cover-image">
+        <div class="insta-cover-gradient"></div>
+        ${
+          isEditing
+            ? `<button type="button" class="btn btn-secondary insta-change-cover-btn" title="Thay ảnh bìa đầu mục này">
+                 <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+                 <span>📷 Thay ảnh bìa mục này</span>
+               </button>`
+            : ''
+        }
+      </div>
 
-  // Bind entry actions
-  timelineContainer.querySelectorAll<HTMLButtonElement>('[data-action="change-photo"]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const entryId = btn.getAttribute('data-entry-id');
+      <div class="insta-profile-info">
+        <div class="insta-profile-headline">
+          <span class="insta-profile-coord">${currentCat.coord}</span>
+          <h3 class="insta-profile-title">${currentCat.titleVi}</h3>
+          <p class="insta-profile-sub">${currentCat.subtitleVi}</p>
+        </div>
+
+        <div class="insta-profile-stats">
+          <span class="insta-stat-pill"><strong>${currentCat.entries.length}</strong> khoảnh khắc</span>
+          <span class="insta-stat-pill">Cập nhật: <strong>${currentCat.entries[0]?.date || 'Gần đây'}</strong></span>
+          ${
+            isEditing
+              ? '<span class="insta-edit-indicator">✏️ Đang bật Option + E (Bấm vào thẻ dấu + để tạo bài)</span>'
+              : ''
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Instagram Photo Grid -->
+    <div class="insta-grid-wrap">
+      <div class="insta-grid">
+        ${gridItemsHtml}
+      </div>
+    </div>
+  `;
+
+  // Bind Grid Events
+  scrollContainer.querySelectorAll<HTMLElement>('.insta-grid-item').forEach((item) => {
+    const entryId = item.getAttribute('data-entry-id');
+    const openPost = () => {
       if (entryId) {
-        activeEditingEntryId = entryId;
-        photoFileInput?.click();
+        activePostId = entryId;
+        renderJournalModal(currentCatId);
+      }
+    };
+
+    item.addEventListener('click', openPost);
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openPost();
       }
     });
   });
 
-  timelineContainer.querySelectorAll<HTMLButtonElement>('[data-action="delete"]').forEach((btn) => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const entryId = btn.getAttribute('data-entry-id');
-      if (entryId && confirm('Anh có chắc muốn xóa ghi chép này không?')) {
-        currentCat.entries = currentCat.entries.filter((it) => it.id !== entryId);
+  // Create new post button
+  scrollContainer.querySelector<HTMLElement>('.insta-create-card')?.addEventListener('click', () => {
+    newPostFileInput?.click();
+  });
+
+  // Change cover button
+  scrollContainer.querySelector<HTMLElement>('.insta-change-cover-btn')?.addEventListener('click', () => {
+    coverFileInput?.click();
+  });
+}
+
+// Setup file upload inputs
+function setupFileInputs() {
+  // 1. Cover File Input
+  coverFileInput = document.createElement('input');
+  coverFileInput.type = 'file';
+  coverFileInput.accept = 'image/*';
+  coverFileInput.style.display = 'none';
+  document.body.appendChild(coverFileInput);
+
+  coverFileInput.addEventListener('change', () => {
+    const file = coverFileInput?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const currentCat = categories[currentCatId];
+      if (currentCat) {
+        currentCat.coverUrl = dataUrl;
+        updateMainPageCardCovers();
         renderJournalModal(currentCatId);
         saveJournalData();
+        showToast('📷 Đã cập nhật ảnh bìa mục thành công!');
       }
-    });
+    };
+    reader.readAsDataURL(file);
+    if (coverFileInput) coverFileInput.value = '';
+  });
+
+  // 2. Change Photo inside Active Post
+  photoFileInput = document.createElement('input');
+  photoFileInput.type = 'file';
+  photoFileInput.accept = 'image/*';
+  photoFileInput.style.display = 'none';
+  document.body.appendChild(photoFileInput);
+
+  photoFileInput.addEventListener('change', () => {
+    const file = photoFileInput?.files?.[0];
+    if (!file || !activePostId) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const currentCat = categories[currentCatId];
+      if (currentCat) {
+        const entry = currentCat.entries.find((it) => it.id === activePostId);
+        if (entry) {
+          entry.photoUrl = dataUrl;
+          renderJournalModal(currentCatId);
+          saveJournalData();
+          showToast('🖼️ Đã đổi ảnh bài viết thành công!');
+        }
+      }
+    };
+    reader.readAsDataURL(file);
+    if (photoFileInput) photoFileInput.value = '';
+  });
+
+  // 3. New Post File Input
+  newPostFileInput = document.createElement('input');
+  newPostFileInput.type = 'file';
+  newPostFileInput.accept = 'image/*';
+  newPostFileInput.style.display = 'none';
+  document.body.appendChild(newPostFileInput);
+
+  newPostFileInput.addEventListener('change', () => {
+    const file = newPostFileInput?.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const dataUrl = e.target?.result as string;
+      const currentCat = categories[currentCatId];
+      if (currentCat) {
+        const now = new Date();
+        const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
+
+        const newEntry: JournalEntry = {
+          id: 'post-' + Date.now(),
+          date: dateStr,
+          title: 'Tiêu đề khoảnh khắc mới',
+          story:
+            'Hôm nay tôi ghi lại một kỷ niệm đáng nhớ. Nhấp chuột vào đây để trực tiếp viết câu chuyện, bối cảnh, cảm xúc hoặc những điều chiêm nghiệm của bạn...',
+          photoUrl: dataUrl,
+          caption: 'Thêm dòng chú thích ảnh ngắn gọn...',
+        };
+
+        currentCat.entries.unshift(newEntry);
+        activePostId = newEntry.id; // Open the new post directly in the post viewer
+        renderJournalModal(currentCatId);
+        saveJournalData();
+        showToast('✨ Đã tạo bài viết mới! Bạn có thể chỉnh sửa nội dung ngay bây giờ.');
+      }
+    };
+    reader.readAsDataURL(file);
+    if (newPostFileInput) newPostFileInput.value = '';
   });
 }
 
-// Add a new timeline entry
-function addNewEntry() {
-  const currentCat = categories[currentCatId];
-  if (!currentCat) return;
-
-  const now = new Date();
-  const dateStr = `${String(now.getDate()).padStart(2, '0')}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}`;
-
-  const newEntry: JournalEntry = {
-    id: 'entry-' + Date.now(),
-    date: dateStr,
-    title: 'Ghi chép khoảnh khắc mới',
-    story:
-      'Hôm nay tôi ghi lại một khoảnh khắc đáng nhớ. Nhấp chuột vào đây để trực tiếp viết câu chuyện, bối cảnh, cảm xúc hoặc những điều chiêm nghiệm của anh...',
-    photoUrl: currentCat.coverUrl || '/assets/loc-banner.jpg',
-    caption: 'Thêm dòng ghi chú hoặc mô tả về bức ảnh này...',
-  };
-
-  currentCat.entries.unshift(newEntry);
-  renderJournalModal(currentCatId);
-  saveJournalData();
-
-  // Focus the new title for immediate editing
-  setTimeout(() => {
-    const firstTitle = document.querySelector<HTMLElement>('.journal-entry-card:first-child .journal-entry-title');
-    firstTitle?.focus();
-  }, 100);
-}
-
-// Open the Journal Modal
+// Open Journal Modal
 export function openExplorationJournal(catId?: 'photography' | 'trekking' | 'chinese') {
   if (isJournalOpen) return;
   isJournalOpen = true;
@@ -455,6 +611,7 @@ export function openExplorationJournal(catId?: 'photography' | 'trekking' | 'chi
   modal.removeAttribute('hidden');
   modal.classList.add('is-open');
 
+  activePostId = null; // Start with the Instagram grid
   const initialCat = catId || 'photography';
   renderJournalModal(initialCat);
 
@@ -476,7 +633,7 @@ export function openExplorationJournal(catId?: 'photography' | 'trekking' | 'chi
   document.addEventListener('keydown', handleKeyDown);
 }
 
-// Close the Journal Modal
+// Close Journal Modal
 export function closeExplorationJournal() {
   if (!isJournalOpen) return;
   isJournalOpen = false;
@@ -484,11 +641,12 @@ export function closeExplorationJournal() {
   const modal = document.getElementById('exploration-journal-modal');
   if (!modal) return;
 
-  // Auto-sync any unsaved text edits
   if (isEditModeActive()) {
-    syncModalContentToState();
+    syncActivePostToState();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
   }
+
+  activePostId = null;
 
   const container = modal.querySelector<HTMLElement>('.journal-modal-container');
   const backdrop = modal.querySelector<HTMLElement>('.journal-modal-backdrop');
@@ -511,7 +669,6 @@ export function closeExplorationJournal() {
         modal.setAttribute('hidden', '');
         document.body.classList.remove('loc-modal-locked');
         getLenis()?.start();
-        activeTriggerEl?.focus();
       },
     });
   } else {
@@ -519,7 +676,6 @@ export function closeExplorationJournal() {
     modal.setAttribute('hidden', '');
     document.body.classList.remove('loc-modal-locked');
     getLenis()?.start();
-    activeTriggerEl?.focus();
   }
 
   document.removeEventListener('keydown', handleKeyDown);
@@ -528,71 +684,18 @@ export function closeExplorationJournal() {
 function handleKeyDown(e: KeyboardEvent) {
   if (e.key === 'Escape' && isJournalOpen) {
     e.preventDefault();
-    closeExplorationJournal();
+    if (activePostId) {
+      // If inside single post view, pressing Escape goes back to grid
+      syncActivePostToState();
+      activePostId = null;
+      renderJournalModal(currentCatId);
+    } else {
+      closeExplorationJournal();
+    }
   }
 }
 
-// Setup file upload inputs
-function setupFileInputs() {
-  // Cover File Input
-  coverFileInput = document.createElement('input');
-  coverFileInput.type = 'file';
-  coverFileInput.accept = 'image/*';
-  coverFileInput.style.display = 'none';
-  document.body.appendChild(coverFileInput);
-
-  coverFileInput.addEventListener('change', () => {
-    const file = coverFileInput?.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
-      const currentCat = categories[currentCatId];
-      if (currentCat) {
-        currentCat.coverUrl = dataUrl;
-        updateMainPageCardCovers();
-        renderJournalModal(currentCatId);
-        saveJournalData();
-        showToast('📷 Đã cập nhật ảnh bìa mới thành công!');
-      }
-    };
-    reader.readAsDataURL(file);
-    if (coverFileInput) coverFileInput.value = '';
-  });
-
-  // Entry Photo File Input
-  photoFileInput = document.createElement('input');
-  photoFileInput.type = 'file';
-  photoFileInput.accept = 'image/*';
-  photoFileInput.style.display = 'none';
-  document.body.appendChild(photoFileInput);
-
-  photoFileInput.addEventListener('change', () => {
-    const file = photoFileInput?.files?.[0];
-    if (!file || !activeEditingEntryId) return;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const dataUrl = e.target?.result as string;
-      const currentCat = categories[currentCatId];
-      if (currentCat) {
-        const entry = currentCat.entries.find((it) => it.id === activeEditingEntryId);
-        if (entry) {
-          entry.photoUrl = dataUrl;
-          renderJournalModal(currentCatId);
-          saveJournalData();
-          showToast('🖼️ Đã thay ảnh cho nhật ký thành công!');
-        }
-      }
-      activeEditingEntryId = null;
-    };
-    reader.readAsDataURL(file);
-    if (photoFileInput) photoFileInput.value = '';
-  });
-}
-
-// Main initializer
+// Main Initializer
 export function initExplorationJournal() {
   loadJournalData();
   setupFileInputs();
@@ -600,20 +703,18 @@ export function initExplorationJournal() {
   const modal = document.getElementById('exploration-journal-modal');
   if (!modal) return;
 
-  // Triggers on Exploration Cards in the main page
+  // Trigger clicks on exploration cards in main page
   const cards = document.querySelectorAll<HTMLElement>('.exploration-card[data-exploration-id]');
   cards.forEach((card) => {
     card.setAttribute('role', 'button');
     card.setAttribute('tabindex', '0');
-    card.setAttribute('aria-label', 'Xem nhật ký ảnh và ghi chép bối cảnh');
+    card.setAttribute('aria-label', 'Xem bộ sưu tập khoảnh khắc & nhật ký');
 
     const handleClick = (e: Event) => {
-      // If user is currently in edit mode and clicks on an editable title, don't hijack
       if (isEditModeActive() && (e.target as HTMLElement).hasAttribute('data-edit-key')) {
         return;
       }
       e.preventDefault();
-      activeTriggerEl = card;
       const catId = card.getAttribute('data-exploration-id') as 'photography' | 'trekking' | 'chinese';
       openExplorationJournal(catId || 'photography');
     };
@@ -644,38 +745,24 @@ export function initExplorationJournal() {
     btn.addEventListener('click', () => {
       const target = btn.getAttribute('data-journal-tab') as 'photography' | 'trekking' | 'chinese';
       if (target && target !== currentCatId) {
-        if (isEditModeActive()) syncModalContentToState();
+        if (isEditModeActive()) syncActivePostToState();
+        activePostId = null; // Reset to grid view of that category
         renderJournalModal(target);
       }
     });
   });
 
-  // Change Cover Button Click
-  modal.querySelector<HTMLElement>('.journal-change-cover-btn')?.addEventListener('click', () => {
-    coverFileInput?.click();
-  });
-
-  // Add New Entry Button Click
-  modal.querySelector<HTMLElement>('.journal-add-entry-btn')?.addEventListener('click', () => {
-    addNewEntry();
-  });
-
-  // Save Modal Button Click
-  modal.querySelector<HTMLElement>('.journal-modal-save-btn')?.addEventListener('click', () => {
-    saveJournalData();
-  });
-
-  // Listen for Option + E mode changes to update UI in real-time
+  // Listen for Option + E mode changes
   window.addEventListener('loc-edit-mode-changed', () => {
     if (isJournalOpen) {
       renderJournalModal(currentCatId);
     }
   });
 
-  // Listen for global save requested from dock
+  // Global save requested
   window.addEventListener('loc-save-all-requested', () => {
     saveJournalData();
   });
 
-  console.info('[ExplorationJournal] Interactive field notes & photo diary ready.');
+  console.info('[ExplorationJournal] Instagram-style Moments & Story Diary ready.');
 }
