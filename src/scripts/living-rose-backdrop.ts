@@ -209,8 +209,23 @@ export function initLivingRoseBackdrop(): () => void {
   petalSprites.pink = buildPetalSprite(true);
   petalSprites.cream = buildPetalSprite(false);
 
-  // Resize handler
+  // Resize handler (Mobile address bar collapse/expand must NOT thrash canvas mid-scroll)
+  let lastW = W;
+  let lastH = H;
   const handleResize = () => {
+    const newW = window.innerWidth;
+    const newH = window.innerHeight;
+    const widthChanged = Math.abs(newW - lastW) > 10;
+    const heightDrastic = Math.abs(newH - lastH) > 220;
+
+    // Ignore mobile address bar dynamic show/hide on vertical scroll
+    if (!widthChanged && !heightDrastic) {
+      cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      return;
+    }
+
+    lastW = newW;
+    lastH = newH;
     resizeCanvas();
     cachedMaxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
     updateWallGrad();
@@ -219,7 +234,7 @@ export function initLivingRoseBackdrop(): () => void {
   };
   window.addEventListener('resize', handleResize);
 
-  // Mouse & Touch Interaction
+  // Mouse Interaction (Desktop fine pointer)
   const handleMouseMove = (e: MouseEvent) => {
     mouseScreenX = e.clientX;
     mouseScreenY = e.clientY;
@@ -236,18 +251,9 @@ export function initLivingRoseBackdrop(): () => void {
   };
   window.addEventListener('mousemove', handleMouseMove, { passive: true });
 
-  const handleTouchMove = (e: TouchEvent) => {
-    if (e.touches.length > 0) {
-      const touch = e.touches[0];
-      mouseScreenX = touch.clientX;
-      mouseScreenY = touch.clientY;
-      targetMX = touch.clientX / W - 0.5;
-      targetMY = touch.clientY / H - 0.5;
-      if (cursorGlow) {
-        cursorGlow.style.setProperty('--mx', `${(touch.clientX / W) * 100}%`);
-        cursorGlow.style.setProperty('--my', `${(touch.clientY / H) * 100}%`);
-      }
-    }
+  // Touch Move: Do NOT track cursor glow during mobile scroll to prevent style recalculations
+  const handleTouchMove = () => {
+    // Intentionally no-op on touch scroll for silky 120fps native performance
   };
   window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
@@ -462,18 +468,17 @@ export function initLivingRoseBackdrop(): () => void {
     const baseScale = isMobile
       ? Math.max(W / 1300, H / 1100) * 0.75
       : Math.max(W / 1600, H / 950);
-    // Subtle breathing + scroll depth scale
-    const scrollScale = 1 + scrollProgress * 0.08;
+    // On mobile, keep scale constant (no zoom fighting with swipe); on desktop, subtle scroll depth scale
+    const scrollScale = isMobile ? 1 : 1 + scrollProgress * 0.08;
     const scale = baseScale * scrollScale;
 
     // Cinematic camera positioning:
-    // On mobile, keep roses centered and scaled down subtly to avoid overwhelming portrait screens
+    // On mobile, keep roses horizontally centered
     const centerX = isMobile ? W * 0.5 : W * 0.56 - curMX * 20;
 
-    // Smooth continuous linear parallax WITHOUT modulo jumps
-    // On mobile, anchor vase lower so it doesn't clash with central editorial typography
-    const maxParallax = isMobile ? H * 0.12 : H * 0.16;
-    const scrollParallaxY = -Math.min(maxParallax, curScrollY * (isMobile ? 0.025 : 0.035));
+    // On mobile, anchor vase lower at fixed position (zero parallax lag) so foreground cards glide like butter.
+    // On desktop, keep smooth linear parallax.
+    const scrollParallaxY = isMobile ? 0 : -Math.min(H * 0.16, curScrollY * 0.035);
     const centerY = (isMobile ? H * 0.64 : H * 0.55) + scrollParallaxY;
 
     // ==========================================

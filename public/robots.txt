@@ -1,0 +1,13 @@
+# Robots.txt for https://nguyenthanhloc.pages.dev
+User-agent: *
+Allow: /
+
+# Crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+# Sitemap
+Sitemap: https://nguyenthanhloc.pages.dev/sitemap.xml

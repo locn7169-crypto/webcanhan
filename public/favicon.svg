@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#EED7A1"/>
+      <stop offset="50%" stop-color="#B88E38"/>
+      <stop offset="100%" stop-color="#8C6A24"/>
+    </linearGradient>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="100%" stop-color="#F2ECE1"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bgGrad)"/>
+  <rect x="2.5" y="2.5" width="59" height="59" rx="12" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-opacity="0.85"/>
+  <text x="31" y="45" font-family="'Newsreader', Georgia, 'Times New Roman', serif" font-size="40" font-style="italic" font-weight="600" text-anchor="middle" fill="url(#goldGrad)">L</text>
+  <circle cx="47" cy="46" r="2.5" fill="#B88E38"/>
+</svg>

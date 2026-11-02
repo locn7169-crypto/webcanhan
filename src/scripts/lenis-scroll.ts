@@ -13,11 +13,17 @@ export function initSmoothScroll(): Lenis | null {
     return null;
   }
 
+  // On mobile / touch screens (< 768px or coarse pointer), disable Lenis so native 120Hz compositor scrolling runs with zero lag!
+  const isTouchDevice = window.innerWidth < 768 || window.matchMedia('(pointer: coarse)').matches;
+  if (isTouchDevice) {
+    console.info('[SmoothScroll] Mobile touch device detected; delegating to native 120Hz compositor scrolling.');
+    return null;
+  }
+
   lenisInstance = new Lenis({
     duration: 1.15,
     easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
     smoothWheel: true,
-    touchMultiplier: 1.5,
   });
 
   // Synchronize Lenis and GSAP ScrollTrigger on a single unified loop

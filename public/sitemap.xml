@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://nguyenthanhloc.pages.dev/</loc>
+    <lastmod>2026-11-02</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://nguyenthanhloc.pages.dev/assets/loc-avatar.jpg</image:loc>
+      <image:title>Nguyễn Thành Lộc (Nguyen Thanh Loc) — Chân dung đại diện</image:title>
+      <image:caption>Chân dung chính thức của Nguyễn Thành Lộc trên website cá nhân</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nguyenthanhloc.pages.dev/assets/og-share-card.jpg</image:loc>
+      <image:title>Nguyễn Thành Lộc — Personal Website &amp; Portfolio</image:title>
+      <image:caption>Website và portfolio cá nhân chính thức của Nguyễn Thành Lộc</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://nguyenthanhloc.pages.dev/assets/loc-banner.jpg</image:loc>
+      <image:title>Nguyễn Thành Lộc Studio Banner</image:title>
+    </image:image>
+  </url>
+</urlset>

@@ -67,6 +67,8 @@ export function initScrollBackdrop() {
 function initSynthesisBackdropCanvas() {
   const canvas = document.getElementById('backdrop-synthesis-canvas') as HTMLCanvasElement | null;
   if (!canvas) return;
+  // Skip secondary canvas on mobile to preserve 100% GPU fill-rate for silky 120fps scrolling
+  if (window.innerWidth < 768) return;
 
   const ctx = canvas.getContext('2d');
   if (!ctx) return;

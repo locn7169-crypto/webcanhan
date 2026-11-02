@@ -64,6 +64,9 @@ function setupGlobalProgressBar() {
  * 2. Hero Section Continuous Parallax Scrub
  */
 function setupHeroScrollScrub() {
+  // On mobile (< 768px), skip 3D rotateX and parallax scrub to ensure silky smooth 120fps scrolling
+  if (window.innerWidth < 768) return;
+
   const heroSection = document.querySelector<HTMLElement>('.section-hero');
   const heroTitle = document.querySelector<HTMLElement>('.hero-title-wrap');
   const workbench = document.querySelector<HTMLElement>('.hero-workbench-card');
@@ -202,6 +205,9 @@ function setupWorksScrollScrub() {
   const worksSection = document.querySelector<HTMLElement>('#works');
   if (!worksSection) return;
 
+  // On mobile (< 768px), skip objectPosition and scrub parallax on images to avoid repaint stutter
+  if (window.innerWidth < 768) return;
+
   // Scrub Dragon Image and Glow inside Card 02 during horizontal track progression
   const dragonImg = document.querySelector<HTMLElement>('.loc-dragon-hero-img');
   const dragonGlow = document.querySelector<HTMLElement>('.loc-dragon-ambient-glow');
@@ -310,7 +316,9 @@ function setupExplorationsParallax() {
     }
   );
 
-  // Parallax internal image scroll on photography card
+  // Parallax internal image scroll on photography card (desktop only to prevent mobile image jitter)
+  if (window.innerWidth < 768) return;
+
   const realImg = explorationsSection.querySelector<HTMLElement>('.exploration-real-img');
   if (realImg) {
     gsap.fromTo(

@@ -3773,7 +3773,7 @@ body.menu-active .hamburger-line:nth-child(3) {
     padding-right: 1.15rem;
   }
 
-  /* 2. Soft Editorial Ambient Scrim over 3D Living Rose Canvas */
+  /* 2. Soft Editorial Ambient Scrim & 60-120fps Mobile Scroll Optimization */
   .rose-backdrop-stage::after {
     content: "";
     position: absolute;
@@ -3788,7 +3788,42 @@ body.menu-active .hamburger-line:nth-child(3) {
     z-index: 2;
   }
   .rose-sunbeams {
-    opacity: 0.18;
+    filter: none !important;
+    animation: none !important;
+    opacity: 0.12 !important;
+  }
+  .rose-cursor-glow,
+  .bokeh-orb,
+  .contact-sanctuary-halo {
+    display: none !important;
+  }
+
+  /* Hardware-accelerate all cards & images on mobile to eliminate subpixel jitter */
+  img,
+  .project-preview,
+  .exploration-card-img-wrap {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+  .project-card,
+  .exploration-card,
+  .carrd-profile-card,
+  .terminal-window,
+  .hero-bio-card {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+  }
+  .loc-dragon-hero-img,
+  .exploration-real-img,
+  .carrd-banner-img,
+  .carrd-avatar-img {
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    will-change: auto !important;
   }
 
   /* 3. Lusion Floating Island Glass Header */
