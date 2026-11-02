@@ -671,17 +671,23 @@ body.menu-active .hamburger-line:nth-child(3) {
   transform: translateY(-7px) rotate(-45deg);
 }
 
+/* ==========================================================================
+   IMAGE 1 SPECIFICATION: LUXURY FULLSCREEN MOBILE STUDIO MENU
+   ========================================================================== */
 .fullscreen-menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(250, 247, 242, 0.98);
+  background: #FAF7F2;
+  background-image: 
+    radial-gradient(circle at 100% 100%, rgba(240, 232, 218, 0.65) 0%, transparent 60%),
+    radial-gradient(circle at 0% 0%, rgba(255, 255, 255, 0.85) 0%, transparent 50%);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
   z-index: 2000;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(1.25rem, 4vw, 3.5rem);
+  padding: 1.15rem 1.15rem 1.25rem;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   opacity: 0;
@@ -694,48 +700,349 @@ body.menu-active .hamburger-line:nth-child(3) {
   pointer-events: auto;
 }
 
-.fullscreen-menu-close-btn {
-  background: rgba(28, 26, 23, 0.06);
-  border: 1px solid var(--border-subtle);
+/* 1. Menu Top Bar */
+.menu-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding-bottom: 0.35rem;
+}
+
+.menu-profile-brand {
+  display: flex;
+  align-items: center;
+}
+
+.menu-avatar-wrap {
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
+  padding: 2.5px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #D4AF37 100%);
+  box-shadow: 0 4px 14px rgba(184, 142, 56, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.menu-avatar-img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.menu-brand-divider {
+  width: 1px;
+  height: 34px;
+  background: rgba(184, 142, 56, 0.25);
+  margin: 0 0.85rem;
+  flex-shrink: 0;
+}
+
+.menu-brand-meta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.menu-brand-name {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #1C1A17;
+  letter-spacing: -0.01em;
+}
+
+.menu-brand-chinese {
+  font-family: 'PingFang SC', 'Source Han Serif SC', serif;
+  font-size: 0.85rem;
+  color: #B88E38;
+  margin-top: 1px;
+}
+
+.menu-brand-location {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  color: #8A7B68;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 2px;
+  text-transform: uppercase;
+}
+
+.fullscreen-menu-close-btn {
   width: 38px;
   height: 38px;
-  display: grid;
-  place-items: center;
+  border-radius: 50%;
+  background: rgba(28, 26, 23, 0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  color: var(--ink-primary);
-  transition: background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  color: #1C1A17;
+  transition: background 0.2s ease, transform 0.2s ease;
+  flex-shrink: 0;
 }
 
-.fullscreen-menu-close-btn:hover {
-  background: var(--accent-gold-subtle);
-  color: var(--accent-gold);
-  transform: scale(1.05);
+.fullscreen-menu-close-btn:active {
+  transform: scale(0.92);
+  background: rgba(28, 26, 23, 0.12);
 }
 
+/* 2. Menu Navigation List */
 .fullscreen-menu-nav {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.75rem, 2vw, 1.35rem);
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
+  margin: 0.75rem 0;
+  position: relative;
+  z-index: 2;
 }
 
-.fullscreen-menu-link {
-  font-family: var(--font-display-studio);
-  font-size: clamp(1.35rem, 5vw, 2.75rem);
-  line-height: 1.15;
-  color: var(--ink-primary);
+.fullscreen-menu-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.58rem 0.2rem;
+  border-bottom: 1px solid rgba(184, 142, 56, 0.14);
   text-decoration: none;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
-  transition: transform 0.3s ease, color 0.3s ease;
-  display: inline-block;
+  transition: background 0.18s ease, transform 0.18s ease;
 }
 
-.fullscreen-menu-link:hover {
-  color: var(--accent-gold);
-  transform: translateX(10px);
+.fullscreen-menu-item:last-child {
+  border-bottom: none;
+}
+
+.fullscreen-menu-item:active {
+  background: rgba(184, 142, 56, 0.06);
+  border-radius: 8px;
+}
+
+.menu-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.menu-item-num {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  font-style: italic;
+  color: #C59B27;
+  min-width: 22px;
+  letter-spacing: -0.01em;
+}
+
+.menu-item-sep {
+  color: rgba(184, 142, 56, 0.35);
+  font-weight: 300;
+  font-size: 1rem;
+  margin-right: 0.15rem;
+}
+
+.menu-item-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.menu-item-title {
+  font-family: var(--font-sans);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: #1C1A17;
+  text-transform: uppercase;
+}
+
+.menu-item-sub {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  color: #8A7B68;
+  font-weight: 400;
+}
+
+.menu-item-arrow {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(28, 26, 23, 0.04);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #8A7B68;
+  transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+  flex-shrink: 0;
+}
+
+.fullscreen-menu-item:active .menu-item-arrow {
+  transform: translateX(3px);
+  background: #C59B27;
+  color: #FFFFFF;
+}
+
+/* 3. Quote Box */
+.menu-quote-box {
+  border-left: 2.5px solid #C59B27;
+  padding-left: 0.85rem;
+  margin: 0.75rem 0 0.85rem;
+  position: relative;
+  z-index: 2;
+}
+
+.menu-quote-chinese {
+  font-family: 'PingFang SC', 'Source Han Serif SC', serif;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: #1C1A17;
+  line-height: 1.4;
+}
+
+.menu-quote-vi {
+  font-size: 0.75rem;
+  color: #7A7570;
+  line-height: 1.45;
+  margin-top: 0.25rem;
+}
+
+/* 4. Socials Row (4 pills) */
+.menu-socials-row {
+  display: flex;
+  gap: 0.45rem;
+  margin-bottom: 0.75rem;
+  position: relative;
+  z-index: 2;
+}
+
+.menu-social-pill {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  padding: 0.45rem 0.2rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 500;
+  color: #1C1A17;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.menu-social-pill:active {
+  transform: scale(0.95);
+  background: #FFFFFF;
+}
+
+/* 5. Contact Pills Row (Phone + Gmail) */
+.menu-contact-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 0.85rem;
+  position: relative;
+  z-index: 2;
+}
+
+.menu-gold-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 1rem;
+  border-radius: 9999px;
+  border: 1.5px solid #C59B27;
+  background: rgba(255, 255, 255, 0.75);
+  color: #B88E38;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(184, 142, 56, 0.08);
+  transition: all 0.2s ease;
+}
+
+.menu-gold-pill:active {
+  transform: scale(0.96);
+  background: #C59B27;
+  color: #FFFFFF;
+}
+
+.menu-email-pill {
+  font-size: 0.76rem;
+  letter-spacing: 0.01em;
+}
+
+/* 6. Footer Action Bar */
+.menu-footer-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(184, 142, 56, 0.1);
+  position: relative;
+  z-index: 2;
+}
+
+.menu-footer-role {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: #8A7B68;
+  line-height: 1.35;
+}
+
+.menu-footer-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.menu-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.45rem 0.95rem;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #1C1A17;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.menu-action-btn:active {
+  transform: scale(0.94);
+}
+
+/* 7. Floral Watermark (Roses at bottom right) */
+.menu-floral-watermark {
+  position: absolute;
+  bottom: -35px;
+  right: -35px;
+  width: 210px;
+  height: 210px;
+  object-fit: cover;
+  border-radius: 50%;
+  opacity: 0.3;
+  filter: blur(2px);
+  pointer-events: none;
+  mask-image: radial-gradient(circle at 65% 65%, black 25%, transparent 75%);
+  -webkit-mask-image: radial-gradient(circle at 65% 65%, black 25%, transparent 75%);
+  z-index: 1;
 }
 
 .btn-secondary {

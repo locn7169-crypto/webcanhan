@@ -57,65 +57,216 @@
     </div>
   </div>
 
-  <!-- Fullscreen Studio Mobile Menu (Le-Lab Style) -->
+  <!-- Fullscreen Studio Mobile Menu (Refined to Image 1 Specification) -->
   <div class="fullscreen-menu-overlay" aria-hidden="true">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <div class="brand-monogram">
-        <img src="./assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="monogram-avatar-img">
-        <div class="brand-text-group">
-          <span class="brand-text">Nguyễn Thành Lộc</span>
-          <span class="brand-subtext">阮城禄</span>
+    <!-- Top Bar -->
+    <div class="menu-topbar">
+      <div class="menu-profile-brand">
+        <div class="menu-avatar-wrap">
+          <img src="./assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="menu-avatar-img">
+        </div>
+        <div class="menu-brand-divider"></div>
+        <div class="menu-brand-meta">
+          <div class="menu-brand-name">Nguyễn Thành Lộc</div>
+          <div class="menu-brand-chinese">阮城禄</div>
+          <div class="menu-brand-location">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>HO CHI MINH CITY, VN</span>
+          </div>
         </div>
       </div>
-      <div style="display: flex; align-items: center; gap: 0.85rem;">
-        <div style="font-family: var(--font-display-studio); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; color: var(--accent-gold);">
-          HO CHI MINH CITY, VN
-        </div>
-        <button class="fullscreen-menu-close-btn" aria-label="Đóng menu" type="button">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
+      <button class="fullscreen-menu-close-btn" aria-label="Đóng menu" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
     </div>
 
+    <!-- Navigation List (7 Rows matching Image 1) -->
     <nav class="fullscreen-menu-nav">
-      <a href="#hero" class="fullscreen-menu-link">01 / Index · Trang chủ</a>
-      <a href="#philosophy" class="fullscreen-menu-link">02 / Philosophy · Triết lý</a>
-      <a href="#works" class="fullscreen-menu-link">03 / Works · Dự án</a>
-      <a href="#synthesis" class="fullscreen-menu-link">04 / My Journey · Hành trình</a>
-      <a href="#explorations" class="fullscreen-menu-link">05 / Explorations · Khám phá</a>
-      <!-- <a href="#principles" class="fullscreen-menu-link">06 / Principles · Nguyên tắc</a> (Tạm ẩn) -->
-      <a href="#contact" class="fullscreen-menu-link">06 / Connect · Kết nối</a>
+      <!-- 01: Index -->
+      <a href="#hero" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">01</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">INDEX · TRANG CHỦ</span>
+            <span class="menu-item-sub">Homepage · Trang chủ</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 02: Philosophy -->
+      <a href="#philosophy" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">02</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">PHILOSOPHY · TRIẾT LÝ</span>
+            <span class="menu-item-sub">Philosophy · Triết lý</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 03: Works -->
+      <a href="#works" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">03</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">WORKS · DỰ ÁN</span>
+            <span class="menu-item-sub">Projects · Dự án</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 04: My Journey -->
+      <a href="#synthesis" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">04</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">MY JOURNEY · HÀNH TRÌNH</span>
+            <span class="menu-item-sub">My Journey · Hành trình</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 05: Explorations -->
+      <a href="#explorations" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">05</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">EXPLORATIONS · KHÁM PHÁ</span>
+            <span class="menu-item-sub">Explorations · Khám phá</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 06: Principles -->
+      <a href="#principles" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">06</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">PRINCIPLES · NGUYÊN TẮC</span>
+            <span class="menu-item-sub">Principles · Nguyên tắc</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
+
+      <!-- 07: Connect -->
+      <a href="#contact" class="fullscreen-menu-link fullscreen-menu-item">
+        <div class="menu-item-left">
+          <span class="menu-item-num">07</span>
+          <span class="menu-item-sep">/</span>
+          <div class="menu-item-text">
+            <span class="menu-item-title">CONNECT · KẾT NỐI</span>
+            <span class="menu-item-sub">Connect · Kết nối</span>
+          </div>
+        </div>
+        <div class="menu-item-arrow">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </div>
+      </a>
     </nav>
 
-    <!-- Mobile Quote & Quick Socials -->
-    <div style="padding: 1rem 0; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
-      <div style="font-family: 'PingFang SC', serif; font-size: 0.85rem; color: var(--ink-secondary); font-style: italic;">
-        “我努力不一定会成功 但我不努力一定会失败”
-      </div>
-      <div style="font-size: 0.78rem; color: var(--ink-muted); margin-top: 0.25rem;">
+    <!-- Motto Box (Trích dẫn phong cách Thư họa) -->
+    <div class="menu-quote-box">
+      <div class="menu-quote-chinese">“我努力不一定会成功 但我不努力一定会失败”</div>
+      <div class="menu-quote-vi">
         Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.
-      </div>
-      <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.75rem;">
-        <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="badge-pill">Instagram</a>
-        <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="badge-pill">TikTok</a>
-        <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="badge-pill">Facebook</a>
-        <a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" class="badge-pill">X (Twitter)</a>
-        <a href="tel:0866192413" class="badge-pill" style="border-color: var(--accent-gold); color: var(--accent-gold);">0866 192 413</a>
       </div>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: flex-end; padding-top: 1.25rem;">
-      <div style="font-family: var(--font-mono); font-size: var(--text-xs); color: var(--ink-muted);">
-        Developer · Creator · Product Builder
+    <!-- Social Link Pills (Instagram, TikTok, Facebook, X) -->
+    <div class="menu-socials-row">
+      <a href="https://www.instagram.com/nguyenthanhloc8561?igsh=MWYweDVkZmRybXp2bg==" target="_blank" rel="noopener noreferrer" class="menu-social-pill">
+        <svg class="social-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        <span>Instagram</span>
+      </a>
+      <a href="https://www.tiktok.com/@nguyenthanhloc475?_r=1&_t=ZS-97c1LhDS42i" target="_blank" rel="noopener noreferrer" class="menu-social-pill">
+        <svg class="social-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1.04-.1z"/></svg>
+        <span>TikTok</span>
+      </a>
+      <a href="https://www.facebook.com/share/18kbDFkr5f/" target="_blank" rel="noopener noreferrer" class="menu-social-pill">
+        <svg class="social-icon" width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        <span>Facebook</span>
+      </a>
+      <a href="https://x.com/LcNguyn1818975/with_replies" target="_blank" rel="noopener noreferrer" class="menu-social-pill">
+        <svg class="social-icon" width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        <span>X</span>
+      </a>
+    </div>
+
+    <!-- Direct Contact Pills: Phone + Gmail -->
+    <div class="menu-contact-pills-row">
+      <a href="tel:0866192413" class="menu-gold-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        <span>0866 192 413</span>
+      </a>
+      <a href="mailto:locn7169@gmail.com" class="menu-gold-pill menu-email-pill">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        <span>locn7169@gmail.com</span>
+      </a>
+    </div>
+
+    <!-- Bottom Action Footer Bar -->
+    <div class="menu-footer-bar">
+      <div class="menu-footer-role">
+        Developer · Creator<br>Product Builder
       </div>
-      <div style="display: flex; gap: 0.75rem;">
-        <a href="tel:0866192413" class="badge-pill">Gọi điện · Call</a>
-        <a href="sms:0866192413" class="badge-pill">SMS · Nhắn tin</a>
+      <div class="menu-footer-actions">
+        <a href="tel:0866192413" class="menu-action-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+          <span>Gọi điện</span>
+        </a>
+        <a href="sms:0866192413" class="menu-action-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span>Nhắn tin</span>
+        </a>
       </div>
     </div>
+
+    <!-- Floral Rose Watermark at Bottom-Right (Exact to Image 1) -->
+    <img src="./assets/loc-banner.jpg" alt="" class="menu-floral-watermark" aria-hidden="true">
   </div>
 
   <!-- Global Viewport Scroll Progress Bar -->
@@ -142,7 +293,7 @@
           <li><a href="#works" class="nav-link">Works · Dự án</a></li>
           <li><a href="#synthesis" class="nav-link">My Journey · Hành trình</a></li>
           <li><a href="#explorations" class="nav-link">Explorations · Khám phá</a></li>
-          <!-- <li><a href="#principles" class="nav-link">Principles · Nguyên tắc</a></li> (Tạm ẩn) -->
+          <li><a href="#principles" class="nav-link">Principles · Nguyên tắc</a></li>
           <li><a href="#contact" class="nav-link">Connect · Kết nối</a></li>
         </ul>
       </nav>
@@ -1036,10 +1187,7 @@
       </div>
     </section>
 
-    <!-- ==========================================================================
-         6. Engineering Principles: Honest Craft (TẠM ẨN - MỞ LẠI KHI CẦN)
-         ========================================================================== -->
-    <!--
+    <!-- 6. Engineering Principles: Honest Craft -->
     <section id="principles" class="section">
       <div class="container">
         <div class="eyebrow" style="margin-bottom: 0.5rem;">
@@ -1098,7 +1246,6 @@
         </div>
       </div>
     </section>
-    -->
 
     <!-- 7. Colophon & Authentic Identity / Bio Connect: Carrd Signature Showcase -->
     <section id="contact" class="section section-contact">
@@ -1204,13 +1351,31 @@
                     <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
                   </div>
                 </a>
+
+                <!-- 5. Gmail -->
+                <a href="mailto:locn7169@gmail.com" class="carrd-btn-row">
+                  <div class="carrd-btn-icon">
+                    <i data-lucide="mail" style="width: 20px; height: 20px;"></i>
+                  </div>
+                  <div class="carrd-btn-text">
+                    <span class="carrd-btn-title">Gmail · Hòm thư điện tử</span>
+                    <span class="carrd-btn-handle">locn7169@gmail.com</span>
+                  </div>
+                  <div class="carrd-btn-arrow">
+                    <i data-lucide="arrow-up-right" style="width: 18px; height: 18px;"></i>
+                  </div>
+                </a>
               </div>
 
-              <!-- Direct Contact Dock (Call, SMS, Copy) -->
+              <!-- Direct Contact Dock (Call, SMS, Gmail, Copy) -->
               <div class="carrd-dock">
                 <a href="tel:0866192413" class="carrd-dock-btn" title="Gọi trực tiếp 0866 192 413 · Direct Call">
                   <i data-lucide="phone-call" style="width: 15px; height: 15px;"></i>
                   <span>0866 192 413</span>
+                </a>
+                <a href="mailto:locn7169@gmail.com" class="carrd-dock-btn" title="Gửi email qua Gmail · Send Gmail">
+                  <i data-lucide="mail" style="width: 15px; height: 15px;"></i>
+                  <span>locn7169@gmail.com</span>
                 </a>
                 <a href="sms:0866192413" class="carrd-dock-btn" title="Gửi tin nhắn SMS · Send SMS">
                   <i data-lucide="message-square" style="width: 15px; height: 15px;"></i>
