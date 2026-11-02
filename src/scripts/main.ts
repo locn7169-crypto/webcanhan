@@ -151,29 +151,32 @@ function setupNavigationSpy() {
 // Fullscreen Mobile Menu (Le-Lab Style)
 function setupMobileMenu() {
   const toggleBtn = document.querySelector<HTMLButtonElement>('.hamburger-toggle-btn');
+  const closeBtn = document.querySelector<HTMLButtonElement>('.fullscreen-menu-close-btn');
   const overlay = document.querySelector<HTMLElement>('.fullscreen-menu-overlay');
   const menuLinks = document.querySelectorAll<HTMLAnchorElement>('.fullscreen-menu-link');
 
-  if (!toggleBtn || !overlay) return;
+  if (!overlay) return;
+
+  function closeMenu() {
+    overlay?.classList.remove('active');
+    document.body.classList.remove('menu-active');
+  }
 
   function toggle() {
     const isOpen = overlay?.classList.contains('active');
     if (isOpen) {
-      overlay?.classList.remove('active');
-      document.body.classList.remove('menu-active');
+      closeMenu();
     } else {
       overlay?.classList.add('active');
       document.body.classList.add('menu-active');
     }
   }
 
-  toggleBtn.addEventListener('click', toggle);
+  toggleBtn?.addEventListener('click', toggle);
+  closeBtn?.addEventListener('click', closeMenu);
 
   menuLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      overlay.classList.remove('active');
-      document.body.classList.remove('menu-active');
-    });
+    link.addEventListener('click', closeMenu);
   });
 }
 

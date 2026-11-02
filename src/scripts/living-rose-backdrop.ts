@@ -458,19 +458,23 @@ export function initLivingRoseBackdrop(): () => void {
     mouseVelX *= 0.92;
     curScrollY += (targetScrollY - curScrollY) * 0.07;
 
-    const baseScale = Math.max(W / 1600, H / 950);
+    const isMobile = W < 768;
+    const baseScale = isMobile
+      ? Math.max(W / 1300, H / 1100) * 0.75
+      : Math.max(W / 1600, H / 950);
     // Subtle breathing + scroll depth scale
     const scrollScale = 1 + scrollProgress * 0.08;
     const scale = baseScale * scrollScale;
 
     // Cinematic camera positioning:
-    const isMobile = W < 768;
+    // On mobile, keep roses centered and scaled down subtly to avoid overwhelming portrait screens
     const centerX = isMobile ? W * 0.5 : W * 0.56 - curMX * 20;
 
-    // Smooth continuous linear parallax WITHOUT modulo jumps (fixes "giật giật")
-    const maxParallax = H * 0.16;
-    const scrollParallaxY = -Math.min(maxParallax, curScrollY * 0.035);
-    const centerY = (isMobile ? H * 0.52 : H * 0.55) + scrollParallaxY;
+    // Smooth continuous linear parallax WITHOUT modulo jumps
+    // On mobile, anchor vase lower so it doesn't clash with central editorial typography
+    const maxParallax = isMobile ? H * 0.12 : H * 0.16;
+    const scrollParallaxY = -Math.min(maxParallax, curScrollY * (isMobile ? 0.025 : 0.035));
+    const centerY = (isMobile ? H * 0.64 : H * 0.55) + scrollParallaxY;
 
     // ==========================================
     // 1. BACKGROUND LAYER: Wall, Shadows & Drapery
