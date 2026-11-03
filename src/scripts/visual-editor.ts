@@ -62,7 +62,7 @@ export function initVisualEditor() {
       ['.hero-eyebrow span', 'hero-eyebrow'],
       ['.hero-title-line', 'hero-title'],
       ['.hero-tagline', 'hero-tagline'],
-      ['.workbench-code-snippet', 'hero-code-snippet'],
+      ['.hero-about-body', 'hero-about-body'],
       ['.hero-bio-meta h3', 'hero-bio-name'],
       ['.hero-bio-meta span', 'hero-bio-title'],
       ['.hero-bio-quote', 'hero-bio-quote'],
