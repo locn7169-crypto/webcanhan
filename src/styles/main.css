@@ -388,13 +388,15 @@ main {
   transition: transform 0.4s var(--ease-out-editorial), background-color 0.3s ease;
 }
 
-.site-header.scrolled {
-  background: rgba(250, 247, 242, 0.88);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 0.85rem 0;
-  box-shadow: var(--shadow-subtle);
+@media (min-width: 769px) {
+  .site-header.scrolled {
+    background: rgba(250, 247, 242, 0.88);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 0.85rem 0;
+    box-shadow: var(--shadow-subtle);
+  }
 }
 
 .nav-inner {
@@ -3785,43 +3787,76 @@ body.menu-active .hamburger-line:nth-child(3) {
     will-change: auto !important;
   }
 
-  /* 3. Lusion Floating Island Glass Header */
-  .site-header {
-    position: fixed;
-    top: 0.85rem;
-    left: 1rem;
-    right: 1rem;
-    width: calc(100% - 2rem);
-    background: rgba(250, 247, 242, 0.86);
-    backdrop-filter: blur(28px);
-    -webkit-backdrop-filter: blur(28px);
-    border: 1px solid rgba(184, 142, 56, 0.22);
-    border-radius: 9999px;
-    box-shadow: 0 10px 32px -4px rgba(24, 22, 19, 0.08), 0 0 0 1px rgba(255, 255, 255, 0.7) inset;
-    padding: 0.45rem 0.65rem 0.45rem 0.85rem;
-    z-index: 1000;
+  /* 3. Lusion Floating Island Glass Header (Centered & Rock-Solid across all scroll positions) */
+  .site-header,
+  .site-header.scrolled {
+    position: fixed !important;
+    top: 0.75rem !important;
+    left: 0.85rem !important;
+    right: 0.85rem !important;
+    width: calc(100% - 1.7rem) !important;
+    max-width: calc(100vw - 1.7rem) !important;
+    height: 52px !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    background: rgba(250, 247, 242, 0.92) !important;
+    backdrop-filter: blur(28px) !important;
+    -webkit-backdrop-filter: blur(28px) !important;
+    border: 1px solid rgba(184, 142, 56, 0.25) !important;
+    border-radius: 9999px !important;
+    box-shadow: 0 8px 28px -4px rgba(24, 22, 19, 0.09), 0 0 0 1px rgba(255, 255, 255, 0.8) inset !important;
+    padding: 0 0.65rem 0 0.85rem !important;
+    z-index: 1000 !important;
+    display: flex !important;
+    align-items: center !important;
+    box-sizing: border-box !important;
+    transform: translateZ(0);
+    -webkit-transform: translateZ(0);
+    transition: background 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease !important;
   }
   .nav-inner {
-    padding: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
   }
   .brand-monogram {
-    gap: 0.65rem;
-  }
-  .brand-text {
-    font-size: 0.92rem;
-    font-weight: 700;
-    letter-spacing: -0.01em;
-  }
-  .brand-subtext {
-    font-size: 0.72rem;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.65rem !important;
+    text-decoration: none !important;
+    height: 100% !important;
   }
   .monogram-avatar-img {
-    width: 32px;
-    height: 32px;
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 50% !important;
+    object-fit: cover !important;
+    border: 1.5px solid var(--accent-gold) !important;
+    box-shadow: 0 2px 8px rgba(184, 142, 56, 0.22) !important;
+    flex-shrink: 0 !important;
+    display: block !important;
+  }
+  .brand-text-group {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    line-height: 1.15 !important;
+  }
+  .brand-text {
+    font-size: 0.92rem !important;
+    font-weight: 700 !important;
+    letter-spacing: -0.01em !important;
+    color: var(--ink-primary) !important;
+    line-height: 1.15 !important;
+  }
+  .brand-subtext {
+    font-family: 'PingFang SC', 'Source Han Serif SC', serif !important;
+    font-size: 0.72rem !important;
+    color: var(--accent-gold) !important;
+    line-height: 1.15 !important;
   }
   .nav-links,
   .nav-status,
