@@ -29,13 +29,10 @@ export function initScrollCinematics() {
   // 6. Explorations Curtain Reveal & Internal Image Parallax
   setupExplorationsParallax();
 
-  // 7. Principles Ethos Blur-to-Sharp Cascade
-  setupPrinciplesCascade();
-
-  // 8. Carrd Master Showcase Finale Reveal & Beacon
+  // 7. Carrd Master Showcase Finale Reveal & Beacon
   setupConnectFinale();
 
-  // 9. Floating Discrete Scroll-To-Top Pill
+  // 8. Floating Discrete Scroll-To-Top Pill
   setupScrollToTop();
 
   console.info('[ScrollCinematics] Continuous scroll-driven storytelling activated from start to finish.');
@@ -359,35 +356,7 @@ function setupExplorationsParallax() {
 }
 
 /**
- * 7. Principles Ethos Blur-to-Sharp Cascade
- */
-function setupPrinciplesCascade() {
-  const principlesSection = document.querySelector<HTMLElement>('#principles');
-  if (!principlesSection) return;
-
-  const cards = principlesSection.querySelectorAll<HTMLElement>('.principle-card');
-  if (!cards.length) return;
-
-  gsap.fromTo(
-    cards,
-    { y: 40, opacity: 0, filter: 'blur(6px)' },
-    {
-      y: 0,
-      opacity: 1,
-      filter: 'blur(0px)',
-      duration: 0.7,
-      stagger: 0.1,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: '.principles-grid',
-        start: 'top 80%',
-      },
-    }
-  );
-}
-
-/**
- * 8. Carrd Master Showcase Finale Reveal & Beacon
+ * 7. Carrd Master Showcase Finale Reveal & Beacon
  */
 function setupConnectFinale() {
   const contactSection = document.querySelector<HTMLElement>('#contact');
@@ -462,7 +431,7 @@ function setupConnectFinale() {
 }
 
 /**
- * 9. Floating Discrete Scroll-To-Top Pill
+ * 8. Floating Discrete Scroll-To-Top Pill
  */
 function setupScrollToTop() {
   const topBtn = document.querySelector<HTMLElement>('.scroll-top-btn');

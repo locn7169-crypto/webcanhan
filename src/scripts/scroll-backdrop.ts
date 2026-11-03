@@ -40,7 +40,6 @@ export function initScrollBackdrop() {
     { sectionId: '#works', sceneKey: 'works' },
     { sectionId: '#synthesis', sceneKey: 'synthesis' },
     { sectionId: '#explorations', sceneKey: 'synthesis' },
-    { sectionId: '#principles', sceneKey: 'contact' },
     { sectionId: '#contact', sceneKey: 'contact' },
   ];
 

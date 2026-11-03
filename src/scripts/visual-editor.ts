@@ -74,7 +74,6 @@ export function initVisualEditor() {
       ['#works .title-section', 'works-title'],
       ['#synthesis .title-section', 'synthesis-title'],
       ['#explorations .title-section', 'explorations-title'],
-      ['#principles .title-section', 'principles-title'],
       ['#contact .title-section', 'contact-title'],
       ['.footer-quote', 'footer-quote'],
     ];
@@ -112,7 +111,7 @@ export function initVisualEditor() {
 
     // Universally tag all text elements
     const candidates = document.querySelectorAll<HTMLElement>(
-      'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .principle-card h3, .principle-card p, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi, .editor-custom-paragraph'
+      'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi, .editor-custom-paragraph'
     );
 
     candidates.forEach((el, idx) => {

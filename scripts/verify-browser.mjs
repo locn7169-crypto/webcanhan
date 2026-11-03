@@ -145,7 +145,7 @@ async function runVerification() {
     console.log('✔ Synthesis Matrix (Design tab) verified.');
   }
 
-  // Explorations & Principles
+  // Explorations
   await page.evaluate(() => {
     document.querySelector('#explorations')?.scrollIntoView({ behavior: 'instant' });
   });
