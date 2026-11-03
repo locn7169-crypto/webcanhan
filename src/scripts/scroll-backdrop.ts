@@ -1,15 +1,11 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { initLivingRoseBackdrop } from './living-rose-backdrop';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function initScrollBackdrop() {
   const backdropContainer = document.querySelector<HTMLElement>('.site-backdrop-system');
   if (!backdropContainer) return;
-
-  // Initialize Living Animated Rose Canvas (Engine ported from nen-web-dong-hoa-hong.html)
-  initLivingRoseBackdrop();
 
   const scenes = {
     hero: document.getElementById('bg-scene-hero'),
