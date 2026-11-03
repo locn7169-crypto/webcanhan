@@ -69,8 +69,6 @@ export function initVisualEditor() {
       ['.brand-text', 'brand-name'],
       ['.brand-subtext', 'brand-subname'],
       ['.nav-status span:last-child', 'nav-status'],
-      ['.section-philosophy .title-section', 'philosophy-title'],
-      ['.section-philosophy .text-body', 'philosophy-body'],
       ['#works .title-section', 'works-title'],
       ['#synthesis .title-section', 'synthesis-title'],
       ['#explorations .title-section', 'explorations-title'],

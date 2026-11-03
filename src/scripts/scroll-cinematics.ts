@@ -17,10 +17,7 @@ export function initScrollCinematics() {
   // 2. Hero Section Continuous Parallax Scrub
   setupHeroScrollScrub();
 
-  // 3. Philosophy Section Reveals & Methodology Step Cascades
-  setupPhilosophyScroll();
-
-  // 4. Featured Works Card Enhancements (Dragon Scrub & Tilt)
+  // 3. Featured Works Card Enhancements (Dragon Scrub & Tilt)
   setupWorksScrollScrub();
 
   // 5. Synthesis Matrix 3D Reveal
@@ -110,93 +107,7 @@ function setupHeroScrollScrub() {
 }
 
 /**
- * 3. Philosophy Section Reveals & Methodology Step Cascades
- */
-function setupPhilosophyScroll() {
-  const philosophySection = document.querySelector<HTMLElement>('#philosophy');
-  if (!philosophySection) return;
-
-  // Reveal title with clip / translate
-  const title = philosophySection.querySelector('.title-section');
-  if (title) {
-    gsap.fromTo(
-      title,
-      { y: 35, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: title,
-          start: 'top 85%',
-        },
-      }
-    );
-  }
-
-  // Interests pills wave popup
-  const tags = philosophySection.querySelectorAll('.interest-tag');
-  if (tags.length) {
-    gsap.fromTo(
-      tags,
-      { scale: 0.85, opacity: 0, y: 15 },
-      {
-        scale: 1,
-        opacity: 1,
-        y: 0,
-        duration: 0.45,
-        stagger: 0.04,
-        ease: 'back.out(1.5)',
-        scrollTrigger: {
-          trigger: '.interests-grid',
-          start: 'top 85%',
-        },
-      }
-    );
-  }
-
-  // Methodology steps cascade with golden line illumination
-  const steps = philosophySection.querySelectorAll('.methodology-step');
-  steps.forEach((step, idx) => {
-    gsap.fromTo(
-      step,
-      { y: 40, opacity: 0 },
-      {
-        y: 0,
-        opacity: 1,
-        duration: 0.7,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: step,
-          start: 'top 82%',
-          toggleActions: 'play none none reverse',
-        },
-      }
-    );
-
-    // Number badge illumination on scroll past
-    const num = step.querySelector('.step-num');
-    if (num) {
-      gsap.fromTo(
-        num,
-        { color: 'var(--ink-muted)' },
-        {
-          color: 'var(--accent-gold)',
-          duration: 0.5,
-          scrollTrigger: {
-            trigger: step,
-            start: 'top 70%',
-            toggleActions: 'play reverse play reverse',
-          },
-        }
-      );
-    }
-  });
-}
-
-/**
- * 4. Featured Works Card Enhancements (Dragon Scrub & Parallax)
+ * 3. Featured Works Card Enhancements (Dragon Scrub & Parallax)
  */
 function setupWorksScrollScrub() {
   const worksSection = document.querySelector<HTMLElement>('#works');

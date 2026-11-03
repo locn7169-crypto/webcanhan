@@ -9,7 +9,6 @@ export function initScrollBackdrop() {
 
   const scenes = {
     hero: document.getElementById('bg-scene-hero'),
-    philosophy: document.getElementById('bg-scene-philosophy'),
     works: document.getElementById('bg-scene-works'),
     synthesis: document.getElementById('bg-scene-synthesis'),
     contact: document.getElementById('bg-scene-contact'),
@@ -32,7 +31,6 @@ export function initScrollBackdrop() {
   // Section to Scene Mapping using ScrollTrigger
   const sectionMappings: Array<{ sectionId: string; sceneKey: keyof typeof scenes }> = [
     { sectionId: '#hero', sceneKey: 'hero' },
-    { sectionId: '#philosophy', sceneKey: 'philosophy' },
     { sectionId: '#works', sceneKey: 'works' },
     { sectionId: '#synthesis', sceneKey: 'synthesis' },
     { sectionId: '#explorations', sceneKey: 'synthesis' },
