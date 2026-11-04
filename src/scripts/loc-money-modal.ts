@@ -27,7 +27,9 @@ export function initLocMoneyModal() {
       const match = pane.getAttribute('data-loc-pane') === tabId;
       pane.classList.toggle('active', match);
       if (match) {
-        pane.scrollTop = 0;
+        requestAnimationFrame(() => {
+          pane.scrollTop = 0;
+        });
       }
     });
   }
@@ -49,10 +51,20 @@ export function initLocMoneyModal() {
 
     const container = modal.querySelector<HTMLElement>('.loc-modal-container');
     if (container) {
+      container.style.willChange = 'transform, opacity';
       gsap.fromTo(
         container,
         { opacity: 0, y: 36, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out' }
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.45,
+          ease: 'power3.out',
+          onComplete: () => {
+            container.style.willChange = 'auto';
+          },
+        }
       );
     }
 
@@ -77,12 +89,16 @@ export function initLocMoneyModal() {
 
     const container = modal.querySelector<HTMLElement>('.loc-modal-container');
     if (container && backdrop) {
+      container.style.willChange = 'transform, opacity';
       gsap.to(container, {
         opacity: 0,
         y: 20,
         scale: 0.98,
         duration: 0.25,
         ease: 'power2.in',
+        onComplete: () => {
+          container.style.willChange = 'auto';
+        },
       });
 
       gsap.to(backdrop, {
@@ -114,40 +130,22 @@ export function initLocMoneyModal() {
     }
   }
 
-  // Bind trigger clicks with tactile shockwave & spring haptics
+  // Bind trigger clicks: instant modal opening without artificial latency or layout thrashing
   triggers.forEach((trigger) => {
     trigger.addEventListener('click', (e: MouseEvent) => {
       e.preventDefault();
       activeTrigger = trigger;
       const initialTab = trigger.getAttribute('data-target-tab') || 'tong-quan';
+      openModal(initialTab);
+    });
 
-      // Dynamic gold ripple / shockwave burst at click coordinates
-      const rect = trigger.getBoundingClientRect();
-      const x = e.clientX ? e.clientX - rect.left : rect.width / 2;
-      const y = e.clientY ? e.clientY - rect.top : rect.height / 2;
-
-      const ripple = document.createElement('div');
-      ripple.className = 'loc-click-shockwave';
-      ripple.style.left = `${x}px`;
-      ripple.style.top = `${y}px`;
-      ripple.style.width = '36px';
-      ripple.style.height = '36px';
-      trigger.appendChild(ripple);
-
-      // Tactile spring recoil + shockwave expansion timeline
-      const tl = gsap.timeline({
-        onComplete: () => {
-          ripple.remove();
-        },
-      });
-
-      tl.to(trigger, { scale: 0.96, duration: 0.1, ease: 'power2.in' })
-        .to(ripple, { scale: 14, opacity: 0, duration: 0.55, ease: 'power2.out' }, 0)
-        .to(trigger, { scale: 1.02, duration: 0.18, ease: 'power2.out' }, 0.1)
-        .to(trigger, { scale: 1, duration: 0.22, ease: 'elastic.out(1.2, 0.45)' }, 0.28)
-        .call(() => {
-          openModal(initialTab);
-        }, undefined, 0.15);
+    trigger.addEventListener('keydown', (e: KeyboardEvent) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        activeTrigger = trigger;
+        const initialTab = trigger.getAttribute('data-target-tab') || 'tong-quan';
+        openModal(initialTab);
+      }
     });
   });
 

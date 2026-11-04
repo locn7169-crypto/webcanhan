@@ -5121,6 +5121,73 @@ body.loc-modal-locked {
 }
 
 /* ==========================================================================
+   Mobile 60fps Interaction Optimization: Zero Blur Shaders & Touch Responsiveness
+   ========================================================================== */
+
+/* Universal fast tap & touch behavior: eliminate 300ms double-tap delay */
+.project-card,
+.exploration-card,
+.loc-modal-tab-btn,
+.journal-tab-btn,
+.loc-modal-close,
+.insta-arrow-btn,
+.insta-dot,
+.insta-thumb-item,
+.insta-grid-item {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Modal momentum touch scrolling & pan-y delegation */
+.loc-modal-tab-pane,
+.journal-modal-scroll {
+  touch-action: pan-y !important;
+  -webkit-overflow-scrolling: touch !important;
+  overscroll-behavior: contain;
+}
+
+/* Zero GPU shader blur load on mobile viewports & touch devices */
+@media (max-width: 768px), (pointer: coarse) {
+  .loc-modal-backdrop,
+  .journal-modal-backdrop {
+    background: rgba(14, 12, 10, 0.94) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .insta-lightbox-backdrop {
+    background: rgba(10, 9, 8, 0.97) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .insta-ambient-glow {
+    filter: none !important;
+    opacity: 0.15 !important;
+  }
+
+  .loc-dragon-brand-tag,
+  .loc-live-pill,
+  .loc-mini-glass-pill,
+  .loc-dragon-click-cue,
+  .exploration-click-badge,
+  .insta-photo-counter-badge,
+  .insta-enlarge-btn,
+  .insta-carousel-arrow,
+  .insta-carousel-dots {
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+  }
+
+  .loc-modal-tab-pane,
+  .journal-modal-scroll {
+    touch-action: pan-y !important;
+    -webkit-overflow-scrolling: touch !important;
+    overscroll-behavior: contain;
+  }
+}
+
+/* ==========================================================================
    Continuous Scroll-Driven Cinematics (From Beginning to End)
    ========================================================================== */
 
@@ -5221,9 +5288,19 @@ body.loc-modal-locked {
   will-change: transform;
 }
 
-/* 5. Avatar Beacon Ring Pulse */
+/* 5. Avatar Beacon Ring Pulse (GPU Composited Opacity & Scale) */
 .carrd-avatar-ring {
-  transition: box-shadow 0.4s ease;
+  position: relative;
+}
+
+.carrd-avatar-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  box-shadow: 0 0 26px rgba(184, 142, 56, 0.45);
+  pointer-events: none;
+  z-index: -1;
+  will-change: transform, opacity;
 }
 
 

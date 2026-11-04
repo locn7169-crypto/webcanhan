@@ -26,7 +26,9 @@ export function initLocLearnModal() {
       const match = pane.getAttribute('data-learn-pane') === tabId;
       pane.classList.toggle('active', match);
       if (match) {
-        pane.scrollTop = 0;
+        requestAnimationFrame(() => {
+          pane.scrollTop = 0;
+        });
       }
     });
   }
@@ -50,10 +52,20 @@ export function initLocLearnModal() {
 
     const container = modal.querySelector<HTMLElement>('.loc-modal-container');
     if (container) {
+      container.style.willChange = 'transform, opacity';
       gsap.fromTo(
         container,
         { opacity: 0, y: 36, scale: 0.94 },
-        { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out' }
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.45,
+          ease: 'power3.out',
+          onComplete: () => {
+            container.style.willChange = 'auto';
+          },
+        }
       );
     }
 
@@ -77,12 +89,16 @@ export function initLocLearnModal() {
 
     const container = modal.querySelector<HTMLElement>('.loc-modal-container');
     if (container && backdrop) {
+      container.style.willChange = 'transform, opacity';
       gsap.to(container, {
         opacity: 0,
         y: 20,
         scale: 0.98,
         duration: 0.25,
         ease: 'power2.in',
+        onComplete: () => {
+          container.style.willChange = 'auto';
+        },
       });
 
       gsap.to(backdrop, {

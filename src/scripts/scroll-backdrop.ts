@@ -100,14 +100,39 @@ function initSynthesisBackdropCanvas() {
     });
   }
 
-  let animationFrameId: number;
-  let isSceneActive = false;
+  let animationFrameId = 0;
+  let isRunning = false;
   const synthesisScene = document.getElementById('bg-scene-synthesis');
 
-  function render() {
-    isSceneActive = synthesisScene?.classList.contains('active') ?? false;
+  function shouldRun(): boolean {
+    const isSceneActive = synthesisScene?.classList.contains('active') ?? false;
+    const isModalLocked = document.body.classList.contains('loc-modal-locked');
+    return isSceneActive && !isModalLocked;
+  }
 
-    if (isSceneActive && ctx) {
+  function startLoop() {
+    if (isRunning) return;
+    if (!shouldRun()) return;
+    isRunning = true;
+    render();
+  }
+
+  function stopLoop() {
+    isRunning = false;
+    if (animationFrameId) {
+      cancelAnimationFrame(animationFrameId);
+      animationFrameId = 0;
+    }
+  }
+
+  function render() {
+    if (!isRunning) return;
+    if (!shouldRun()) {
+      stopLoop();
+      return;
+    }
+
+    if (ctx) {
       ctx.clearRect(0, 0, width, height);
 
       // Render glowing soft auroral dust
@@ -152,5 +177,22 @@ function initSynthesisBackdropCanvas() {
     animationFrameId = requestAnimationFrame(render);
   }
 
-  render();
+  // Observers to start/stop loop when scene activates or modal locks
+  const updateLoopState = () => {
+    if (shouldRun()) {
+      startLoop();
+    } else {
+      stopLoop();
+    }
+  };
+
+  if (synthesisScene) {
+    const sceneObserver = new MutationObserver(updateLoopState);
+    sceneObserver.observe(synthesisScene, { attributes: true, attributeFilter: ['class'] });
+  }
+
+  const bodyObserver = new MutationObserver(updateLoopState);
+  bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  updateLoopState();
 }

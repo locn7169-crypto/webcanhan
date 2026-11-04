@@ -52,8 +52,9 @@ export function initHeroAmbientConstellation() {
   handleResize();
   window.addEventListener('resize', handleResize);
 
-  // Mouse move listener across hero
+  // Mouse move listener across hero (gated to desktop mouse to avoid mobile touch reflow)
   heroSection.addEventListener('pointermove', (e) => {
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
     if (!container || !renderer) return;
     const rect = container.getBoundingClientRect();
     renderer.setPointer(e.clientX - rect.left, e.clientY - rect.top);
@@ -65,11 +66,34 @@ export function initHeroAmbientConstellation() {
 
   let animFrame = 0;
   let isVisible = true;
+  let isRunning = false;
+
+  function shouldRun() {
+    return isVisible && !document.body.classList.contains('loc-modal-locked');
+  }
+
+  function startLoop() {
+    if (isRunning) return;
+    if (!shouldRun()) return;
+    isRunning = true;
+    loop();
+  }
+
+  function stopLoop() {
+    isRunning = false;
+    if (animFrame) {
+      cancelAnimationFrame(animFrame);
+      animFrame = 0;
+    }
+  }
 
   function loop() {
-    if (isVisible) {
-      renderer?.render();
+    if (!isRunning) return;
+    if (!shouldRun()) {
+      stopLoop();
+      return;
     }
+    renderer?.render();
     animFrame = requestAnimationFrame(loop);
   }
 
@@ -77,10 +101,25 @@ export function initHeroAmbientConstellation() {
   const observer = new IntersectionObserver(
     ([entry]) => {
       isVisible = entry.isIntersecting;
+      if (shouldRun()) {
+        startLoop();
+      } else {
+        stopLoop();
+      }
     },
     { threshold: 0.05 }
   );
   observer.observe(heroSection);
 
-  loop();
+  // Pause loop when modal is open / body is locked
+  const bodyObserver = new MutationObserver(() => {
+    if (shouldRun()) {
+      startLoop();
+    } else {
+      stopLoop();
+    }
+  });
+  bodyObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
+  startLoop();
 }

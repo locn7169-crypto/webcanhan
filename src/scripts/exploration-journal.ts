@@ -151,6 +151,11 @@ let currentPhotoIndex = 0; // Current photo in the active post carousel
 let isJournalOpen = false;
 let isLightboxOpen = false;
 
+// DOM render caching state for 60fps instant transitions
+let lastRenderedCat: string | null = null;
+let lastRenderedPostId: string | null = null;
+let lastRenderedEditMode = false;
+
 // File input elements
 let coverFileInput: HTMLInputElement | null = null;
 let appendPhotosFileInput: HTMLInputElement | null = null;
@@ -223,6 +228,7 @@ function loadJournalData() {
 // Save data to localStorage
 export function saveJournalData() {
   try {
+    lastRenderedCat = null;
     syncActivePostToState();
     localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
     updateMainPageCardCovers();
@@ -371,6 +377,29 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
 
   const scrollContainer = modal.querySelector<HTMLElement>('.journal-modal-scroll');
   if (!scrollContainer) return;
+
+  // Prevent redundant DOM rebuilding (innerHTML) if category content is already built
+  const canSkipRebuild =
+    lastRenderedCat === catId &&
+    lastRenderedPostId === activePostId &&
+    lastRenderedEditMode === isEditing &&
+    scrollContainer.children.length > 0;
+
+  if (canSkipRebuild) {
+    requestAnimationFrame(() => {
+      scrollContainer.scrollTop = 0;
+    });
+    return;
+  }
+
+  lastRenderedCat = catId;
+  lastRenderedPostId = activePostId;
+  lastRenderedEditMode = isEditing;
+
+  // Reset scroll asynchronously to prevent blocking the frame
+  requestAnimationFrame(() => {
+    scrollContainer.scrollTop = 0;
+  });
 
   // ==========================================
   // VIEW A: Single Post View (Instagram Style)
@@ -1084,10 +1113,20 @@ export function openExplorationJournal(catId?: 'photography' | 'trekking' | 'chi
   const backdrop = modal.querySelector<HTMLElement>('.journal-modal-backdrop');
 
   if (container) {
+    container.style.willChange = 'transform, opacity';
     gsap.fromTo(
       container,
       { opacity: 0, y: 36, scale: 0.94 },
-      { opacity: 1, y: 0, scale: 1, duration: 0.45, ease: 'power3.out' }
+      {
+        opacity: 1,
+        y: 0,
+        scale: 1,
+        duration: 0.45,
+        ease: 'power3.out',
+        onComplete: () => {
+          container.style.willChange = 'auto';
+        },
+      }
     );
   }
 
@@ -1118,12 +1157,16 @@ export function closeExplorationJournal() {
   const backdrop = modal.querySelector<HTMLElement>('.journal-modal-backdrop');
 
   if (container && backdrop) {
+    container.style.willChange = 'transform, opacity';
     gsap.to(container, {
       opacity: 0,
       y: 20,
       scale: 0.98,
       duration: 0.25,
       ease: 'power2.in',
+      onComplete: () => {
+        container.style.willChange = 'auto';
+      },
     });
 
     gsap.to(backdrop, {
@@ -1247,4 +1290,15 @@ export function initExplorationJournal() {
   window.addEventListener('loc-save-all-requested', () => {
     saveJournalData();
   });
+
+  // Pre-render initial category on idle so first tap opens instantly with 0 DOM compilation
+  if (typeof requestIdleCallback === 'function') {
+    requestIdleCallback(() => {
+      renderJournalModal('photography');
+    });
+  } else {
+    setTimeout(() => {
+      renderJournalModal('photography');
+    }, 200);
+  }
 }

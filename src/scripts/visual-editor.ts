@@ -68,7 +68,6 @@ export function initVisualEditor() {
       ['.hero-bio-quote', 'hero-bio-quote'],
       ['.brand-text', 'brand-name'],
       ['.brand-subtext', 'brand-subname'],
-      ['.nav-status span:last-child', 'nav-status'],
       ['#works .title-section', 'works-title'],
       ['#synthesis .title-section', 'synthesis-title'],
       ['#explorations .title-section', 'explorations-title'],

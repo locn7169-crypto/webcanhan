@@ -329,15 +329,26 @@ function setupConnectFinale() {
     );
   }
 
-  // Golden beacon pulse around the avatar ring
+  // Golden beacon pulse around the avatar ring (GPU composited opacity & transform to eliminate infinite paint)
   if (avatarRing) {
-    gsap.to(avatarRing, {
-      boxShadow: '0 0 28px rgba(184, 142, 56, 0.45)',
-      repeat: -1,
-      yoyo: true,
-      duration: 2.2,
-      ease: 'sine.inOut',
-    });
+    let glowEl = avatarRing.querySelector<HTMLElement>('.carrd-avatar-glow');
+    if (!glowEl) {
+      glowEl = document.createElement('div');
+      glowEl.className = 'carrd-avatar-glow';
+      avatarRing.appendChild(glowEl);
+    }
+    gsap.fromTo(
+      glowEl,
+      { opacity: 0.25, scale: 0.98 },
+      {
+        opacity: 0.85,
+        scale: 1.04,
+        repeat: -1,
+        yoyo: true,
+        duration: 2.2,
+        ease: 'sine.inOut',
+      }
+    );
   }
 }
 
@@ -348,14 +359,18 @@ function setupScrollToTop() {
   const topBtn = document.querySelector<HTMLElement>('.scroll-top-btn');
   if (!topBtn) return;
 
-  // Show/hide based on scroll position
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 450) {
-      topBtn.classList.add('visible');
-    } else {
-      topBtn.classList.remove('visible');
-    }
-  });
+  // Show/hide based on scroll position (passive listener for 60fps scrolling)
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY > 450) {
+        topBtn.classList.add('visible');
+      } else {
+        topBtn.classList.remove('visible');
+      }
+    },
+    { passive: true }
+  );
 
   topBtn.addEventListener('click', (e) => {
     e.preventDefault();

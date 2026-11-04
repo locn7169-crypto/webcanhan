@@ -122,30 +122,34 @@ function setupNavigationSpy() {
   const sections = document.querySelectorAll<HTMLElement>('section[id]');
   const navLinks = document.querySelectorAll<HTMLAnchorElement>('.nav-link');
 
-  window.addEventListener('scroll', () => {
-    if (window.scrollY > 40) {
-      header?.classList.add('scrolled');
-    } else {
-      header?.classList.remove('scrolled');
-    }
-
-    // Active link highlighting
-    let currentId = '';
-    const scrollPos = window.scrollY + 180;
-
-    sections.forEach((sec) => {
-      if (sec.offsetTop <= scrollPos) {
-        currentId = sec.getAttribute('id') || '';
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (window.scrollY > 40) {
+        header?.classList.add('scrolled');
+      } else {
+        header?.classList.remove('scrolled');
       }
-    });
 
-    navLinks.forEach((link) => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentId}`) {
-        link.classList.add('active');
-      }
-    });
-  });
+      // Active link highlighting
+      let currentId = '';
+      const scrollPos = window.scrollY + 180;
+
+      sections.forEach((sec) => {
+        if (sec.offsetTop <= scrollPos) {
+          currentId = sec.getAttribute('id') || '';
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${currentId}`) {
+          link.classList.add('active');
+        }
+      });
+    },
+    { passive: true }
+  );
 }
 
 // Fullscreen Mobile Menu (Le-Lab Style)

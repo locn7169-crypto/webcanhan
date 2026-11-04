@@ -60,6 +60,7 @@ export function initHeroStage() {
     const moveAsideY = gsap.quickTo(aside, 'y', { duration: 0.8, ease: 'power2.out' });
 
     stage.addEventListener('pointermove', (e) => {
+      if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
       const rect = stage.getBoundingClientRect();
       const relX = (e.clientX - rect.left - rect.width / 2) / (rect.width / 2);
       const relY = (e.clientY - rect.top - rect.height / 2) / (rect.height / 2);
