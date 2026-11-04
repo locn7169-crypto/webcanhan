@@ -1645,13 +1645,17 @@ body.menu-active .hamburger-line:nth-child(3) {
 /* Welcome & Gratitude Marquee Strip */
 .tech-references-section {
   padding: 1.25rem 0;
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  background: var(--bg-canvas-subtle);
+  margin: 3rem 0 1.5rem 0;
+  border-top: 1px solid rgba(184, 142, 56, 0.22);
+  border-bottom: 1px solid rgba(184, 142, 56, 0.22);
+  background: rgba(250, 247, 242, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   overflow: hidden;
   position: relative;
-  z-index: 2;
+  z-index: 4;
   cursor: default;
+  box-shadow: 0 4px 20px rgba(184, 142, 56, 0.05);
 }
 
 .tech-references-section:hover .tech-marquee-wrapper {
@@ -1714,7 +1718,8 @@ body.menu-active .hamburger-line:nth-child(3) {
 
 @media (max-width: 768px) {
   .tech-references-section {
-    padding: 1rem 0;
+    padding: 0.9rem 0;
+    margin: 2rem 0 1rem 0;
   }
   .tech-marquee-wrapper {
     gap: 2.5rem;
