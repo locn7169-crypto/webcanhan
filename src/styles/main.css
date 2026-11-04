@@ -2055,6 +2055,30 @@ body.menu-active .hamburger-line:nth-child(3) {
   text-align: justify;
 }
 
+.bio-story-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  padding-top: 0.5rem;
+}
+
+.bio-story-body p {
+  font-size: 1.02rem;
+  line-height: 1.85;
+  color: var(--ink-primary);
+  margin: 0;
+  letter-spacing: 0.005em;
+  text-align: justify;
+}
+
+.bio-story-body p em,
+.bio-story-body p i {
+  color: var(--accent-gold);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 500;
+}
+
 @media (max-width: 768px) {
   .bio-chapter {
     padding: 1.75rem 0;
