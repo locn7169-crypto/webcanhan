@@ -1,7 +1,7 @@
 {
-  "name": "Nguyễn Thành Lộc — Personal Website & Portfolio",
-  "short_name": "Nguyễn Thành Lộc",
-  "description": "Website và portfolio cá nhân chính thức của Nguyễn Thành Lộc (Nguyen Thanh Loc).",
+  "name": "Nguyễn Thành Lộc — Lộc Studio",
+  "short_name": "Lộc Studio",
+  "description": "Website và portfolio cá nhân chính thức của Nguyễn Thành Lộc (Lộc Studio / Nguyen Thanh Loc).",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF7F2",

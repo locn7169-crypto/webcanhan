@@ -3,22 +3,23 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://nguyenthanhloc.pages.dev/</loc>
-    <lastmod>2026-11-02</lastmod>
+    <lastmod>2026-11-04</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
     <image:image>
       <image:loc>https://nguyenthanhloc.pages.dev/assets/loc-avatar.jpg</image:loc>
-      <image:title>Nguyễn Thành Lộc (Nguyen Thanh Loc) — Chân dung đại diện</image:title>
-      <image:caption>Chân dung chính thức của Nguyễn Thành Lộc trên website cá nhân</image:caption>
+      <image:title>Nguyễn Thành Lộc (Lộc Studio) — Chân dung đại diện</image:title>
+      <image:caption>Chân dung chính thức của Nguyễn Thành Lộc — Lộc Studio trên website cá nhân</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://nguyenthanhloc.pages.dev/assets/og-share-card.jpg</image:loc>
-      <image:title>Nguyễn Thành Lộc — Personal Website &amp; Portfolio</image:title>
-      <image:caption>Website và portfolio cá nhân chính thức của Nguyễn Thành Lộc</image:caption>
+      <image:title>Nguyễn Thành Lộc — Lộc Studio | Personal Website &amp; Portfolio</image:title>
+      <image:caption>Website và portfolio cá nhân chính thức của Nguyễn Thành Lộc — Lộc Studio</image:caption>
     </image:image>
     <image:image>
       <image:loc>https://nguyenthanhloc.pages.dev/assets/loc-banner.jpg</image:loc>
-      <image:title>Nguyễn Thành Lộc Studio Banner</image:title>
+      <image:title>Nguyễn Thành Lộc — Lộc Studio Banner</image:title>
+      <image:caption>Không gian sáng tạo và chế tác sản phẩm công nghệ Lộc Studio</image:caption>
     </image:image>
   </url>
 </urlset>

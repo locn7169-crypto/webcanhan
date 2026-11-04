@@ -66,7 +66,7 @@ function setupHeroScrollScrub() {
   const workbench = document.querySelector<HTMLElement>('.hero-workbench-card');
   const aside = document.querySelector<HTMLElement>('.hero-stage-aside');
   const mouseCue = document.querySelector<HTMLElement>('.hero-scroll-cue');
-  const bottomBar = document.querySelector<HTMLElement>('.hero-bottom-bar');
+  const bottomBar = document.querySelector<HTMLElement>('.hero-connect-showcase, .hero-bottom-bar');
 
   if (!heroSection) return;
 

@@ -1,6 +1,7 @@
 import {
   createIcons,
   ArrowUpRight,
+  ArrowRight,
   Code,
   Cpu,
   Palette,
@@ -55,6 +56,7 @@ function setupIcons() {
   createIcons({
     icons: {
       ArrowUpRight,
+      ArrowRight,
       ArrowUp,
       Code,
       Cpu,

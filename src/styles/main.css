@@ -1291,105 +1291,334 @@ body.menu-active .hamburger-line:nth-child(3) {
   transform: translateY(-1px);
 }
 
-/* Le-Lab Inspired Hero Bottom Bar & Mouse Scroll */
-.hero-bottom-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+/* ==========================================================================
+   Hero Connect Showcase (Image 2 Specification: Location, Contact & Follow Me)
+   ========================================================================== */
+.hero-connect-showcase {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
   width: 100%;
-  margin-top: var(--space-xl);
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--border-subtle);
+  margin-top: 2.25rem;
   position: relative;
   z-index: 5;
 }
 
-.hero-bottom-location {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-family: var(--font-display-studio);
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--ink-primary);
-}
-
-.mouse-scroll-indicator {
+.hero-contact-card {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.88) 0%, rgba(250, 247, 242, 0.76) 100%);
+  border: 1px solid rgba(184, 142, 56, 0.2);
+  border-radius: 28px;
+  padding: clamp(1.4rem, 3vw, 2rem);
+  box-shadow: 0 10px 32px rgba(184, 142, 56, 0.07);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.4rem;
-  text-decoration: none;
-  cursor: pointer;
-  transition: transform 0.25s ease;
+  justify-content: space-between;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.mouse-scroll-indicator:hover {
-  transform: translateY(3px);
+.hero-contact-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(184, 142, 56, 0.35);
+  box-shadow: 0 16px 40px rgba(184, 142, 56, 0.12);
 }
 
-.mouse-scroll-indicator .mouse-body {
-  width: 22px;
-  height: 36px;
-  border: 2px solid var(--ink-primary);
-  border-radius: 12px;
-  position: relative;
-  display: flex;
-  justify-content: center;
-}
-
-.mouse-scroll-indicator .mouse-dot {
-  width: 4px;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--accent-gold);
+.card-blossom-bg {
   position: absolute;
-  top: 6px;
-  animation: mouse-scroll-dot 1.6s infinite ease-in-out;
+  top: 0;
+  right: 0;
+  width: 135px;
+  height: 105px;
+  pointer-events: none;
+  opacity: 0.85;
 }
 
-@keyframes mouse-scroll-dot {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(12px); opacity: 0; }
+.card-eyebrow-accent {
+  font-family: var(--font-serif);
+  font-size: 0.88rem;
+  font-style: italic;
+  color: var(--accent-gold);
+  font-weight: 500;
+  letter-spacing: 0.02em;
 }
 
-.mouse-scroll-indicator .scroll-label {
-  font-family: var(--font-display-studio);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--ink-muted);
+.card-title-serif {
+  font-family: var(--font-serif);
+  font-size: clamp(1.35rem, 2.5vw, 1.7rem);
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin: 0.35rem 0 1.25rem 0;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
 }
 
-.hero-bottom-socials {
+.card-pill-tag {
+  display: inline-block;
+  align-self: flex-start;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #8F5419;
+  background: rgba(184, 142, 56, 0.12);
+  border: 1px solid rgba(184, 142, 56, 0.2);
+  padding: 0.28rem 0.85rem;
+  border-radius: 999px;
+  letter-spacing: 0.02em;
+}
+
+.card-subtitle {
+  font-family: var(--font-sans);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--ink-secondary);
+  margin: 0 0 1.35rem 0;
+}
+
+/* Contact Pills inside Card 1 */
+.contact-pill-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.contact-info-pill {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(184, 142, 56, 0.18);
+  border-radius: 999px;
+  padding: 0.65rem 1.15rem;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  list-style: none;
+  justify-content: space-between;
+  box-shadow: 0 3px 10px rgba(184, 142, 56, 0.05);
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.22s ease;
 }
 
-.hero-bottom-socials a {
-  width: 36px;
-  height: 36px;
+.contact-info-pill:hover {
+  background: #FFFFFF;
+  border-color: var(--accent-gold);
+  box-shadow: 0 6px 18px rgba(184, 142, 56, 0.14);
+  transform: translateY(-1px);
+}
+
+.pill-left {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  z-index: 2;
+}
+
+.pill-icon-circle {
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
-  border: 1px solid var(--border-subtle);
-  background: var(--bg-surface);
+  background: rgba(184, 142, 56, 0.12);
+  display: grid;
+  place-items: center;
+  color: var(--accent-gold);
+  flex-shrink: 0;
+}
+
+.pill-text-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.pill-title {
+  font-family: var(--font-sans);
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.25;
+}
+
+.pill-sub {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--ink-secondary);
+  line-height: 1.25;
+  margin-top: 0.15rem;
+}
+
+.pill-phone-num {
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #8F5419;
+  letter-spacing: 0.06em;
+}
+
+.pill-map-indicator {
+  display: flex;
+  align-items: center;
+  z-index: 2;
+}
+
+.pill-skyline-bg {
+  position: absolute;
+  right: 0.5rem;
+  bottom: 0;
+  width: 140px;
+  height: 38px;
+  pointer-events: none;
+  opacity: 0.65;
+}
+
+/* Follow Me Squircle Buttons inside Card 2 */
+.card-social-squircle-row {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.55rem, 1.8vw, 0.95rem);
+  flex-wrap: wrap;
+}
+
+.social-squircle-btn {
+  width: clamp(46px, 9vw, 54px);
+  height: clamp(46px, 9vw, 54px);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(184, 142, 56, 0.18);
+  box-shadow: 0 4px 14px rgba(184, 142, 56, 0.08);
   display: grid;
   place-items: center;
   color: var(--ink-primary);
   text-decoration: none;
-  font-size: 0.8rem;
   transition: all 0.25s var(--ease-out-editorial);
+  flex-shrink: 0;
 }
 
-.hero-bottom-socials a:hover {
-  background: var(--ink-primary);
-  color: var(--bg-canvas);
-  border-color: var(--ink-primary);
-  transform: translateY(-2px);
+.social-squircle-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  background: #FFFFFF;
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  box-shadow: 0 8px 24px rgba(184, 142, 56, 0.2);
+}
+
+.social-squircle-btn:active {
+  transform: scale(0.95);
+}
+
+/* Elegant Golden Star Divider */
+.luxury-star-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 3.5rem auto 3rem auto;
+  max-width: 580px;
+  width: 100%;
+}
+
+.star-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184, 142, 56, 0.35), transparent);
+}
+
+.star-divider-gem {
+  color: var(--accent-gold);
+  font-size: 1.25rem;
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* Refined Works Counter Capsule (Matching Image 2) */
+.works-counter-capsule {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.85rem;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(184, 142, 56, 0.22);
+  border-radius: 999px;
+  padding: 0.4rem 0.5rem 0.4rem 0.65rem;
+  box-shadow: 0 4px 16px rgba(184, 142, 56, 0.06);
+}
+
+.counter-capsule-num {
+  font-family: var(--font-serif);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  background: rgba(184, 142, 56, 0.12);
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.counter-capsule-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.counter-capsule-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.25;
+}
+
+.counter-capsule-sub {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.72rem;
+  color: var(--accent-gold);
+  line-height: 1.25;
+  margin-top: 0.15rem;
+}
+
+.counter-capsule-arrow {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(184, 142, 56, 0.14);
+  color: #8F5419;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease, background 0.2s ease;
+}
+
+.works-counter-capsule:hover .counter-capsule-arrow {
+  transform: translateX(3px);
+  background: var(--accent-gold);
+  color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .hero-connect-showcase {
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    margin-top: 1.5rem;
+  }
+
+  .card-social-squircle-row {
+    justify-content: space-between;
+  }
+
+  .social-squircle-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 16px;
+  }
+
+  .luxury-star-divider {
+    margin: 2.25rem auto 2rem auto;
+  }
+
+  .works-counter-capsule {
+    width: 100%;
+    justify-content: space-between;
+  }
 }
 
 /* Le-Lab Massive Section Numbering */
