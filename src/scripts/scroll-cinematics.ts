@@ -14,7 +14,10 @@ export function initScrollCinematics() {
   // 1. Global Viewport Scroll Progress Bar
   setupGlobalProgressBar();
 
-  // 2. Hero Section Continuous Parallax Scrub
+  // 2. Hero Arrival Dawn, Climber & Petals Motion (Mobile & PC)
+  setupHeroDawnAndPetals();
+
+  // 3. Hero Section Continuous Parallax Scrub
   setupHeroScrollScrub();
 
   // 3. Featured Works Card Enhancements (Dragon Scrub & Tilt)
@@ -55,7 +58,106 @@ function setupGlobalProgressBar() {
 }
 
 /**
- * 2. Hero Section Continuous Parallax Scrub
+ * 2. Hero Arrival Dawn, Climber & Petals Motion (Mobile & PC)
+ * User Motion Directives:
+ * - "cánh hoa khi vào lướt sẽ duy chuyển từ phải sang trái nhẹ"
+ * - "Mặt trời chỗ bức tranh sẽ mọc lên"
+ * - "hình người leo núi bước tới"
+ */
+function setupHeroDawnAndPetals() {
+  const arrivalGrid = document.querySelector<HTMLElement>('.hero-arrival-grid');
+  const sunLayer = document.querySelector<HTMLElement>('.hero-rising-sun-layer');
+  const climberLayer = document.querySelector<HTMLElement>('.hero-climber-layer');
+  const petals = document.querySelectorAll<HTMLElement>('.hero-drifting-petal');
+
+  if (!arrivalGrid) return;
+
+  // 1. Initial Entrance Animation (Reveals gracefully on load)
+  const entranceTl = gsap.timeline({ defaults: { ease: 'power2.out' } });
+
+  if (sunLayer) {
+    entranceTl.fromTo(
+      sunLayer,
+      { y: 32, scale: 0.88, opacity: 0.5 },
+      { y: 0, scale: 1.05, opacity: 1, duration: 2.2 },
+      0.2
+    );
+  }
+
+  if (climberLayer) {
+    entranceTl.fromTo(
+      climberLayer,
+      { x: 12, y: 8, scale: 0.93 },
+      { x: 0, y: 0, scale: 1.04, duration: 1.8 },
+      0.4
+    );
+  }
+
+  if (petals.length > 0) {
+    entranceTl.fromTo(
+      petals,
+      { x: 25, y: -10, opacity: 0 },
+      { x: 0, y: 0, opacity: 0.85, duration: 1.6, stagger: 0.12 },
+      0.3
+    );
+  }
+
+  // 2. Scroll-Driven Kinematics ("khi vào lướt")
+  const scrubTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: arrivalGrid,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.7,
+    },
+  });
+
+  if (sunLayer) {
+    scrubTl.to(
+      sunLayer,
+      {
+        y: -35,
+        scale: 1.25,
+        ease: 'none',
+      },
+      0
+    );
+  }
+
+  if (climberLayer) {
+    scrubTl.to(
+      climberLayer,
+      {
+        x: -12,
+        y: -6,
+        scale: 1.12,
+        ease: 'none',
+      },
+      0
+    );
+  }
+
+  petals.forEach((petal, i) => {
+    const driftX = -70 - i * 22;
+    const driftY = 40 + i * 15;
+    const rot = (i % 2 === 0 ? 1 : -1) * (25 + i * 8);
+
+    scrubTl.to(
+      petal,
+      {
+        x: driftX,
+        y: driftY,
+        rotation: rot,
+        opacity: 0.45,
+        ease: 'none',
+      },
+      0
+    );
+  });
+}
+
+/**
+ * 3. Hero Section Continuous Parallax Scrub
  */
 function setupHeroScrollScrub() {
   // On mobile (< 768px), skip 3D rotateX and parallax scrub to ensure silky smooth 120fps scrolling
