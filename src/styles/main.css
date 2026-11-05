@@ -1148,19 +1148,14 @@ body.menu-active .hamburger-line:nth-child(3) {
   }
 }
 
-/* Hero Arrival Grid */
-.hero-arrival-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: clamp(2rem, 4vw, 4.5rem);
-  align-items: center;
-  position: relative;
-  z-index: 5;
-}
-
-.hero-identity-column {
+/* Hero Editorial Identity Header */
+.hero-editorial-hero {
   display: flex;
   flex-direction: column;
+  max-width: 820px;
+  position: relative;
+  z-index: 5;
+  padding-top: clamp(0.75rem, 2vw, 2rem);
 }
 
 .hero-editorial-eyebrow {
@@ -1400,172 +1395,6 @@ body.menu-active .hamburger-line:nth-child(3) {
   box-shadow: 0 8px 20px rgba(184, 142, 56, 0.14);
 }
 
-/* Cinematic Mountain Column */
-.hero-cinematic-column {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-}
-
-.hero-mountain-window-wrap {
-  position: relative;
-  width: 100%;
-}
-
-.hero-mountain-window-inner {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  border-radius: 28px;
-  overflow: hidden;
-  box-shadow: 0 18px 45px rgba(184, 142, 56, 0.12), 0 4px 18px rgba(0, 0, 0, 0.06);
-  border: 1px solid rgba(184, 142, 56, 0.25);
-  background: #FAF7F2;
-}
-
-.hero-mountain-bg-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center bottom;
-  display: block;
-}
-
-/* The Rising Sun Disc */
-.hero-rising-sun-layer {
-  position: absolute;
-  bottom: 30%;
-  left: 47%;
-  transform: translate(-50%, 0);
-  pointer-events: none;
-  z-index: 2;
-  will-change: transform, opacity;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hero-sun-core {
-  width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  background: radial-gradient(circle, #FFFFFF 0%, #FFF3D1 40%, #FFB648 80%, rgba(255, 182, 72, 0) 100%);
-  box-shadow: 0 0 32px rgba(255, 205, 95, 0.95), 0 0 65px rgba(255, 155, 35, 0.6);
-  position: relative;
-  z-index: 2;
-}
-
-.hero-sun-glow-outer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 225, 145, 0.5) 0%, rgba(255, 175, 75, 0.16) 50%, transparent 75%);
-  filter: blur(14px);
-  z-index: 1;
-}
-
-.hero-sun-ray-flare {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 320px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, rgba(255, 240, 180, 0.85), transparent);
-  z-index: 2;
-}
-
-/* The Advancing Climber Figure */
-.hero-climber-layer {
-  position: absolute;
-  bottom: 16%;
-  right: 11%;
-  width: 25%;
-  height: auto;
-  pointer-events: none;
-  z-index: 3;
-  will-change: transform;
-  transform-origin: bottom center;
-}
-
-.hero-climber-img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  display: block;
-  filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.35));
-}
-
-.hero-mountain-mist-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(250, 247, 242, 0) 65%, rgba(250, 247, 242, 0.35) 85%, rgba(250, 247, 242, 0.8) 100%);
-  pointer-events: none;
-  z-index: 4;
-}
-
-/* 3-Column Floating Frosted Glass Stats Card */
-.hero-stats-glass-card {
-  position: relative;
-  margin-top: -1.85rem;
-  z-index: 5;
-  margin-left: auto;
-  margin-right: auto;
-  width: 90%;
-  max-width: 500px;
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(184, 142, 56, 0.28);
-  border-radius: 22px;
-  padding: 0.95rem 1.4rem;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr auto 1.15fr;
-  align-items: center;
-  box-shadow: 0 14px 36px rgba(184, 142, 56, 0.12), 0 3px 10px rgba(0, 0, 0, 0.04);
-}
-
-.hero-stat-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-}
-
-.hero-stat-icon-wrap {
-  color: var(--accent-gold);
-  margin-bottom: 0.2rem;
-  display: grid;
-  place-items: center;
-}
-
-.hero-stat-val {
-  font-family: var(--font-display-studio);
-  font-size: 1.55rem;
-  font-weight: 700;
-  color: #8F5419;
-  line-height: 1.1;
-}
-
-.hero-stat-desc {
-  font-family: var(--font-sans);
-  font-size: 0.74rem;
-  color: var(--ink-muted);
-  margin-top: 0.15rem;
-  font-weight: 550;
-  white-space: nowrap;
-}
-
-.hero-stat-divider-v {
-  width: 1px;
-  height: 34px;
-  background: rgba(184, 142, 56, 0.22);
-}
-
 .hero-arrival-star-divider {
   margin: 3.5rem auto 2.5rem auto;
 }
@@ -1578,60 +1407,41 @@ body.menu-active .hamburger-line:nth-child(3) {
 }
 
 .about-title-bar {
-  width: 4px;
-  height: 22px;
-  background: var(--accent-gold);
-  border-radius: 999px;
-  flex-shrink: 0;
+  display: none;
 }
 
 /* Responsive Overrides */
 @media (max-width: 900px) {
-  .hero-arrival-grid {
-    grid-template-columns: 1fr;
-    gap: 1.75rem;
+  .hero-editorial-hero {
+    padding-top: 1rem;
   }
 
-  .hero-cta-desktop {
-    display: none;
-  }
-
-  .hero-cta-mobile {
+  .hero-cta-button-row {
     display: grid;
     grid-template-columns: 1.2fr 0.8fr;
     gap: 0.85rem;
-    margin-top: 1.5rem;
     width: 100%;
-  }
-
-  .hero-stats-glass-card {
-    width: 96%;
-    padding: 0.85rem 1rem;
-    margin-top: -1.5rem;
-  }
-
-  .hero-stat-val {
-    font-size: 1.35rem;
-  }
-
-  .hero-stat-desc {
-    font-size: 0.7rem;
   }
 
   .hero-blossom-aura-wrapper {
     top: -1rem;
     right: -0.75rem;
-    width: 220px;
-    height: 220px;
-  }
-
-  .hero-mountain-window-inner {
-    aspect-ratio: 16 / 10.5;
-    border-radius: 24px;
+    width: 180px;
+    height: 180px;
   }
 
   .hero-arrival-star-divider {
     margin: 2.5rem auto 1.75rem auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-display-name {
+    font-size: 2.5rem;
+  }
+
+  .hero-cta-button-row {
+    grid-template-columns: 1fr;
   }
 }
 
