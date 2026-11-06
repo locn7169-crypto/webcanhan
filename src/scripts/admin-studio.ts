@@ -1,5 +1,6 @@
 import '../styles/admin-studio.css';
 import { toggleTiptapEditMode } from './tiptap-editor';
+import { fetchCloudCMS, pushCloudCMS, pushCloudPin } from './cloud-cms-sync';
 
 // ============================================================================
 // DATA TYPES
@@ -545,7 +546,7 @@ function showAdminToast(msg: string) {
  * Synchronizes the media items and collections into `loc_exploration_journals_v4`
  * so the entire website updates immediately upon "Xuất bản" without reload or deploy!
  */
-async function syncWithExplorationJournal() {
+async function syncWithExplorationJournal(pushToCloud = false) {
   try {
     // 1. Group media items by collection
     const grouped: Record<string, MediaItem[]> = {};
@@ -664,6 +665,16 @@ async function syncWithExplorationJournal() {
       })
     );
     console.info('[AdminStudio] Published data synchronized with live website.');
+
+    // 6. Background push to Cloud Gist for multi-device sync
+    if (pushToCloud) {
+      pushCloudCMS({
+        pin: getStoredPin(),
+        mediaItems,
+        collections,
+        journalCategories,
+      }).catch((e) => console.warn('[AdminStudio] Cloud push warning:', e));
+    }
   } catch (err) {
     console.error('[AdminStudio] Synchronization failed:', err);
   }
@@ -801,32 +812,50 @@ function updatePinDots() {
   });
 }
 
-function handlePinInput(digit: string) {
+async function handlePinInput(digit: string) {
   if (isPinValidating || currentEnteredPin.length >= 4) return;
   currentEnteredPin += digit;
   updatePinDots();
 
   if (currentEnteredPin.length === 4) {
-    // Validate PIN instantly (0ms)
+    // 1. Instant check against local stored PIN (0ms)
     const storedPin = getStoredPin();
     if (currentEnteredPin === storedPin) {
       setSessionAuthenticated(true);
       closeAuthModal();
       openAdminStudioPanel();
       showAdminToast('🔓 Đăng nhập thành công: Chào mừng anh Lộc trở lại!');
-    } else {
-      // Wrong PIN
-      isPinValidating = true;
-      const card = document.getElementById('admin-auth-card');
-      card?.classList.add('shake');
-      showAdminToast('⚠️ Mã PIN không đúng. Vui lòng thử lại.');
-      setTimeout(() => {
-        card?.classList.remove('shake');
-        currentEnteredPin = '';
-        updatePinDots();
-        isPinValidating = false;
-      }, 350);
+      return;
     }
+
+    // 2. Fallback check against Cloud Gist in case PIN was recently changed on phone / another device
+    isPinValidating = true;
+    try {
+      const cloud = await fetchCloudCMS();
+      if (cloud && cloud.pin && currentEnteredPin === cloud.pin) {
+        localStorage.setItem(PIN_KEY, cloud.pin);
+        await dbSetSetting(PIN_KEY, cloud.pin);
+        setSessionAuthenticated(true);
+        closeAuthModal();
+        openAdminStudioPanel();
+        showAdminToast('🔓 Đăng nhập thành công (Đã đồng bộ từ đám mây)!');
+        isPinValidating = false;
+        return;
+      }
+    } catch {
+      // Offline fallback
+    }
+
+    // Wrong PIN
+    const card = document.getElementById('admin-auth-card');
+    card?.classList.add('shake');
+    showAdminToast('⚠️ Mã PIN không đúng. Vui lòng thử lại.');
+    setTimeout(() => {
+      card?.classList.remove('shake');
+      currentEnteredPin = '';
+      updatePinDots();
+      isPinValidating = false;
+    }, 350);
   }
 }
 
@@ -1829,21 +1858,57 @@ function closeMetadataModal() {
 // ============================================================================
 
 async function handlePublishAll() {
+  const publishBtn = document.getElementById('admin-publish-all-btn');
   try {
+    if (publishBtn) {
+      publishBtn.classList.add('is-publishing');
+      publishBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" style="animation: spin 1s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        <span>Đang xuất bản...</span>
+      `;
+    }
+
     // 1. Commit all media items and current sequence to IndexedDB
     await dbSaveAllMedia(mediaItems);
 
     // 2. Synchronize with Exploration Journal & Website live DOM
-    syncWithExplorationJournal();
+    await syncWithExplorationJournal(false);
 
-    // 3. Celebratory feedback
-    showAdminToast('🎉 Đã xuất bản thành công! Website đã được cập nhật ngay lập tức mà không cần deploy lại.');
+    showAdminToast('☁️ Đang đồng bộ ảnh và dữ liệu lên đám mây...');
 
-    // 4. Update stats
+    // 3. Retrieve rich journal categories from IndexedDB
+    let journalCategories: Record<string, any> = {};
+    try {
+      journalCategories = await dbGetSetting<Record<string, any>>('journal_categories', {});
+    } catch {}
+
+    // 4. Push to Cloud Gist so computer, phone, and all visitors see it!
+    const cloudOk = await pushCloudCMS({
+      pin: getStoredPin(),
+      mediaItems,
+      collections,
+      journalCategories,
+    });
+
+    if (cloudOk) {
+      showAdminToast('🎉 Đã xuất bản & đồng bộ toàn cầu! Website trên điện thoại và máy tính đều đã cập nhật.');
+    } else {
+      showAdminToast('🎉 Đã xuất bản thành công! Website đã được cập nhật ngay lập tức mà không cần deploy lại.');
+    }
+
+    // 5. Update stats
     updateDashboardStats();
   } catch (err) {
     console.error('[AdminStudio] Publish error:', err);
     showAdminToast('⚠️ Xuất bản gặp sự cố. Vui lòng thử lại.');
+  } finally {
+    if (publishBtn) {
+      publishBtn.classList.remove('is-publishing');
+      publishBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        <span>Xuất bản ngay</span>
+      `;
+    }
   }
 }
 
@@ -1956,7 +2021,14 @@ function setupSettingsHandlers() {
       } catch {}
       await dbSetSetting(PIN_KEY, val);
       pinInput.value = '';
-      showAdminToast('🔐 Đã đổi mã PIN thành công! Hãy ghi nhớ mã PIN mới này.');
+      showAdminToast('🔐 Đang đồng bộ mã PIN mới lên đám mây...');
+
+      const cloudOk = await pushCloudPin(val);
+      if (cloudOk) {
+        showAdminToast('🔐 Đã đổi mã PIN và đồng bộ đám mây thành công! (Dùng được trên cả Điện thoại & Máy tính)');
+      } else {
+        showAdminToast('🔐 Đã đổi mã PIN thành công! Hãy ghi nhớ mã PIN mới này.');
+      }
     } else {
       showAdminToast('⚠️ Vui lòng nhập đúng 4 chữ số (ví dụ: 1902).');
     }
@@ -2132,5 +2204,87 @@ export async function initAdminStudio() {
     }
   });
 
-  console.info('[AdminStudio] Lộc Studio CMS Engine ready.');
+  // 6. Multi-Device Cloud Synchronization (Phone <-> Computer sync)
+  syncCMSFromCloud().catch((err) => console.warn('[AdminStudio] Initial cloud sync:', err));
+
+  // 7. Auto-sync when switching back to tab / window focus
+  window.addEventListener('focus', () => {
+    syncCMSFromCloud();
+  });
+
+  // 8. Auto-sync periodically every 45 seconds
+  setInterval(() => {
+    syncCMSFromCloud();
+  }, 45000);
+
+// Expose globally for testing & external triggers
+if (typeof window !== 'undefined') {
+  (window as any).syncCMSFromCloud = syncCMSFromCloud;
+  (window as any).requestAdminAccess = requestAdminAccess;
+}
+
+console.info('[AdminStudio] Lộc Studio CMS Engine ready with Multi-Device Cloud Sync.');
+}
+
+/**
+ * Automatically synchronizes latest CMS data from Cloud Gist to local client.
+ * This guarantees that when photos or PIN are changed on Phone, they appear on Computer
+ * and vice-versa upon page reload or tab switch!
+ */
+export async function syncCMSFromCloud(): Promise<boolean> {
+  try {
+    const cloud = await fetchCloudCMS();
+    if (!cloud) return false;
+
+    let hasChanges = false;
+
+    // 1. Sync PIN across all devices
+    if (cloud.pin && cloud.pin !== getStoredPin()) {
+      try {
+        localStorage.setItem(PIN_KEY, cloud.pin);
+      } catch {}
+      await dbSetSetting(PIN_KEY, cloud.pin);
+      console.info('[AdminStudio] PIN synchronized from Cloud Gist:', cloud.pin);
+    }
+
+    // 2. Sync Collections
+    if (cloud.collections && cloud.collections.length > 0) {
+      collections = cloud.collections;
+    }
+
+    // 3. Sync Media Items
+    if (cloud.mediaItems && Array.isArray(cloud.mediaItems) && cloud.mediaItems.length > 0) {
+      const lastApplied = localStorage.getItem('loc_last_applied_cloud_ts');
+      const cloudTs = cloud.publishedAt || cloud.updatedAt || '';
+
+      if (lastApplied !== cloudTs || cloud.mediaItems.length !== mediaItems.length) {
+        mediaItems = cloud.mediaItems;
+        await dbSaveAllMedia(mediaItems);
+        try {
+          localStorage.setItem('loc_last_applied_cloud_ts', cloudTs);
+        } catch {}
+        hasChanges = true;
+      }
+    }
+
+    // 4. Update live website journal DOM
+    if (hasChanges || !localStorage.getItem('loc_initial_journal_synced')) {
+      await syncWithExplorationJournal(false);
+      try {
+        localStorage.setItem('loc_initial_journal_synced', 'true');
+      } catch {}
+
+      const overlay = document.getElementById('admin-studio-overlay');
+      if (overlay?.classList.contains('is-open')) {
+        renderMediaGrid();
+        updateDashboardStats();
+      }
+      console.info('[AdminStudio] Website and Media Library synchronized with Cloud CMS.');
+    }
+
+    return true;
+  } catch (err) {
+    console.warn('[AdminStudio] syncCMSFromCloud warning:', err);
+    return false;
+  }
 }
