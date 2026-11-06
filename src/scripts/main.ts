@@ -50,6 +50,7 @@ import { initScrollCinematics } from './scroll-cinematics';
 import { initHeroAmbientConstellation } from '../threeui/hero-constellation';
 import { initTiptapEditor } from './tiptap-editor';
 import { initScrollBackdrop } from './scroll-backdrop';
+import { initAdminStudio } from './admin-studio';
 
 // Initialize Lucide icons
 function setupIcons() {
@@ -238,6 +239,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroAmbientConstellation();
   initScrollBackdrop();
   initTiptapEditor();
+  initAdminStudio();
 
   console.info('[Loc Portfolio] Experience initialized with craft & precision.');
 });

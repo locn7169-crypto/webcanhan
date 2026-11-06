@@ -183,8 +183,40 @@ function showToast(msg: string) {
   }, 3200);
 }
 
-// Load data from localStorage with v3 -> v4 migration
-function loadJournalData() {
+// Async loader from IndexedDB to bypass 5MB localStorage limits
+export async function loadJournalFromDB(): Promise<boolean> {
+  try {
+    return new Promise((resolve) => {
+      const req = indexedDB.open('loc_studio_cms_v1', 1);
+      req.onsuccess = (e) => {
+        const db = (e.target as IDBOpenDBRequest).result;
+        if (!db.objectStoreNames.contains('cms_settings')) {
+          resolve(false);
+          return;
+        }
+        const tx = db.transaction('cms_settings', 'readonly');
+        const store = tx.objectStore('cms_settings');
+        const getReq = store.get('journal_categories');
+        getReq.onsuccess = () => {
+          if (getReq.result && getReq.result.value) {
+            categories = { ...DEFAULT_CATEGORIES, ...getReq.result.value };
+            updateMainPageCardCovers();
+            resolve(true);
+          } else {
+            resolve(false);
+          }
+        };
+        getReq.onerror = () => resolve(false);
+      };
+      req.onerror = () => resolve(false);
+    });
+  } catch {
+    return false;
+  }
+}
+
+// Load data from localStorage with v3 -> v4 migration and IndexedDB sync
+export function loadJournalData() {
   try {
     let raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) {
@@ -223,6 +255,14 @@ function loadJournalData() {
   }
 
   updateMainPageCardCovers();
+
+  // Asynchronously query IndexedDB for full high-res media items without quota limits
+  loadJournalFromDB().then((loaded) => {
+    if (loaded && isJournalOpen) {
+      lastRenderedCat = null;
+      renderJournalModal(currentCatId);
+    }
+  });
 }
 
 // Save data to localStorage
@@ -263,7 +303,7 @@ function syncActivePostToState() {
 }
 
 // Update card cover visuals in the main page #explorations section
-function updateMainPageCardCovers() {
+export function updateMainPageCardCovers() {
   const photoCard = document.querySelector<HTMLImageElement>('#exp-cover-photography');
   if (photoCard && categories.photography?.coverUrl) {
     photoCard.src = categories.photography.coverUrl;
@@ -1289,6 +1329,20 @@ export function initExplorationJournal() {
   // Listen to Save All event from floating pill
   window.addEventListener('loc-save-all-requested', () => {
     saveJournalData();
+  });
+
+  // Listen to CMS Publish event from Admin Studio
+  window.addEventListener('loc-cms-published', (e: any) => {
+    if (e.detail?.categories) {
+      categories = { ...DEFAULT_CATEGORIES, ...e.detail.categories };
+      updateMainPageCardCovers();
+    } else {
+      loadJournalData();
+    }
+    if (isJournalOpen) {
+      lastRenderedCat = null;
+      renderJournalModal(currentCatId);
+    }
   });
 
   // Pre-render initial category on idle so first tap opens instantly with 0 DOM compilation
