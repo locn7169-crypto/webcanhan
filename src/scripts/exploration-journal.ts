@@ -73,11 +73,11 @@ const DEFAULT_CATEGORIES: Record<string, ExplorationCategory> = {
   },
   photography: {
     id: 'photography',
-    titleEn: 'Photography & Visual Storytelling',
-    titleVi: 'Nhiếp ảnh & Kể chuyện thị giác',
-    subtitleEn: 'Observing geometry, natural daylight, delicate floral stillness, and spatial harmony in everyday moments.',
-    subtitleVi: 'Quan sát hình khối, ánh sáng tự nhiên, nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.',
-    coord: 'Still Life & Drapery · Tĩnh vật & Ánh sáng',
+    titleEn: 'Through My Lens',
+    titleVi: 'Qua ống kính của tôi',
+    subtitleEn: 'A visual journal where journeys, landscapes, and memorable moments are captured in my own personal way.',
+    subtitleVi: 'Một cuốn nhật ký bằng hình ảnh, nơi những chuyến đi, cảnh vật và khoảnh khắc đáng nhớ được lưu giữ theo cách riêng.',
+    coord: 'Through My Lens · Qua ống kính của tôi',
     coverUrl: './assets/loc-banner.jpg',
     entries: [
       {
