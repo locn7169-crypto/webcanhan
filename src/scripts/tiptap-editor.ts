@@ -9,6 +9,7 @@ import Highlight from '@tiptap/extension-highlight';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CharacterCount from '@tiptap/extension-character-count';
+import { isSessionAuthenticated, openAuthModal, dbGetSetting, dbSetSetting } from './admin-studio';
 
 // Custom Tiptap Extension for dynamic Font Size scaling
 export const FontSize = Extension.create({
@@ -143,68 +144,154 @@ function getStandardExtensions(bubbleMenuEl?: HTMLElement) {
   return exts;
 }
 
-// Restore saved edits on page load
-function restoreSavedContent() {
+// Stable, deterministic tagging of all editable text nodes across the site
+export function ensureStableEditKeys() {
+  const semanticSelectors: [string, string][] = [
+    ['.hero-editorial-eyebrow .eyebrow-line-en', 'hero-eyebrow-en'],
+    ['.hero-editorial-eyebrow .eyebrow-line-vi', 'hero-eyebrow-vi'],
+    ['.name-line-first', 'hero-name-first'],
+    ['.name-line-second', 'hero-name-second'],
+    ['.hero-signature-subtitle .sig-cn', 'hero-sig-cn'],
+    ['.hero-signature-subtitle .sig-studio', 'hero-sig-studio'],
+    ['.hero-portfolio-italic', 'hero-tagline-en'],
+    ['.quote-bar-text', 'hero-quote-vi'],
+    ['.hero-about-title', 'hero-about-title'],
+    ['.hero-bio-name', 'hero-bio-name'],
+    ['.hero-bio-signature', 'hero-bio-sig'],
+    ['.hero-bio-quote', 'hero-bio-quote'],
+    ['.brand-text', 'brand-name'],
+    ['.brand-subtext', 'brand-subname'],
+    ['#works .title-section', 'works-title'],
+    ['#synthesis .title-section', 'synthesis-title'],
+    ['#explorations .explorations-title', 'explorations-title'],
+    ['#explorations .explorations-subtitle', 'explorations-subtitle'],
+    ['#contact .title-section', 'contact-title'],
+    ['.carrd-name', 'carrd-name'],
+    ['.carrd-subtitle', 'carrd-subtitle'],
+    ['.carrd-quote-chinese', 'carrd-quote-cn'],
+    ['.carrd-quote-box .bilingual-en', 'carrd-quote-en'],
+    ['.carrd-quote-vi', 'carrd-quote-vi'],
+    ['.carrd-avatar-img', 'carrd-avatar-img'],
+    ['.carrd-banner-img', 'carrd-banner-img'],
+    ['.footer-quote', 'footer-quote'],
+  ];
+
+  semanticSelectors.forEach(([sel, key]) => {
+    const el = document.querySelector<HTMLElement>(sel);
+    if (el && !el.getAttribute('data-edit-key')) {
+      el.setAttribute('data-edit-key', key);
+    }
+  });
+
+  // Also tag paragraphs in about body
+  document.querySelectorAll<HTMLElement>('.hero-about-body p').forEach((p, idx) => {
+    if (!p.getAttribute('data-edit-key')) {
+      p.setAttribute('data-edit-key', `hero-about-p-${idx}`);
+    }
+  });
+
+  // Tag all text-bearing candidates systematically
+  const candidates = document.querySelectorAll<HTMLElement>(
+    'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi'
+  );
+
+  candidates.forEach((el, idx) => {
+    if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, #admin-studio-overlay, #admin-auth-overlay, #previewModal, #exploration-journal-modal, script, style, svg')) return;
+    if (!el.getAttribute('data-edit-key')) {
+      const secId = el.closest('section[id], div[id]')?.id || 'doc';
+      const tag = el.tagName.toLowerCase();
+      el.setAttribute('data-edit-key', `tt-${secId}-${tag}-${idx}`);
+    }
+  });
+}
+
+function applyEditsToDOM(edits: Record<string, any>) {
+  if (!edits || typeof edits !== 'object') return;
+  Object.entries(edits).forEach(([key, val]) => {
+    const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
+    if (el) {
+      if (el.tagName.toLowerCase() === 'img') {
+        const src = typeof val === 'string' ? val : (val?.src || val?.html);
+        if (src) (el as HTMLImageElement).src = src;
+      } else if (typeof val === 'string') {
+        el.innerHTML = val;
+      } else if (val && typeof val === 'object') {
+        if (val.html !== undefined) el.innerHTML = val.html;
+        if (val.style) {
+          Object.assign(el.style, val.style);
+        }
+      }
+    }
+  });
+}
+
+// Restore saved edits on page load (synchronous localStorage first, then IndexedDB)
+export function restoreSavedContent() {
+  ensureStableEditKeys();
+
   try {
     let saved = localStorage.getItem(STORAGE_KEY);
     if (!saved) {
       saved = localStorage.getItem('loc_portfolio_tiptap_v1') || localStorage.getItem('loc_portfolio_edits_v4') || localStorage.getItem('loc_portfolio_edits_v3');
     }
-    if (!saved) return;
-
-    const edits: Record<string, any> = JSON.parse(saved);
-    Object.entries(edits).forEach(([key, val]) => {
-      const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
-      if (el) {
-        if (typeof val === 'string') {
-          el.innerHTML = val;
-        } else if (val && typeof val === 'object') {
-          if (val.html !== undefined) el.innerHTML = val.html;
-          if (val.style) {
-            Object.assign(el.style, val.style);
-          }
-        }
-      }
-    });
-    console.info('[Tiptap] Restored persisted content across website.');
+    if (saved) {
+      applyEditsToDOM(JSON.parse(saved));
+      console.info('[Tiptap] Restored persisted content from localStorage.');
+    }
   } catch (e) {
-    console.warn('[Tiptap] Failed to restore content:', e);
+    console.warn('[Tiptap] Failed to restore content from localStorage:', e);
   }
+
+  // Also query IndexedDB in background to ensure quota or multi-tab persistence
+  dbGetSetting<Record<string, any> | null>('tiptap_content', null)
+    .then((dbEdits) => {
+      if (dbEdits && typeof dbEdits === 'object' && Object.keys(dbEdits).length > 0) {
+        applyEditsToDOM(dbEdits);
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(dbEdits));
+        } catch {}
+      }
+    })
+    .catch(() => {});
 }
 
-// Save all content to localStorage
+// Save all content to localStorage and IndexedDB
 export function saveAllTiptapContent() {
   if (activeEditor && activeTargetEl) {
     const html = activeEditor.getHTML();
     activeTargetEl.innerHTML = html;
   }
 
-  const edits: Record<string, { html: string; style: Record<string, string> }> = {};
+  const edits: Record<string, { html?: string; src?: string; style?: Record<string, string> }> = {};
   document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
     const key = el.getAttribute('data-edit-key');
     if (key) {
-      const styleObj: Record<string, string> = {};
-      if (el.style.fontSize) styleObj.fontSize = el.style.fontSize;
-      if (el.style.color) styleObj.color = el.style.color;
-      if (el.style.textAlign) styleObj.textAlign = el.style.textAlign;
-      if (el.style.lineHeight) styleObj.lineHeight = el.style.lineHeight;
+      if (el.tagName.toLowerCase() === 'img') {
+        edits[key] = { src: (el as HTMLImageElement).src };
+      } else {
+        const styleObj: Record<string, string> = {};
+        if (el.style.fontSize) styleObj.fontSize = el.style.fontSize;
+        if (el.style.color) styleObj.color = el.style.color;
+        if (el.style.textAlign) styleObj.textAlign = el.style.textAlign;
+        if (el.style.lineHeight) styleObj.lineHeight = el.style.lineHeight;
 
-      // Extract inner content without ProseMirror wrapper if active
-      let htmlContent = el.innerHTML;
-      const pm = el.querySelector<HTMLElement>('.ProseMirror');
-      if (pm && activeEditor && activeTargetEl === el) {
-        htmlContent = activeEditor.getHTML();
+        let htmlContent = el.innerHTML;
+        const pm = el.querySelector<HTMLElement>('.ProseMirror');
+        if (pm && activeEditor && activeTargetEl === el) {
+          htmlContent = activeEditor.getHTML();
+        }
+
+        edits[key] = {
+          html: htmlContent,
+          style: styleObj,
+        };
       }
-
-      edits[key] = {
-        html: htmlContent,
-        style: styleObj,
-      };
     }
   });
 
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
+    dbSetSetting('tiptap_content', edits).catch(() => {});
     window.dispatchEvent(new CustomEvent('loc-save-all-requested'));
     showToast('💾 Tiptap: Đã lưu toàn bộ nội dung & định dạng thành công!');
   } catch (e) {
@@ -944,6 +1031,12 @@ function closeTiptapComposerModal() {
 
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
+  if (enable && !isSessionAuthenticated()) {
+    showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để kích hoạt chế độ chỉnh sửa.');
+    openAuthModal();
+    return;
+  }
+
   isEditMode = enable;
 
   if (enable) {
@@ -955,21 +1048,19 @@ export function toggleTiptapEditMode(enable: boolean) {
     document.body.classList.add('visual-editor-active', 'tiptap-mode-active');
     dock?.classList.remove('hidden');
 
-    // Auto tag elements across the site
-    document.querySelectorAll<HTMLElement>(
-      'h1, h2, h3, h4, h5, h6, p, .text-body, .eyebrow span, .badge-pill, .bilingual-en, .bilingual-vi, .bilingual-sub, .bilingual-title-vi, .interest-tag, .contact-method-value, .contact-method-label, .bio-chapter-title, .bio-chapter-period, .bio-chapter-body p, .bio-article-headline, .bio-article-lead, .welcome-marquee-en, .welcome-marquee-vi'
-    ).forEach((el, idx) => {
-      if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, script, style, svg')) return;
-      if (!el.getAttribute('data-edit-key')) {
-        const secId = el.closest('section[id], div[id]')?.id || 'doc';
-        const tag = el.tagName.toLowerCase();
-        el.setAttribute('data-edit-key', `tt-${secId}-${tag}-${idx}`);
+    ensureStableEditKeys();
+
+    document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
+      if (el.tagName.toLowerCase() === 'img') {
+        el.style.cursor = 'pointer';
+        el.title = 'Nhấp vào đây để đổi ảnh này từ máy tính';
+      } else {
+        el.setAttribute('data-editable-active', 'true');
       }
-      el.setAttribute('data-editable-active', 'true');
     });
 
     window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: true } }));
-    showToast('✨ Tiptap Studio: Đã kích hoạt! Nhấp vào bất kỳ đoạn chữ nào để bắt đầu.');
+    showToast('✨ Tiptap Studio: Đã kích hoạt! Nhấp vào bất kỳ đoạn chữ nào để sửa hoặc nhấp vào ảnh để thay đổi.');
   } else {
     document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
     
@@ -994,6 +1085,10 @@ export function toggleTiptapEditMode(enable: boolean) {
 
     document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
       el.removeAttribute('data-editable-active');
+      if (el.tagName.toLowerCase() === 'img') {
+        el.style.cursor = '';
+        el.title = '';
+      }
     });
 
     window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: false } }));
@@ -1005,14 +1100,36 @@ export function toggleTiptapEditMode(enable: boolean) {
 export function initTiptapEditor() {
   restoreSavedContent();
   // Do NOT mount any editor toolbars or bubble menus on initial page load!
-  // They are strictly spawned on demand via Option + E.
+  // They are strictly spawned on demand via Option + E when authenticated.
 
-  // Listen to clicks on editable elements to attach Tiptap
+  // Listen to clicks on editable elements or editable images to attach Tiptap / change image
   document.addEventListener('click', (e) => {
     if (!isEditMode) return;
     const target = e.target as HTMLElement;
 
-    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice')) {
+    if (target.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, #admin-studio-overlay, #admin-auth-overlay')) {
+      return;
+    }
+
+    // Editable image replacement
+    const imgEl = target.closest<HTMLImageElement>('img[data-edit-key]');
+    if (imgEl) {
+      const fileInput = document.createElement('input');
+      fileInput.type = 'file';
+      fileInput.accept = 'image/*';
+      fileInput.onchange = () => {
+        const file = fileInput.files?.[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = (re) => {
+            imgEl.src = re.target?.result as string;
+            saveAllTiptapContent();
+            showToast('🖼️ Đã cập nhật ảnh và lưu trữ thành công!');
+          };
+          reader.readAsDataURL(file);
+        }
+      };
+      fileInput.click();
       return;
     }
 
@@ -1034,6 +1151,11 @@ export function initTiptapEditor() {
 
     if (e.altKey && isEKey) {
       e.preventDefault();
+      if (!isSessionAuthenticated()) {
+        showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để chỉnh sửa.');
+        openAuthModal();
+        return;
+      }
       toggleTiptapEditMode(!isEditMode);
       return;
     }
@@ -1045,6 +1167,9 @@ export function initTiptapEditor() {
       }
     }
   });
+
+  (window as any).toggleTiptapEditMode = toggleTiptapEditMode;
+  (window as any).saveAllTiptapContent = saveAllTiptapContent;
 
   console.info('[Tiptap] Rich Text Engine ready.');
 }

@@ -1,5 +1,5 @@
 import { openExplorationJournal } from './exploration-journal';
-import { dbGetAllMedia, dbGetSetting, type MediaItem } from './admin-studio';
+import { dbGetAllMedia, dbGetSetting, dbSetSetting, type MediaItem } from './admin-studio';
 
 export interface MomentItem {
   id: string;
@@ -11,6 +11,8 @@ export interface MomentItem {
   imgId?: string;
   categoryName?: string;
 }
+
+const MOMENTS_CACHE_KEY = 'loc_moments_cache_v2';
 
 export const moments: MomentItem[] = [
   {
@@ -57,41 +59,93 @@ export const moments: MomentItem[] = [
 let activeModalCatId: 'photography' | 'trekking' | 'chinese' = 'photography';
 
 /**
+ * Load cached moments from localStorage for immediate 0ms hydration (prevents flicker on reload)
+ */
+export function loadCachedMoments() {
+  try {
+    const raw = localStorage.getItem(MOMENTS_CACHE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        parsed.forEach((cachedItem: MomentItem, idx: number) => {
+          if (moments[idx]) {
+            if (cachedItem.image) moments[idx].image = cachedItem.image;
+            if (cachedItem.title) moments[idx].title = cachedItem.title;
+            if (cachedItem.caption) moments[idx].caption = cachedItem.caption;
+            if (cachedItem.meta) moments[idx].meta = cachedItem.meta;
+          }
+        });
+      }
+    }
+  } catch (e) {
+    console.warn('[Moments] Cache load notice:', e);
+  }
+}
+
+/**
+ * Update moments array directly from media items (called by admin studio on upload, replace, reorder)
+ */
+export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
+  if (!mediaList || mediaList.length === 0) return;
+
+  const photos = mediaList.filter((m) => m.collectionId === 'photography' || !m.collectionId);
+  const treks = mediaList.filter((m) => m.collectionId === 'trekking');
+  const chinese = mediaList.filter((m) => m.collectionId === 'chinese');
+
+  // Moment 1: Latest photography
+  if (photos[0]) {
+    moments[0].image = photos[0].thumbUrl || photos[0].dataUrl;
+    if (photos[0].title && photos[0].title !== 'll 0') moments[0].title = photos[0].title;
+    if (photos[0].caption) moments[0].caption = photos[0].caption;
+  }
+
+  // Moment 2: Latest trekking
+  if (treks[0]) {
+    moments[1].image = treks[0].thumbUrl || treks[0].dataUrl;
+    if (treks[0].title) moments[1].title = treks[0].title;
+    if (treks[0].caption) moments[1].caption = treks[0].caption;
+  }
+
+  // Moment 3: Latest Chinese
+  if (chinese[0]) {
+    moments[2].image = chinese[0].thumbUrl || chinese[0].dataUrl;
+    if (chinese[0].title) moments[2].title = chinese[0].title;
+    if (chinese[0].caption) moments[2].caption = chinese[0].caption;
+  }
+
+  // Moment 4: Second photography (or next photo)
+  if (photos[1]) {
+    moments[3].image = photos[1].thumbUrl || photos[1].dataUrl;
+    if (photos[1].title) moments[3].title = photos[1].title;
+    if (photos[1].caption) moments[3].caption = photos[1].caption;
+  } else if (mediaList[3]) {
+    moments[3].image = mediaList[3].thumbUrl || mediaList[3].dataUrl;
+    if (mediaList[3].title) moments[3].title = mediaList[3].title;
+    if (mediaList[3].caption) moments[3].caption = mediaList[3].caption;
+  }
+
+  // Persist cache immediately
+  try {
+    localStorage.setItem(MOMENTS_CACHE_KEY, JSON.stringify(moments));
+  } catch {}
+  dbSetSetting('moments_cache', moments).catch(() => {});
+}
+
+/**
  * Sync moments with latest media items from IndexedDB / Cloud CMS
  */
 export async function syncMomentsWithStorage() {
   try {
-    // 1. Try from IndexedDB media items
+    // 1. Check IndexedDB media items
     const mediaList = await dbGetAllMedia();
     if (mediaList && mediaList.length > 0) {
-      // Find latest photo
-      const latestPhoto = mediaList.find((m) => m.collectionId === 'photography' || !m.collectionId);
-      if (latestPhoto) {
-        moments[0].image = latestPhoto.thumbUrl || latestPhoto.dataUrl;
-        if (latestPhoto.title && latestPhoto.title !== 'll 0') {
-          moments[0].title = latestPhoto.title;
-        }
-        if (latestPhoto.caption) {
-          moments[0].caption = latestPhoto.caption;
-        }
-      }
-
-      // Find latest trekking
-      const latestTrek = mediaList.find((m) => m.collectionId === 'trekking');
-      if (latestTrek) {
-        moments[1].image = latestTrek.thumbUrl || latestTrek.dataUrl;
-        if (latestTrek.title) moments[1].title = latestTrek.title;
-        if (latestTrek.caption) moments[1].caption = latestTrek.caption;
-      }
+      updateMomentsFromMediaList(mediaList);
     } else {
       // Fallback check from journal_categories setting
       const categories = await dbGetSetting<any>('journal_categories', null);
-      if (categories?.photography?.coverUrl) {
-        moments[0].image = categories.photography.coverUrl;
-      }
-      if (categories?.trekking?.coverUrl) {
-        moments[1].image = categories.trekking.coverUrl;
-      }
+      if (categories?.photography?.coverUrl) moments[0].image = categories.photography.coverUrl;
+      if (categories?.trekking?.coverUrl) moments[1].image = categories.trekking.coverUrl;
+      if (categories?.chinese?.coverUrl) moments[2].image = categories.chinese.coverUrl;
     }
   } catch (err) {
     console.warn('[Moments] Storage sync notice:', err);
@@ -157,100 +211,6 @@ export function closePreview() {
 }
 
 /**
- * Open Clean Code modal displaying clean HTML of the section
- */
-export function openCodeModal() {
-  const code = `<section id="explorations" class="max-w-3xl mx-auto px-6 py-16 space-y-10">
-  <div class="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 border-b border-white/10 pb-4">
-    <h2 class="text-base font-medium text-zinc-100">Ngoài màn hình</h2>
-    <p class="text-xs text-zinc-400">Một vài lát cắt về kỷ luật, vận động và khoảng lặng.</p>
-  </div>
-
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-10 gap-y-12">
-${moments
-  .map(
-    (m) => `    <article class="group space-y-3">
-      <div class="overflow-hidden rounded-lg bg-zinc-900 aspect-[4/3]">
-        <img src="${m.image}" alt="${m.title}" loading="lazy"
-          class="w-full h-full object-cover grayscale hover:grayscale-0 transition duration-500" />
-      </div>
-      <div class="space-y-1">
-        <div class="flex justify-between items-baseline">
-          <h3 class="text-sm font-medium text-zinc-100">${m.title}</h3>
-          <span class="font-mono text-[11px] text-zinc-500">${m.meta}</span>
-        </div>
-        <p class="text-xs text-zinc-400 leading-relaxed">${m.caption}</p>
-      </div>
-    </article>`
-  )
-  .join('\n\n')}
-  </div>
-</section>`;
-
-  const output = document.getElementById('cleanCodeOutput');
-  if (output) output.textContent = code;
-
-  const modal = document.getElementById('codeModal');
-  if (modal) {
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-    modal.classList.add('is-open');
-    document.body.style.overflow = 'hidden';
-  }
-}
-
-/**
- * Close Clean Code modal
- */
-export function closeCodeModal() {
-  const modal = document.getElementById('codeModal');
-  if (modal) {
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-    modal.classList.remove('is-open');
-    document.body.style.overflow = '';
-  }
-}
-
-/**
- * Copy clean HTML to clipboard with visual confirmation
- */
-export function copyCleanCode() {
-  const text = document.getElementById('cleanCodeOutput')?.textContent || '';
-  const btnText = document.getElementById('copyBtnText');
-
-  const showSuccess = () => {
-    if (btnText) {
-      const orig = btnText.textContent;
-      btnText.textContent = 'Đã sao chép!';
-      setTimeout(() => {
-        if (btnText) btnText.textContent = orig;
-      }, 1800);
-    }
-  };
-
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(showSuccess).catch(() => fallbackCopy(text, showSuccess));
-  } else {
-    fallbackCopy(text, showSuccess);
-  }
-}
-
-function fallbackCopy(text: string, cb: () => void) {
-  const ta = document.createElement('textarea');
-  ta.value = text;
-  ta.style.position = 'fixed';
-  ta.style.opacity = '0';
-  document.body.appendChild(ta);
-  ta.select();
-  try {
-    document.execCommand('copy');
-    cb();
-  } catch {}
-  document.body.removeChild(ta);
-}
-
-/**
  * Render Moments Cards into the #moments-grid container
  */
 export function renderMoments() {
@@ -307,22 +267,14 @@ export function renderMoments() {
  * Initialize the Moments Outside the Screen Subsystem
  */
 export function initExplorationsMoments() {
+  // 1. Instant 0ms hydration from local cache
+  loadCachedMoments();
   renderMoments();
+
+  // 2. Async sync with IndexedDB
   syncMomentsWithStorage().then(() => {
     renderMoments();
   });
-
-  // Code Modal Trigger
-  const openCodeBtn = document.getElementById('openCodeModalBtn');
-  if (openCodeBtn) {
-    openCodeBtn.addEventListener('click', () => openCodeModal());
-  }
-
-  // Copy Code Button
-  const copyBtn = document.getElementById('copyCodeBtn');
-  if (copyBtn) {
-    copyBtn.addEventListener('click', () => copyCleanCode());
-  }
 
   // Close buttons
   const closePreviewBtn = document.getElementById('closePreviewBtn');
@@ -330,20 +282,10 @@ export function initExplorationsMoments() {
     closePreviewBtn.addEventListener('click', () => closePreview());
   }
 
-  const closeCodeBtn = document.getElementById('closeCodeBtn');
-  if (closeCodeBtn) {
-    closeCodeBtn.addEventListener('click', () => closeCodeModal());
-  }
-
   // Backdrop clicks
   const previewBackdrop = document.getElementById('previewModalBackdrop');
   if (previewBackdrop) {
     previewBackdrop.addEventListener('click', () => closePreview());
-  }
-
-  const codeBackdrop = document.getElementById('codeModalBackdrop');
-  if (codeBackdrop) {
-    codeBackdrop.addEventListener('click', () => closeCodeModal());
   }
 
   // View full album button inside Preview Modal
@@ -359,7 +301,6 @@ export function initExplorationsMoments() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closePreview();
-      closeCodeModal();
     }
   });
 
@@ -374,9 +315,6 @@ export function initExplorationsMoments() {
   if (typeof window !== 'undefined') {
     (window as any).openPreview = openPreview;
     (window as any).closePreview = closePreview;
-    (window as any).openCodeModal = openCodeModal;
-    (window as any).closeCodeModal = closeCodeModal;
-    (window as any).copyCleanCode = copyCleanCode;
     (window as any).renderMoments = renderMoments;
   }
 }

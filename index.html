@@ -1198,18 +1198,11 @@
 
         <div class="explorations-header-row">
           <div class="explorations-header-left">
-            <h2 class="explorations-title">
+            <h2 class="explorations-title" data-edit-key="explorations-title">
               Ngoài màn hình
               <span class="explorations-title-sub">· Explorations Outside the Screen</span>
             </h2>
-            <p class="explorations-subtitle">Một vài lát cắt về kỷ luật, vận động và khoảng lặng.</p>
-          </div>
-
-          <div class="explorations-header-actions">
-            <button type="button" class="btn-clean-code" id="openCodeModalBtn" title="Xem mã nguồn sạch của phần này" aria-label="Xem mã nguồn">
-              <i data-lucide="code" style="width: 13px; height: 13px;"></i>
-              <span>Mã nguồn</span>
-            </button>
+            <p class="explorations-subtitle" data-edit-key="explorations-subtitle">Một vài lát cắt về kỷ luật, vận động và khoảng lặng.</p>
           </div>
         </div>
 
@@ -2270,31 +2263,6 @@
             <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
           </button>
         </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Clean Code Inspector Modal -->
-  <div id="codeModal" class="hidden moment-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="codeModalTitle">
-    <div class="moment-modal-backdrop" id="codeModalBackdrop"></div>
-    <div class="moment-modal-dialog moment-code-dialog">
-      <div class="moment-code-header">
-        <div class="moment-code-title-row">
-          <i data-lucide="code" style="width: 16px; height: 16px; color: var(--accent-gold);"></i>
-          <h3 id="codeModalTitle" class="moment-code-title">Mã nguồn thành phần Ngoài màn hình</h3>
-        </div>
-        <div class="moment-code-actions">
-          <button type="button" class="btn-copy-code" id="copyCodeBtn" aria-label="Sao chép code">
-            <i data-lucide="copy" style="width: 14px; height: 14px;"></i>
-            <span id="copyBtnText">Sao chép code</span>
-          </button>
-          <button type="button" class="moment-modal-close-static" id="closeCodeBtn" aria-label="Đóng hộp thoại">
-            <i data-lucide="x" style="width: 16px; height: 16px;"></i>
-          </button>
-        </div>
-      </div>
-      <div class="moment-code-body">
-        <pre class="moment-code-pre"><code id="cleanCodeOutput" class="language-html"></code></pre>
       </div>
     </div>
   </div>

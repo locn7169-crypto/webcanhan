@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "test": "node scripts/verify-persistence-hydration.mjs",
     "build": "tsc && vite build && find dist -name '.DS_Store' -delete",
     "preview": "vite preview",
     "deploy:fast": "vite build && find dist -name '.DS_Store' -delete && wrangler pages deploy dist --project-name nguyenthanhloc",

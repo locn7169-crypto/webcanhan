@@ -13,6 +13,7 @@ export interface CloudCMSData {
   mediaItems: MediaItem[];
   collections: CollectionItem[];
   journalCategories?: Record<string, any>;
+  tiptapContent?: Record<string, any> | string;
 }
 
 const GIST_ID = 'f0753e26442b1fc861c7f0a48d3c0793';
@@ -99,6 +100,7 @@ export async function pushCloudCMS(data: {
   mediaItems: MediaItem[];
   collections: CollectionItem[];
   journalCategories?: Record<string, any>;
+  tiptapContent?: Record<string, any> | string;
 }): Promise<boolean> {
   try {
     const now = new Date().toISOString();
@@ -110,6 +112,7 @@ export async function pushCloudCMS(data: {
       mediaItems: data.mediaItems || [],
       collections: data.collections || [],
       journalCategories: data.journalCategories || {},
+      tiptapContent: data.tiptapContent || {},
     };
 
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}`, {

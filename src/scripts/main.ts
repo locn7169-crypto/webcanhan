@@ -220,13 +220,17 @@ function setupCopyPhone() {
 
 // App bootstrap
 document.addEventListener('DOMContentLoaded', () => {
+  // 1. Instant Data Hydration (Text & Photos restored at 0ms before paint)
+  initTiptapEditor();
+  initExplorationsMoments();
+
+  // 2. Initialize UI & Motion Subsystems
   setupIcons();
   setupLiveClock();
   setupNavigationSpy();
   setupMobileMenu();
   setupCopyPhone();
 
-  // Initialize Motion Subsystems
   initSmoothScroll();
   initMagneticAndCursor();
   init3DTiltCards();
@@ -236,11 +240,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initLocMoneyModal();
   initLocLearnModal();
   initExplorationJournal();
-  initExplorationsMoments();
   initScrollCinematics();
   initHeroAmbientConstellation();
   initScrollBackdrop();
-  initTiptapEditor();
   initAdminStudio();
 
   console.info('[Loc Portfolio] Experience initialized with craft & precision.');

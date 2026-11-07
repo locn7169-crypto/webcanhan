@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { getLenis } from './lenis-scroll';
+import { dbGetSetting, dbSetSetting, isSessionAuthenticated } from './admin-studio';
 
 export interface JournalEntry {
   id: string;
@@ -163,7 +164,7 @@ let replacePhotoFileInput: HTMLInputElement | null = null;
 let newPostFileInput: HTMLInputElement | null = null;
 
 function isEditModeActive(): boolean {
-  return document.body.classList.contains('visual-editor-active');
+  return isSessionAuthenticated() && document.body.classList.contains('visual-editor-active');
 }
 
 function showToast(msg: string) {
@@ -186,30 +187,13 @@ function showToast(msg: string) {
 // Async loader from IndexedDB to bypass 5MB localStorage limits
 export async function loadJournalFromDB(): Promise<boolean> {
   try {
-    return new Promise((resolve) => {
-      const req = indexedDB.open('loc_studio_cms_v1', 1);
-      req.onsuccess = (e) => {
-        const db = (e.target as IDBOpenDBRequest).result;
-        if (!db.objectStoreNames.contains('cms_settings')) {
-          resolve(false);
-          return;
-        }
-        const tx = db.transaction('cms_settings', 'readonly');
-        const store = tx.objectStore('cms_settings');
-        const getReq = store.get('journal_categories');
-        getReq.onsuccess = () => {
-          if (getReq.result && getReq.result.value) {
-            categories = { ...DEFAULT_CATEGORIES, ...getReq.result.value };
-            updateMainPageCardCovers();
-            resolve(true);
-          } else {
-            resolve(false);
-          }
-        };
-        getReq.onerror = () => resolve(false);
-      };
-      req.onerror = () => resolve(false);
-    });
+    const val = await dbGetSetting<Record<string, ExplorationCategory> | null>('journal_categories', null);
+    if (val && typeof val === 'object' && Object.keys(val).length > 0) {
+      categories = { ...DEFAULT_CATEGORIES, ...val };
+      updateMainPageCardCovers();
+      return true;
+    }
+    return false;
   } catch {
     return false;
   }
@@ -268,12 +252,17 @@ export function loadJournalData() {
   });
 }
 
-// Save data to localStorage
+// Save data to localStorage and IndexedDB
 export function saveJournalData() {
   try {
     lastRenderedCat = null;
     syncActivePostToState();
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(categories));
+    } catch (quotaErr) {
+      console.warn('[Journal] localStorage quota reached, relying on IndexedDB:', quotaErr);
+    }
+    dbSetSetting('journal_categories', categories).catch(() => {});
     updateMainPageCardCovers();
     showToast('💾 Đã lưu dữ liệu nhật ký & ảnh thành công!');
   } catch (e) {
