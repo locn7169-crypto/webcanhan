@@ -2857,6 +2857,452 @@ body.menu-active .hamburger-line:nth-child(3) {
 }
 
 /* ==========================================================================
+   EDITORIAL "NGOÀI MÀN HÌNH" (MOMENTS) SECTION DESIGN
+   ========================================================================== */
+.section-explorations {
+  padding-top: var(--space-xl);
+  padding-bottom: var(--space-xl);
+  position: relative;
+}
+
+.explorations-container {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+.explorations-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 1.25rem;
+  margin-bottom: 2.75rem;
+}
+
+.explorations-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.explorations-title {
+  font-family: var(--font-display-studio, var(--font-sans));
+  font-size: clamp(1.45rem, 1.25rem + 1vw, 2.15rem);
+  font-weight: 600;
+  color: var(--ink-primary);
+  line-height: 1.25;
+  letter-spacing: -0.015em;
+  margin: 0;
+}
+
+.explorations-title-sub {
+  font-size: clamp(0.95rem, 0.85rem + 0.3vw, 1.15rem);
+  font-weight: 400;
+  color: var(--ink-muted);
+  font-family: var(--font-sans);
+  margin-left: 0.4rem;
+}
+
+.explorations-subtitle {
+  font-size: var(--text-sm);
+  color: var(--ink-secondary);
+  margin-top: 0.25rem;
+  line-height: 1.55;
+}
+
+.btn-clean-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 9999px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--ink-secondary);
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  white-space: nowrap;
+}
+
+.btn-clean-code:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold-hover);
+  background: var(--accent-gold-subtle);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(184, 142, 56, 0.15);
+}
+
+.btn-clean-code:active {
+  transform: translateY(0);
+}
+
+/* Moments 2-Column Editorial Grid */
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 2.75rem;
+  row-gap: 2.75rem;
+}
+
+.moment-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  text-align: left;
+  outline: none;
+  position: relative;
+  transition: opacity 0.3s ease;
+}
+
+.moment-media-frame {
+  aspect-ratio: 4 / 3;
+  width: 100%;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-canvas-subtle);
+  position: relative;
+  border: 1px solid var(--border-subtle);
+  box-shadow: 0 8px 24px rgba(28, 26, 23, 0.04);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.moment-card:hover .moment-media-frame,
+.moment-card:focus-visible .moment-media-frame {
+  transform: translateY(-4px);
+  border-color: rgba(184, 142, 56, 0.4);
+  box-shadow: 0 16px 36px rgba(28, 26, 23, 0.09), 0 0 0 1px rgba(184, 142, 56, 0.18);
+}
+
+.moment-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  filter: grayscale(85%) contrast(102%) brightness(0.97);
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+.moment-card:hover .moment-img,
+.moment-card:focus-visible .moment-img {
+  filter: grayscale(0%) contrast(104%) brightness(1);
+  transform: scale(1.045);
+}
+
+.moment-zoom-badge {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  background: rgba(28, 26, 23, 0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  padding: 0.32rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-family: var(--font-sans);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+.moment-card:hover .moment-zoom-badge,
+.moment-card:focus-visible .moment-zoom-badge {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.moment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.28rem;
+}
+
+.moment-header-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+}
+
+.moment-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  letter-spacing: -0.01em;
+  transition: color 0.25s ease;
+}
+
+.moment-card:hover .moment-title {
+  color: var(--accent-gold-hover);
+}
+
+.moment-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.06em;
+  color: var(--accent-gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.moment-caption {
+  font-size: 0.8125rem;
+  color: var(--ink-secondary);
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   MOMENTS PREVIEW & CODE MODALS
+   ========================================================================== */
+.moment-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moment-modal-overlay.flex,
+.moment-modal-overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.moment-modal-overlay.hidden {
+  display: none !important;
+}
+
+.moment-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(18, 16, 14, 0.72);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.moment-modal-dialog {
+  position: relative;
+  z-index: 1;
+  max-width: 760px;
+  width: 100%;
+  background: var(--bg-surface);
+  border-radius: 22px;
+  border: 1px solid var(--border-medium);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.38), 0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.96) translateY(8px);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.moment-modal-overlay.flex .moment-modal-dialog,
+.moment-modal-overlay.is-open .moment-modal-dialog {
+  transform: scale(1) translateY(0);
+}
+
+.moment-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(28, 26, 23, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.moment-modal-close:hover {
+  background: rgba(28, 26, 23, 0.85);
+  transform: rotate(90deg) scale(1.08);
+}
+
+.moment-modal-media-wrap {
+  width: 100%;
+  max-height: 62vh;
+  background: #11100F;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.moment-modal-img {
+  max-width: 100%;
+  max-height: 62vh;
+  object-fit: contain;
+  display: block;
+}
+
+.moment-modal-footer {
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.moment-modal-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  color: var(--accent-gold);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-bottom: 0.25rem;
+  display: inline-block;
+}
+
+.moment-modal-caption {
+  font-size: 0.875rem;
+  color: var(--ink-primary);
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.btn-moment-view-album {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.05rem;
+  border-radius: 9999px;
+  background: var(--accent-gold);
+  color: #FFFFFF;
+  font-size: 0.78125rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.25s ease;
+}
+
+.btn-moment-view-album:hover {
+  background: var(--accent-gold-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(184, 142, 56, 0.25);
+}
+
+/* Code Inspector Modal */
+.moment-code-dialog {
+  max-width: 820px;
+  max-height: 82vh;
+}
+
+.moment-code-header {
+  padding: 1rem 1.25rem;
+  background: var(--bg-canvas-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.moment-code-title-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.moment-code-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  font-family: var(--font-mono);
+}
+
+.moment-code-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.btn-copy-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 8px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--ink-primary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-copy-code:hover {
+  border-color: var(--accent-gold);
+  color: var(--accent-gold);
+  background: var(--accent-gold-subtle);
+}
+
+.moment-modal-close-static {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  color: var(--ink-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.moment-modal-close-static:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--ink-primary);
+}
+
+.moment-code-body {
+  padding: 1.25rem;
+  background: #141312;
+  overflow: auto;
+  max-height: calc(82vh - 70px);
+}
+
+.moment-code-pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.78125rem;
+  line-height: 1.65;
+  color: #E6E1D8;
+  white-space: pre;
+}
+
+/* ==========================================================================
    Exploration Interactive Field Notes & Photo Diary Modal
    ========================================================================== */
 .exploration-card[data-exploration-id] {
@@ -4688,6 +5134,28 @@ body.menu-active .hamburger-line:nth-child(3) {
   .explorations-grid {
     grid-template-columns: 1fr;
     gap: 1.35rem;
+  }
+  .explorations-header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+    margin-bottom: 2rem;
+  }
+  .moments-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  .moment-modal-dialog {
+    border-radius: 18px !important;
+  }
+  .moment-modal-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.85rem;
+  }
+  .btn-moment-view-album {
+    width: 100%;
+    justify-content: center;
   }
   .exploration-card {
     border-radius: 24px !important;

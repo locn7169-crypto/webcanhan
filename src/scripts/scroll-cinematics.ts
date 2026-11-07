@@ -200,7 +200,7 @@ function setupExplorationsParallax() {
   const explorationsSection = document.querySelector<HTMLElement>('#explorations');
   if (!explorationsSection) return;
 
-  const cards = explorationsSection.querySelectorAll<HTMLElement>('.exploration-card');
+  const cards = explorationsSection.querySelectorAll<HTMLElement>('.moment-card, .exploration-card');
   gsap.fromTo(
     cards,
     { y: 45, opacity: 0 },

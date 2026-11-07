@@ -291,7 +291,7 @@ function openDB(): Promise<IDBDatabase> {
 }
 
 // Read all media items from IndexedDB
-async function dbGetAllMedia(): Promise<MediaItem[]> {
+export async function dbGetAllMedia(): Promise<MediaItem[]> {
   try {
     const db = await openDB();
     return new Promise((resolve) => {
@@ -348,7 +348,7 @@ async function dbSaveAllMedia(items: MediaItem[]): Promise<void> {
 }
 
 // Get single setting
-async function dbGetSetting<T>(key: string, defaultValue: T): Promise<T> {
+export async function dbGetSetting<T>(key: string, defaultValue: T): Promise<T> {
   try {
     const db = await openDB();
     if (!db.objectStoreNames.contains(STORE_SETTINGS)) {
