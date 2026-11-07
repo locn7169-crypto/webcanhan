@@ -417,7 +417,7 @@ interface CompressedImageResult {
  * Compresses an image file client-side into WebP with maximum dimension constraint
  * and generates a high-speed 320px thumbnail for 60fps drag-and-drop.
  */
-function compressImageFile(file: File, maxDim = 1920, quality = 0.85): Promise<CompressedImageResult> {
+function compressImageFile(file: File, maxDim = 1600, quality = 0.82): Promise<CompressedImageResult> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = (e) => {
@@ -457,9 +457,9 @@ function compressImageFile(file: File, maxDim = 1920, quality = 0.85): Promise<C
           dataUrl = canvas.toDataURL('image/jpeg', quality);
         }
 
-        // 2. Generate Lightweight 320px Thumbnail for smooth grid drag & drop
+        // 2. Generate Lightweight 280px Thumbnail for smooth grid drag & drop
         const thumbCanvas = document.createElement('canvas');
-        const thumbMax = 320;
+        const thumbMax = 280;
         let tw = width;
         let th = height;
         if (tw > thumbMax || th > thumbMax) {
@@ -480,9 +480,9 @@ function compressImageFile(file: File, maxDim = 1920, quality = 0.85): Promise<C
           tctx.drawImage(img, 0, 0, tw, th);
         }
 
-        let thumbUrl = thumbCanvas.toDataURL('image/webp', 0.8);
+        let thumbUrl = thumbCanvas.toDataURL('image/webp', 0.75);
         if (!thumbUrl.startsWith('data:image/webp')) {
-          thumbUrl = thumbCanvas.toDataURL('image/jpeg', 0.8);
+          thumbUrl = thumbCanvas.toDataURL('image/jpeg', 0.75);
         }
 
         // Approximate size
@@ -832,15 +832,21 @@ async function handlePinInput(digit: string) {
     isPinValidating = true;
     try {
       const cloud = await fetchCloudCMS();
-      if (cloud && cloud.pin && currentEnteredPin === cloud.pin) {
-        localStorage.setItem(PIN_KEY, cloud.pin);
+      if (cloud && cloud.pin) {
+        // Update local storage with the cloud PIN
+        try {
+          localStorage.setItem(PIN_KEY, cloud.pin);
+        } catch {}
         await dbSetSetting(PIN_KEY, cloud.pin);
-        setSessionAuthenticated(true);
-        closeAuthModal();
-        openAdminStudioPanel();
-        showAdminToast('🔓 Đăng nhập thành công (Đã đồng bộ từ đám mây)!');
-        isPinValidating = false;
-        return;
+
+        if (currentEnteredPin === cloud.pin) {
+          setSessionAuthenticated(true);
+          closeAuthModal();
+          openAdminStudioPanel();
+          showAdminToast('🔓 Đăng nhập thành công (Đã đồng bộ từ đám mây)!');
+          isPinValidating = false;
+          return;
+        }
       }
     } catch {
       // Offline fallback
@@ -874,6 +880,21 @@ export function openAuthModal() {
   updatePinDots();
   const overlay = document.getElementById('admin-auth-overlay');
   overlay?.classList.add('is-open');
+
+  // Sync PIN from cloud only if cloud PIN is different AND not overwriting a custom local PIN with default 1902
+  fetchCloudCMS()
+    .then((cloud) => {
+      const local = getStoredPin();
+      if (cloud && cloud.pin && cloud.pin !== local) {
+        if (local !== DEFAULT_PIN && cloud.pin === DEFAULT_PIN) return;
+        try {
+          localStorage.setItem(PIN_KEY, cloud.pin);
+        } catch {}
+        dbSetSetting(PIN_KEY, cloud.pin);
+        console.info('[AdminAuth] Synchronized PIN from cloud on modal open:', cloud.pin);
+      }
+    })
+    .catch(() => {});
 }
 
 function closeAuthModal() {
@@ -2016,6 +2037,10 @@ function setupSettingsHandlers() {
   savePinBtn?.addEventListener('click', async () => {
     const val = pinInput.value.trim();
     if (val.length === 4 && /^\d{4}$/.test(val)) {
+      const origText = savePinBtn.textContent;
+      savePinBtn.setAttribute('disabled', 'true');
+      savePinBtn.textContent = 'Đang lưu...';
+
       try {
         localStorage.setItem(PIN_KEY, val);
       } catch {}
@@ -2024,6 +2049,9 @@ function setupSettingsHandlers() {
       showAdminToast('🔐 Đang đồng bộ mã PIN mới lên đám mây...');
 
       const cloudOk = await pushCloudPin(val);
+      savePinBtn.removeAttribute('disabled');
+      savePinBtn.textContent = origText;
+
       if (cloudOk) {
         showAdminToast('🔐 Đã đổi mã PIN và đồng bộ đám mây thành công! (Dùng được trên cả Điện thoại & Máy tính)');
       } else {
@@ -2240,11 +2268,14 @@ export async function syncCMSFromCloud(): Promise<boolean> {
 
     // 1. Sync PIN across all devices
     if (cloud.pin && cloud.pin !== getStoredPin()) {
-      try {
-        localStorage.setItem(PIN_KEY, cloud.pin);
-      } catch {}
-      await dbSetSetting(PIN_KEY, cloud.pin);
-      console.info('[AdminStudio] PIN synchronized from Cloud Gist:', cloud.pin);
+      const local = getStoredPin();
+      if (!(local !== DEFAULT_PIN && cloud.pin === DEFAULT_PIN)) {
+        try {
+          localStorage.setItem(PIN_KEY, cloud.pin);
+        } catch {}
+        await dbSetSetting(PIN_KEY, cloud.pin);
+        console.info('[AdminStudio] PIN synchronized from Cloud Gist:', cloud.pin);
+      }
     }
 
     // 2. Sync Collections

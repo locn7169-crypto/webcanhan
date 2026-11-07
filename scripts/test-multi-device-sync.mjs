@@ -43,7 +43,7 @@ async function testMultiDeviceSync() {
       }
     });
 
-    await phonePage.goto('http://localhost:4173', { waitUntil: 'networkidle' });
+    await phonePage.goto('http://localhost:4173', { waitUntil: 'domcontentloaded' });
     await phonePage.waitForTimeout(600);
 
     // Open Admin on Phone
@@ -99,7 +99,7 @@ async function testMultiDeviceSync() {
     // Click "Xuất bản ngay" on Phone
     console.log('📱 Phone: Clicking "Xuất bản ngay" (Push to Cloud)...');
     await phonePage.click('#admin-publish-all-btn');
-    await phonePage.waitForTimeout(2500); // Wait for cloud push to complete
+    await phonePage.waitForTimeout(4000); // Wait for cloud push to complete
     console.log('✔ Phone: Published and synced to cloud.');
 
     // ------------------------------------------------------------------------
@@ -118,7 +118,7 @@ async function testMultiDeviceSync() {
     });
 
     console.log('💻 PC: Visiting nguyenthanhloc (Loading fresh page)...');
-    await pcPage.goto('http://localhost:4173', { waitUntil: 'networkidle' });
+    await pcPage.goto('http://localhost:4173', { waitUntil: 'domcontentloaded' });
     await pcPage.waitForTimeout(1000);
 
     // Explicitly call cloud sync on PC to guarantee latest state
@@ -147,9 +147,15 @@ async function testMultiDeviceSync() {
     await pcPage.click('.admin-menu-item[data-action="open-media-library"]');
     await pcPage.waitForTimeout(500);
 
-    const pcPhotoCardsCount = await pcPage.evaluate(() => {
-      return document.querySelectorAll('.admin-photo-card').length;
+    const pcDebug = await pcPage.evaluate(() => {
+      return {
+        cardCount: document.querySelectorAll('.admin-photo-card').length,
+        titles: Array.from(document.querySelectorAll('.admin-photo-title')).map((t) => t.textContent),
+        activeTab: document.querySelector('.admin-cat-tab.active')?.getAttribute('data-cat-filter'),
+      };
     });
+    console.log('💻 PC Debug State:', pcDebug);
+    const pcPhotoCardsCount = pcDebug.cardCount;
     console.log(`💻 PC: Found ${pcPhotoCardsCount} photo cards in Media Library.`);
     if (pcPhotoCardsCount < 9) {
       throw new Error(`Expected at least 9 photo cards synced to PC, but found ${pcPhotoCardsCount}`);

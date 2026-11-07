@@ -29,13 +29,12 @@ const LAST_SYNC_KEY = 'loc_cloud_cms_last_sync_timestamp';
 export async function fetchCloudCMS(): Promise<CloudCMSData | null> {
   try {
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 6500);
+    const timeout = setTimeout(() => controller.abort(), 7500);
 
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}?_t=${Date.now()}`, {
       signal: controller.signal,
       headers: {
         Accept: 'application/vnd.github+json',
-        'User-Agent': 'LocStudioCMS-Browser/1.0',
       },
     });
 
@@ -48,12 +47,30 @@ export async function fetchCloudCMS(): Promise<CloudCMSData | null> {
 
     const data = await res.json();
     const file = data.files?.[GIST_FILE];
-    if (!file || !file.content) {
+    if (!file) {
       console.warn('[CloudCMS] Gist file loc-studio-cms.json not found in payload');
       return null;
     }
 
-    const parsed: CloudCMSData = JSON.parse(file.content);
+    let rawContent = file.content;
+    // If GitHub API truncated the file (>1MB), fetch the full raw URL directly
+    if (file.truncated && file.raw_url) {
+      try {
+        const rawRes = await fetch(`${file.raw_url}?_t=${Date.now()}`);
+        if (rawRes.ok) {
+          rawContent = await rawRes.text();
+        }
+      } catch (err) {
+        console.warn('[CloudCMS] Failed to fetch raw_url for truncated Gist:', err);
+      }
+    }
+
+    if (!rawContent) {
+      console.warn('[CloudCMS] Empty content in Gist file');
+      return null;
+    }
+
+    const parsed: CloudCMSData = JSON.parse(rawContent);
     try {
       localStorage.setItem(CACHE_KEY, JSON.stringify(parsed));
       localStorage.setItem(LAST_SYNC_KEY, parsed.publishedAt || parsed.updatedAt || new Date().toISOString());
@@ -100,7 +117,6 @@ export async function pushCloudCMS(data: {
         Authorization: `Bearer ${GIST_TOKEN}`,
         Accept: 'application/vnd.github+json',
         'Content-Type': 'application/json',
-        'User-Agent': 'LocStudioCMS-Browser/1.0',
       },
       body: JSON.stringify({
         description: 'Lộc Studio CMS Cloud Sync · Multi-Device Live Data',
@@ -158,7 +174,6 @@ export async function pushCloudPin(newPin: string): Promise<boolean> {
         Authorization: `Bearer ${GIST_TOKEN}`,
         Accept: 'application/vnd.github+json',
         'Content-Type': 'application/json',
-        'User-Agent': 'LocStudioCMS-Browser/1.0',
       },
       body: JSON.stringify({
         description: 'Lộc Studio CMS Cloud Sync · Multi-Device Live Data',

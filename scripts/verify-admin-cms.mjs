@@ -11,6 +11,10 @@ if (!fs.existsSync(outDir)) {
 async function runAdminVerification() {
   console.log('🚀 Starting Admin Studio CMS Deep Verification...');
 
+  // Reset Cloud Gist baseline to 1902
+  const { pushCloudPin } = await import('../src/scripts/cloud-cms-sync.ts');
+  await pushCloudPin('1902');
+
   // 1. Start preview server
   const previewProcess = spawn('npx', ['vite', 'preview', '--port', '4173'], {
     stdio: 'pipe',
@@ -71,18 +75,18 @@ async function runAdminVerification() {
         document.querySelector('.toast-notice')?.textContent?.includes('không đúng');
     });
     console.log(`✔ Wrong PIN rejected with warning/shake: ${hasShake ? 'PASS' : 'WARN'}`);
-    await page.waitForTimeout(700);
+    await page.waitForTimeout(1500);
 
     // 3. Enter Correct Default PIN: 1902 using keypad clicks
     console.log('Entering correct PIN: 1902...');
     await page.click('.admin-keypad-btn[data-key="1"]');
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(120);
     await page.click('.admin-keypad-btn[data-key="9"]');
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(120);
     await page.click('.admin-keypad-btn[data-key="0"]');
-    await page.waitForTimeout(100);
+    await page.waitForTimeout(120);
     await page.click('.admin-keypad-btn[data-key="2"]');
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1200);
 
     // 4. Admin Studio Dashboard must be open
     const isStudioOpen = await page.evaluate(() => {
@@ -222,7 +226,9 @@ async function runAdminVerification() {
 
     await page.fill('#admin-new-pin-input', '5678');
     await page.click('#admin-save-pin-btn');
-    await page.waitForTimeout(400);
+    // Wait until save is complete (button is re-enabled)
+    await page.waitForFunction(() => !document.getElementById('admin-save-pin-btn')?.hasAttribute('disabled'), { timeout: 10000 });
+    await page.waitForTimeout(600);
 
     // Logout
     await page.click('#admin-logout-btn');
@@ -245,14 +251,18 @@ async function runAdminVerification() {
     });
     if (!oldPinFailed) throw new Error('CRITICAL BUG: Old default PIN 1902 was still accepted after changing PIN to 5678!');
     console.log('✔ Security confirmed: Old default PIN 1902 was rejected after PIN change.');
+    await page.waitForTimeout(1400);
 
     // Enter new PIN 5678 -> MUST SUCCEED!
     console.log('Entering new PIN 5678...');
     await page.click('.admin-keypad-btn[data-key="5"]');
+    await page.waitForTimeout(100);
     await page.click('.admin-keypad-btn[data-key="6"]');
+    await page.waitForTimeout(100);
     await page.click('.admin-keypad-btn[data-key="7"]');
+    await page.waitForTimeout(100);
     await page.click('.admin-keypad-btn[data-key="8"]');
-    await page.waitForTimeout(600);
+    await page.waitForTimeout(1200);
 
     const newPinSuccess = await page.evaluate(() => {
       const overlay = document.getElementById('admin-studio-overlay');
@@ -266,7 +276,8 @@ async function runAdminVerification() {
     await page.waitForTimeout(300);
     await page.fill('#admin-new-pin-input', '1902');
     await page.click('#admin-save-pin-btn');
-    await page.waitForTimeout(400);
+    await page.waitForFunction(() => !document.getElementById('admin-save-pin-btn')?.hasAttribute('disabled'), { timeout: 10000 });
+    await page.waitForTimeout(600);
     console.log('✔ PIN restored to default 1902.');
 
     console.log('🎉 ALL ADMIN STUDIO CMS DEEP VERIFICATIONS PASSED WITH 100% SUCCESS!');
