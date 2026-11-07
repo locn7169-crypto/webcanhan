@@ -608,6 +608,9 @@ async function syncWithExplorationJournal(pushToCloud = false) {
         };
       });
 
+      // Sort items by order
+      items.sort((a, b) => (a.order || 0) - (b.order || 0));
+
       // Update coverUrl if has photos, else fallback
       if (items.length > 0) {
         journalCategories[catId].coverUrl = items[0].thumbUrl || items[0].dataUrl;
@@ -619,19 +622,24 @@ async function syncWithExplorationJournal(pushToCloud = false) {
     // 2. Save full rich categories to IndexedDB (practically unlimited quota)
     await dbSetSetting('journal_categories', journalCategories);
 
-    // 3. Save lightweight fallback to localStorage (use thumbUrl to prevent QuotaExceededError)
+    // 3. Save lightweight fallback to localStorage using real thumbnails (never fall back to flower)
     try {
       const lightweightCategories: Record<string, any> = {};
       Object.keys(journalCategories).forEach((key) => {
         const cat = journalCategories[key];
+        const catItems = grouped[key] || [];
         lightweightCategories[key] = {
           ...cat,
-          coverUrl: cat.coverUrl?.length > 300000 ? cat.entries?.[0]?.photoUrl : cat.coverUrl,
-          entries: cat.entries?.map((e: any) => ({
-            ...e,
-            photoUrl: e.photoUrl?.length > 300000 ? (cat.entries?.[0]?.photoUrl || '') : e.photoUrl,
-            photos: e.photos?.map((p: string) => p.length > 300000 ? (cat.entries?.[0]?.photoUrl || '') : p),
-          })),
+          coverUrl: cat.coverUrl?.length > 250000 ? (catItems[0]?.thumbUrl || cat.coverUrl) : cat.coverUrl,
+          entries: cat.entries?.map((e: any) => {
+            const mItem = mediaItems.find((it) => it.id === e.id);
+            const realThumb = mItem?.thumbUrl || e.thumbUrl || e.photoUrl;
+            return {
+              ...e,
+              photoUrl: e.photoUrl?.length > 250000 ? realThumb : e.photoUrl,
+              photos: e.photos?.map((p: string) => (p.length > 250000 ? realThumb : p)),
+            };
+          }),
         };
       });
       localStorage.setItem(JOURNAL_STORAGE_KEY, JSON.stringify(lightweightCategories));
@@ -1411,7 +1419,7 @@ async function processUploadedFiles(files: File[]) {
     if (progressBar) progressBar.style.width = `${percent}%`;
 
     try {
-      const compressed = await compressImageFile(file, 1920, 0.85);
+      const compressed = await compressImageFile(file);
 
       // Extract a clean title from the filename (e.g., 'hoang_hon_da_lat.jpg' -> 'Hoàng Hôn Đà Lạt')
       const rawName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
@@ -1426,7 +1434,7 @@ async function processUploadedFiles(files: File[]) {
         caption: `Khoảnh khắc mới tải lên · ${cleanTitle}`,
         description: `Hình ảnh được tối ưu hóa chuẩn WebP 4K trong bộ sưu tập của Lộc Studio.`,
         collectionId: currentFilterCat !== 'all' ? currentFilterCat : 'photography',
-        order: mediaItems.length + 1,
+        order: 1,
         createdAt: new Date().toISOString().split('T')[0],
         fileSize: compressed.fileSize,
         width: compressed.width,
@@ -1434,7 +1442,11 @@ async function processUploadedFiles(files: File[]) {
         likes: 0,
       };
 
-      mediaItems.push(newItem);
+      // Place newly uploaded photos at the beginning so they become the latest masterpiece & album cover
+      mediaItems.unshift(newItem);
+      mediaItems.forEach((it, idx) => {
+        it.order = idx + 1;
+      });
       successCount++;
     } catch (err) {
       console.warn('[AdminUpload] Failed to process file:', file.name, err);
@@ -1617,7 +1629,7 @@ function renderMediaGrid() {
     replaceInput.onchange = async () => {
       if (replaceInput.files && replaceInput.files[0] && editingMediaItem) {
         try {
-          const compressed = await compressImageFile(replaceInput.files[0], 1920, 0.85);
+          const compressed = await compressImageFile(replaceInput.files[0]);
           editingMediaItem.dataUrl = compressed.dataUrl;
           editingMediaItem.thumbUrl = compressed.thumbUrl;
           editingMediaItem.fileSize = compressed.fileSize;

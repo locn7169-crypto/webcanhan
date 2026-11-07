@@ -258,9 +258,12 @@ export function loadJournalData() {
 
   // Asynchronously query IndexedDB for full high-res media items without quota limits
   loadJournalFromDB().then((loaded) => {
-    if (loaded && isJournalOpen) {
-      lastRenderedCat = null;
-      renderJournalModal(currentCatId);
+    if (loaded) {
+      updateMainPageCardCovers();
+      if (isJournalOpen) {
+        lastRenderedCat = null;
+        renderJournalModal(currentCatId);
+      }
     }
   });
 }
@@ -1147,7 +1150,18 @@ export function openExplorationJournal(catId?: 'photography' | 'trekking' | 'chi
   activePostId = null; // Start with the Instagram grid
   currentPhotoIndex = 0;
   const initialCat = catId || 'photography';
+  
+  // Invalidate any pre-rendered stale cache to always display fresh real photos
+  lastRenderedCat = null;
   renderJournalModal(initialCat);
+
+  // Refresh with latest high-res data from IndexedDB
+  loadJournalFromDB().then((loaded) => {
+    if (loaded && isJournalOpen) {
+      lastRenderedCat = null;
+      renderJournalModal(currentCatId);
+    }
+  });
 
   const container = modal.querySelector<HTMLElement>('.journal-modal-container');
   const backdrop = modal.querySelector<HTMLElement>('.journal-modal-backdrop');
@@ -1339,8 +1353,8 @@ export function initExplorationJournal() {
     } else {
       loadJournalData();
     }
+    lastRenderedCat = null;
     if (isJournalOpen) {
-      lastRenderedCat = null;
       renderJournalModal(currentCatId);
     }
   });

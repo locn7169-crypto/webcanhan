@@ -34,6 +34,7 @@ export async function fetchCloudCMS(): Promise<CloudCMSData | null> {
     const res = await fetch(`https://api.github.com/gists/${GIST_ID}?_t=${Date.now()}`, {
       signal: controller.signal,
       headers: {
+        Authorization: `Bearer ${GIST_TOKEN}`,
         Accept: 'application/vnd.github+json',
       },
     });
@@ -56,7 +57,7 @@ export async function fetchCloudCMS(): Promise<CloudCMSData | null> {
     // If GitHub API truncated the file (>1MB), fetch the full raw URL directly
     if (file.truncated && file.raw_url) {
       try {
-        const rawRes = await fetch(`${file.raw_url}?_t=${Date.now()}`);
+        const rawRes = await fetch(file.raw_url);
         if (rawRes.ok) {
           rawContent = await rawRes.text();
         }
