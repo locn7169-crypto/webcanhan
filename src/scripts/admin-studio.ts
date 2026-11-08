@@ -253,7 +253,7 @@ const DEFAULT_SECTIONS: SiteSectionItem[] = [
   { id: 'hero', name: 'Hero — Mở đầu & Khẳng định danh tính', description: 'Khu vực chào đón, avatar 3D và hoa đào bay', visible: true },
   { id: 'works', name: 'Works — Dự án trọng tâm', description: 'Lộc Money 2 & Lộc Learn song hành', visible: true },
   { id: 'synthesis', name: 'My Journey — Hành trình 5 năm', description: 'Ma trận tổng hợp năng lực và cột mốc phát triển', visible: true },
-  { id: 'explorations', name: 'Explorations — Ghi chép & Khám phá', description: 'Nhiếp ảnh, Trekking và Học Hán tự', visible: true },
+  { id: 'explorations', name: 'Thư Viện · Library', description: 'Nhiếp ảnh, Trekking và Học Hán tự', visible: true },
   { id: 'contact', name: 'Connect — Kết nối trực tiếp', description: 'Hồ sơ cá nhân phong cách Carrd và thông tin liên hệ', visible: true },
 ];
 
