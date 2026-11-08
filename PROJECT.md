@@ -48,7 +48,7 @@
 | M1 | Explorations Section Cleanup | F1, F2, F3: Remove "Mã nguồn" button & Code Modal, preserve card layout & preview modal | none | DONE |
 | M2 | Strict Authentication Gating | F4, F5, F6, F7, F8: Centralized auth gate, gate keyboard shortcuts, public read-only, remove PIN hint | none | PLANNED |
 | M3 | Hydration & Cloud Persistence Engine | F9, F10, F11, F12, F13: Deterministic tagging, text/image reload hydration, IndexedDB v2, Gist sync | M2 | PLANNED |
-| E2E | E2E Testing Suite (Playwright) | F14: Comprehensive automated browser tests verifying R1, R2, R3, R4 | none | PLANNED |
+| E2E | E2E Testing Suite (Playwright) | F14: Comprehensive automated browser tests verifying R1, R2, R3, R4 | none | DONE |
 | M4 | Final Integration, Packaging & Deployment | F15, F16: Verify 100% E2E tests pass, build, package desktop dist.zip, deploy Cloudflare Pages, git push | M1, M3, E2E | PLANNED |
 
 ## Interface Contracts

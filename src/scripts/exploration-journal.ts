@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { getLenis } from './lenis-scroll';
-import { dbGetSetting, dbSetSetting, isSessionAuthenticated } from './admin-studio';
+import { isAdminAuthenticated } from './auth-gate';
+import { dbGetSetting, dbSetSetting } from './admin-studio';
 
 export interface JournalEntry {
   id: string;
@@ -164,7 +165,7 @@ let replacePhotoFileInput: HTMLInputElement | null = null;
 let newPostFileInput: HTMLInputElement | null = null;
 
 function isEditModeActive(): boolean {
-  return isSessionAuthenticated() && document.body.classList.contains('visual-editor-active');
+  return isAdminAuthenticated() && document.body.classList.contains('visual-editor-active');
 }
 
 function showToast(msg: string) {
@@ -254,6 +255,7 @@ export function loadJournalData() {
 
 // Save data to localStorage and IndexedDB
 export function saveJournalData() {
+  if (!isAdminAuthenticated()) return;
   try {
     lastRenderedCat = null;
     syncActivePostToState();
@@ -788,6 +790,10 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
 
     // 8. Delete entire post
     scrollContainer.querySelector('[data-action="delete-post"]')?.addEventListener('click', () => {
+      if (!isAdminAuthenticated()) {
+        showToast('🔒 Chỉ quản trị viên mới có quyền xóa bài.');
+        return;
+      }
       if (confirm('Anh có chắc muốn xóa vĩnh viễn toàn bộ bài viết này không?')) {
         currentCat.entries = currentCat.entries.filter((it) => it.id !== entry.id);
         activePostId = null;
@@ -798,6 +804,10 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
 
     // 9. Save Post
     scrollContainer.querySelector('.insta-save-post-btn')?.addEventListener('click', () => {
+      if (!isAdminAuthenticated()) {
+        showToast('🔒 Chỉ quản trị viên mới có quyền lưu bài.');
+        return;
+      }
       saveJournalData();
     });
 
@@ -967,6 +977,7 @@ function setupFileInputs() {
   document.body.appendChild(coverFileInput);
 
   coverFileInput.addEventListener('change', () => {
+    if (!isAdminAuthenticated()) return;
     const file = coverFileInput?.files?.[0];
     if (!file) return;
 
@@ -995,6 +1006,7 @@ function setupFileInputs() {
   document.body.appendChild(appendPhotosFileInput);
 
   appendPhotosFileInput.addEventListener('change', async () => {
+    if (!isAdminAuthenticated()) return;
     const files = Array.from(appendPhotosFileInput?.files || []);
     if (files.length === 0 || !activePostId) return;
 
@@ -1036,6 +1048,7 @@ function setupFileInputs() {
   document.body.appendChild(replacePhotoFileInput);
 
   replacePhotoFileInput.addEventListener('change', () => {
+    if (!isAdminAuthenticated()) return;
     const file = replacePhotoFileInput?.files?.[0];
     if (!file || !activePostId) return;
 
@@ -1072,6 +1085,7 @@ function setupFileInputs() {
   document.body.appendChild(newPostFileInput);
 
   newPostFileInput.addEventListener('change', async () => {
+    if (!isAdminAuthenticated()) return;
     const files = Array.from(newPostFileInput?.files || []);
     if (files.length === 0) return;
 
@@ -1325,6 +1339,14 @@ export function initExplorationJournal() {
   // Listen to Visual Editor Mode changes (Option + E)
   window.addEventListener('loc-edit-mode-changed', () => {
     if (isJournalOpen) {
+      renderJournalModal(currentCatId);
+    }
+  });
+
+  // Listen to Admin Auth state changes
+  window.addEventListener('loc-admin-auth-changed', () => {
+    if (isJournalOpen) {
+      lastRenderedCat = null;
       renderJournalModal(currentCatId);
     }
   });

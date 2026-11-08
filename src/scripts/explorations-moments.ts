@@ -95,7 +95,7 @@ export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
   // Moment 1: Latest photography
   if (photos[0]) {
     moments[0].image = photos[0].thumbUrl || photos[0].dataUrl;
-    if (photos[0].title && photos[0].title !== 'll 0') moments[0].title = photos[0].title;
+    if (photos[0].title) moments[0].title = photos[0].title;
     if (photos[0].caption) moments[0].caption = photos[0].caption;
   }
 
@@ -151,13 +151,8 @@ export async function syncMomentsWithStorage() {
     console.warn('[Moments] Storage sync notice:', err);
   }
 
-  // Update DOM covers directly
-  moments.forEach((m) => {
-    if (m.imgId) {
-      const imgEl = document.getElementById(m.imgId) as HTMLImageElement;
-      if (imgEl && m.image) imgEl.src = m.image;
-    }
-  });
+  // Re-render moment cards to ensure updated titles, captions, and images are live
+  renderMoments();
 }
 
 /**
@@ -227,6 +222,7 @@ export function renderMoments() {
           alt="${m.title}" 
           loading="lazy" 
           class="moment-img" 
+          data-edit-key="moment-img-${m.id}"
           ${m.imgId ? `id="${m.imgId}"` : ''} 
         />
         <div class="moment-zoom-badge">
@@ -238,10 +234,10 @@ export function renderMoments() {
       </div>
       <div class="moment-info">
         <div class="moment-header-line">
-          <h3 class="moment-title">${m.title}</h3>
-          <span class="moment-meta">${m.meta}</span>
+          <h3 class="moment-title" data-edit-key="moment-title-${m.id}">${m.title}</h3>
+          <span class="moment-meta" data-edit-key="moment-meta-${m.id}">${m.meta}</span>
         </div>
-        <p class="moment-caption">${m.caption}</p>
+        <p class="moment-caption" data-edit-key="moment-caption-${m.id}">${m.caption}</p>
       </div>
     </article>
   `

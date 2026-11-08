@@ -9,7 +9,8 @@ import Highlight from '@tiptap/extension-highlight';
 import TaskList from '@tiptap/extension-task-list';
 import TaskItem from '@tiptap/extension-task-item';
 import CharacterCount from '@tiptap/extension-character-count';
-import { isSessionAuthenticated, openAuthModal, dbGetSetting, dbSetSetting } from './admin-studio';
+import { isAdminAuthenticated, requestAdminAccess } from './auth-gate';
+import { dbGetSetting, dbSetSetting } from './admin-studio';
 
 // Custom Tiptap Extension for dynamic Font Size scaling
 export const FontSize = Extension.create({
@@ -257,6 +258,11 @@ export function restoreSavedContent() {
 
 // Save all content to localStorage and IndexedDB
 export function saveAllTiptapContent() {
+  if (!isAdminAuthenticated()) {
+    showToast('🔒 Bạn không có quyền lưu nội dung. Vui lòng đăng nhập quản trị.');
+    return;
+  }
+
   if (activeEditor && activeTargetEl) {
     const html = activeEditor.getHTML();
     activeTargetEl.innerHTML = html;
@@ -302,6 +308,11 @@ export function saveAllTiptapContent() {
 
 // Export content as JSON
 export function exportTiptapContent() {
+  if (!isAdminAuthenticated()) {
+    showToast('🔒 Vui lòng đăng nhập quản trị để xuất nội dung.');
+    return;
+  }
+
   saveAllTiptapContent();
   const edits: Record<string, any> = {};
   document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
@@ -333,6 +344,11 @@ export function exportTiptapContent() {
 
 // Reset edits to initial state
 export function resetTiptapContent() {
+  if (!isAdminAuthenticated()) {
+    showToast('🔒 Vui lòng đăng nhập quản trị để khôi phục nội dung.');
+    return;
+  }
+
   if (!confirm('Anh có chắc muốn xóa tất cả chỉnh sửa và khôi phục về nội dung mặc định của website không?')) {
     return;
   }
@@ -1031,9 +1047,9 @@ function closeTiptapComposerModal() {
 
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
-  if (enable && !isSessionAuthenticated()) {
+  if (enable && !isAdminAuthenticated()) {
     showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để kích hoạt chế độ chỉnh sửa.');
-    openAuthModal();
+    requestAdminAccess();
     return;
   }
 
@@ -1151,9 +1167,9 @@ export function initTiptapEditor() {
 
     if (e.altKey && isEKey) {
       e.preventDefault();
-      if (!isSessionAuthenticated()) {
+      if (!isAdminAuthenticated()) {
         showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để chỉnh sửa.');
-        openAuthModal();
+        requestAdminAccess();
         return;
       }
       toggleTiptapEditMode(!isEditMode);

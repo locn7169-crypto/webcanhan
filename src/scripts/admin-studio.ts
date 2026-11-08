@@ -2,6 +2,32 @@ import '../styles/admin-studio.css';
 import { toggleTiptapEditMode, restoreSavedContent } from './tiptap-editor';
 import { fetchCloudCMS, pushCloudCMS, pushCloudPin } from './cloud-cms-sync';
 import { updateMomentsFromMediaList, renderMoments } from './explorations-moments';
+import {
+  isAdminAuthenticated,
+  verifyAdminPin,
+  setAdminAuthenticated,
+  clearAdminAuthentication,
+  requestAdminAccess as gateRequestAdminAccess,
+  registerAuthUIHandlers,
+  getStoredPin,
+  setStoredPin,
+  PIN_KEY,
+  AUTH_SESSION_KEY,
+  DEFAULT_PIN,
+} from './auth-gate';
+
+// Re-export auth functions for backwards compatibility and consumers
+export {
+  isAdminAuthenticated,
+  verifyAdminPin,
+  setAdminAuthenticated,
+  clearAdminAuthentication,
+  getStoredPin,
+  setStoredPin,
+  PIN_KEY,
+  AUTH_SESSION_KEY,
+  DEFAULT_PIN,
+};
 
 // ============================================================================
 // DATA TYPES
@@ -46,12 +72,7 @@ const DB_NAME = 'loc_studio_cms_v1';
 const DB_VERSION = 2;
 const STORE_MEDIA = 'media_items';
 const STORE_SETTINGS = 'cms_settings';
-const PIN_KEY = 'loc_admin_pin_code';
-const AUTH_SESSION_KEY = 'loc_admin_session_auth';
 const JOURNAL_STORAGE_KEY = 'loc_exploration_journals_v4';
-
-// Default PIN
-const DEFAULT_PIN = '1902';
 
 // Initial curated media items (so library is pre-populated with existing portfolio masterpieces)
 const INITIAL_CURATED_MEDIA: MediaItem[] = [
@@ -697,29 +718,11 @@ async function syncWithExplorationJournal(pushToCloud = false) {
 // PIN AUTHENTICATION CONTROLLER
 // ============================================================================
 
-export function getStoredPin(): string {
-  try {
-    const pin = localStorage.getItem(PIN_KEY);
-    return pin || DEFAULT_PIN;
-  } catch {
-    return DEFAULT_PIN;
-  }
-}
+export const isSessionAuthenticated = isAdminAuthenticated;
+export const setSessionAuthenticated = setAdminAuthenticated;
 
-export function isSessionAuthenticated(): boolean {
-  return sessionStorage.getItem(AUTH_SESSION_KEY) === 'true' || localStorage.getItem(AUTH_SESSION_KEY) === 'true';
-}
-
-function setSessionAuthenticated(remember = true) {
-  sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
-  if (remember) {
-    localStorage.setItem(AUTH_SESSION_KEY, 'true');
-  }
-}
-
-function clearSessionAuthentication() {
-  sessionStorage.removeItem(AUTH_SESSION_KEY);
-  localStorage.removeItem(AUTH_SESSION_KEY);
+export function clearSessionAuthentication() {
+  clearAdminAuthentication();
 
   try {
     toggleTiptapEditMode(false);
@@ -779,10 +782,6 @@ function setupAuthModalDOM() {
         <button type="button" class="admin-keypad-btn" data-key="0">0</button>
         <button type="button" class="admin-keypad-btn action-btn" data-action="backspace">⌫</button>
       </div>
-
-      <div class="admin-auth-hint">
-        Mã PIN mặc định: <strong>1902</strong> (Có thể đổi trong Cài đặt)
-      </div>
     </div>
   `;
 
@@ -836,16 +835,15 @@ function updatePinDots() {
   });
 }
 
-async function handlePinInput(digit: string) {
+function handlePinInput(digit: string) {
   if (isPinValidating || currentEnteredPin.length >= 4) return;
   currentEnteredPin += digit;
   updatePinDots();
 
   if (currentEnteredPin.length === 4) {
-    // 1. Instant check against local stored PIN, DEFAULT_PIN (1902), or current cloud PIN (4725) (0ms)
-    const storedPin = getStoredPin();
-    if (currentEnteredPin === storedPin || currentEnteredPin === DEFAULT_PIN || currentEnteredPin === '4725') {
-      setSessionAuthenticated(true);
+    const isValid = verifyAdminPin(currentEnteredPin);
+    if (isValid) {
+      setAdminAuthenticated(true);
       closeAuthModal();
       openAdminStudioPanel();
       showAdminToast('🔓 Đăng nhập thành công: Chào mừng anh Lộc trở lại!');
@@ -853,6 +851,7 @@ async function handlePinInput(digit: string) {
     }
 
     // 2. Wrong PIN - provide instantaneous shake and warning feedback (0ms)
+    isPinValidating = true;
     const card = document.getElementById('admin-auth-card');
     card?.classList.add('shake');
     showAdminToast('⚠️ Mã PIN không đúng. Vui lòng thử lại.');
@@ -1211,7 +1210,16 @@ function setupAdminStudioDOM() {
   });
 
   overlay.querySelector('#admin-logout-btn')?.addEventListener('click', () => {
-    clearSessionAuthentication();
+    clearAdminAuthentication();
+    try {
+      toggleTiptapEditMode(false);
+    } catch {}
+    document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
+    const dock = document.getElementById('visual-editor-dock');
+    if (dock) {
+      dock.classList.add('hidden');
+      dock.remove();
+    }
     closeAdminStudioPanel();
     showAdminToast('🔒 Đã đăng xuất khỏi tài khoản Quản trị.');
   });
@@ -1450,6 +1458,12 @@ async function processUploadedFiles(files: File[]) {
 
   // Save to IndexedDB
   await dbSaveAllMedia(mediaItems);
+  try {
+    localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+  } catch {}
+  await syncWithExplorationJournal(false);
+  updateMomentsFromMediaList(mediaItems);
+  renderMoments();
 
   setTimeout(() => {
     progressBox?.classList.remove('active');
@@ -1608,6 +1622,12 @@ function renderMediaGrid() {
       if (confirm('Anh có chắc muốn xóa ảnh này khỏi thư viện?')) {
         mediaItems = mediaItems.filter((it) => it.id !== id);
         await dbSaveAllMedia(mediaItems);
+        try {
+          localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+        } catch {}
+        await syncWithExplorationJournal(false);
+        updateMomentsFromMediaList(mediaItems);
+        renderMoments();
         renderMediaGrid();
         updateDashboardStats();
         showAdminToast('🗑️ Đã xóa ảnh khỏi thư viện.');
@@ -1627,7 +1647,12 @@ function renderMediaGrid() {
           editingMediaItem.fileSize = compressed.fileSize;
           editingMediaItem.filename = replaceInput.files[0].name;
           await dbSaveAllMedia(mediaItems);
+          try {
+            localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+          } catch {}
           await syncWithExplorationJournal(false);
+          updateMomentsFromMediaList(mediaItems);
+          renderMoments();
           renderMediaGrid();
           showAdminToast('🔄 Đã thay thế ảnh thành công!');
         } catch {
@@ -1665,7 +1690,12 @@ async function moveItemByDirection(itemId: string | null, offset: number) {
   });
 
   await dbSaveAllMedia(mediaItems);
+  try {
+    localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+  } catch {}
   await syncWithExplorationJournal(false);
+  updateMomentsFromMediaList(mediaItems);
+  renderMoments();
   renderMediaGrid();
   showAdminToast(`🔄 Đã đổi thứ tự ảnh #${currentFilteredIdx + 1} sang vị trí #${targetFilteredIdx + 1}!`);
 }
@@ -1693,7 +1723,12 @@ async function reorderItems(draggedId: string, targetId: string) {
   });
 
   await dbSaveAllMedia(mediaItems);
+  try {
+    localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+  } catch {}
   await syncWithExplorationJournal(false);
+  updateMomentsFromMediaList(mediaItems);
+  renderMoments();
   renderMediaGrid();
   showAdminToast(`🔄 Đã cập nhật thứ tự ảnh thành công!`);
 }
@@ -1845,8 +1880,13 @@ function setupMetadataModalDOM() {
     if (captionInput) editingMediaItem.caption = captionInput.value.trim();
     if (descInput) editingMediaItem.description = descInput.value.trim();
     if (dateInput) editingMediaItem.createdAt = dateInput.value.trim();
-
     await dbSaveAllMedia(mediaItems);
+    try {
+      localStorage.setItem('loc_local_media_ts', new Date().toISOString());
+    } catch {}
+    await syncWithExplorationJournal(false);
+    updateMomentsFromMediaList(mediaItems);
+    renderMoments();
     closeMetadataModal();
     renderMediaGrid();
     showAdminToast('💾 Đã cập nhật thông tin ảnh thành công!');
@@ -1927,6 +1967,12 @@ async function handlePublishAll() {
     });
 
     if (cloudOk) {
+      const publishNow = new Date().toISOString();
+      try {
+        localStorage.setItem('loc_local_media_ts', publishNow);
+        localStorage.setItem('loc_local_tiptap_ts', publishNow);
+        localStorage.setItem('loc_last_applied_cloud_ts', publishNow);
+      } catch {}
       showAdminToast('🎉 Đã xuất bản & đồng bộ toàn cầu! Website trên điện thoại và máy tính đều đã cập nhật.');
     } else {
       showAdminToast('🎉 Đã xuất bản thành công! Website đã được cập nhật ngay lập tức mà không cần deploy lại.');
@@ -2170,7 +2216,7 @@ export function closeAdminStudioPanel() {
 }
 
 export function requestAdminAccess() {
-  if (isSessionAuthenticated()) {
+  if (isAdminAuthenticated()) {
     openAdminStudioPanel();
   } else {
     openAuthModal();
@@ -2179,6 +2225,14 @@ export function requestAdminAccess() {
 
 // Initialize Admin Studio subsystem on DOM ready
 export async function initAdminStudio() {
+  registerAuthUIHandlers({
+    openAuthModal,
+    openAdminStudio: openAdminStudioPanel,
+  });
+
+  window.addEventListener('loc-open-auth-modal', () => openAuthModal());
+  window.addEventListener('loc-open-admin-studio', () => openAdminStudioPanel());
+
   // Sync PIN to localStorage for instant auth checks
   try {
     const dbPin = await dbGetSetting<string>(PIN_KEY, DEFAULT_PIN);
@@ -2298,12 +2352,20 @@ export async function syncCMSFromCloud(): Promise<boolean> {
       collections = cloud.collections;
     }
 
-    // 3. Sync Media Items
+    const cloudTs = cloud.publishedAt || cloud.updatedAt || '';
+    const cloudTime = cloudTs ? new Date(cloudTs).getTime() : 0;
+    const localMediaTs = localStorage.getItem('loc_local_media_ts');
+    const localMediaTime = localMediaTs ? new Date(localMediaTs).getTime() : 0;
+    const localTiptapTs = localStorage.getItem('loc_local_tiptap_ts');
+    const localTiptapTime = localTiptapTs ? new Date(localTiptapTs).getTime() : 0;
+
+    // 3. Sync Media Items - only if cloud is strictly newer than local edits!
     if (cloud.mediaItems && Array.isArray(cloud.mediaItems) && cloud.mediaItems.length > 0) {
       const lastApplied = localStorage.getItem('loc_last_applied_cloud_ts');
-      const cloudTs = cloud.publishedAt || cloud.updatedAt || '';
+      const isCloudNewer = cloudTime > localMediaTime;
+      const isInitialVisit = !localMediaTs && !lastApplied;
 
-      if (lastApplied !== cloudTs || cloud.mediaItems.length !== mediaItems.length) {
+      if ((isCloudNewer || isInitialVisit) && lastApplied !== cloudTs) {
         mediaItems = cloud.mediaItems;
         await dbSaveAllMedia(mediaItems);
         try {
@@ -2313,14 +2375,17 @@ export async function syncCMSFromCloud(): Promise<boolean> {
       }
     }
 
-    // 4. Sync Tiptap Text Content across all devices
+    // 4. Sync Tiptap Text Content across all devices - only if cloud is strictly newer!
     if (cloud.tiptapContent) {
       try {
         const cloudContentStr = typeof cloud.tiptapContent === 'string'
           ? cloud.tiptapContent
           : JSON.stringify(cloud.tiptapContent);
         const localContentStr = localStorage.getItem('loc_portfolio_tiptap_v2');
-        if (cloudContentStr && cloudContentStr !== localContentStr && cloudContentStr !== '{}') {
+        const isCloudNewer = cloudTime > localTiptapTime;
+        const isInitialVisit = !localTiptapTs && !localContentStr;
+
+        if ((isCloudNewer || isInitialVisit) && cloudContentStr && cloudContentStr !== localContentStr && cloudContentStr !== '{}') {
           localStorage.setItem('loc_portfolio_tiptap_v2', cloudContentStr);
           await dbSetSetting('tiptap_content', typeof cloud.tiptapContent === 'string' ? JSON.parse(cloud.tiptapContent) : cloud.tiptapContent);
           restoreSavedContent();
