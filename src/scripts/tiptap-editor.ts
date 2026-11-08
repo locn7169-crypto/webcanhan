@@ -164,6 +164,7 @@ export function ensureStableEditKeys() {
     ['.brand-subtext', 'brand-subname'],
     ['#works .title-section', 'works-title'],
     ['#synthesis .title-section', 'synthesis-title'],
+    ['#explorations .eyebrow span', 'explorations-eyebrow'],
     ['#explorations .explorations-title', 'explorations-title'],
     ['#explorations .explorations-subtitle', 'explorations-subtitle'],
     ['#contact .title-section', 'contact-title'],
@@ -206,9 +207,65 @@ export function ensureStableEditKeys() {
   });
 }
 
+export function enforceCanonicalExplorationsHeader() {
+  const titleEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-title"], #explorations .explorations-title');
+  if (titleEl) {
+    titleEl.innerHTML = 'Thư Viện <span class="explorations-title-sub">· Library</span>';
+  }
+  const eyebrowEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-eyebrow"], #explorations .eyebrow span');
+  if (eyebrowEl) {
+    eyebrowEl.innerHTML = 'LIBRARY · THƯ VIỆN';
+  }
+  const subtitleEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-subtitle"], #explorations .explorations-subtitle');
+  if (subtitleEl) {
+    subtitleEl.remove();
+  }
+}
+
+function sanitizeEdits(edits: Record<string, any>): boolean {
+  if (!edits || typeof edits !== 'object') return false;
+  let changed = false;
+  const obsoleteStrings = [
+    'Ngoài màn hình',
+    'Explorations Outside the Screen',
+    'FIELD NOTES & PERSPECTIVES',
+    'GHI CHÉP & GÓC NHÌN',
+    'FIELD NOTES',
+    'Một vài lát cắt về kỷ luật',
+    'Một vài lát cắt',
+  ];
+
+  Object.keys(edits).forEach((key) => {
+    const val = edits[key];
+    const text = typeof val === 'string' ? val : (val?.html || JSON.stringify(val));
+    const isObsolete = obsoleteStrings.some((s) => text.includes(s));
+    if (isObsolete || key === 'explorations-subtitle' || key.includes('explorations-subtitle')) {
+      delete edits[key];
+      changed = true;
+    }
+  });
+
+  return changed;
+}
+
 function applyEditsToDOM(edits: Record<string, any>) {
   if (!edits || typeof edits !== 'object') return;
   Object.entries(edits).forEach(([key, val]) => {
+    // Never allow obsolete strings to overwrite DOM
+    const valStr = typeof val === 'string' ? val : (val?.html || JSON.stringify(val) || '');
+    if (
+      valStr.includes('Ngoài màn hình') ||
+      valStr.includes('Explorations Outside the Screen') ||
+      valStr.includes('FIELD NOTES & PERSPECTIVES') ||
+      valStr.includes('GHI CHÉP & GÓC NHÌN') ||
+      valStr.includes('FIELD NOTES') ||
+      valStr.includes('Một vài lát cắt') ||
+      key === 'explorations-subtitle' ||
+      key.includes('explorations-subtitle')
+    ) {
+      return;
+    }
+
     const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
     if (el) {
       if (el.tagName.toLowerCase() === 'img') {
@@ -224,11 +281,17 @@ function applyEditsToDOM(edits: Record<string, any>) {
       }
     }
   });
+
+  // Re-assert canonical header immediately after any DOM write
+  enforceCanonicalExplorationsHeader();
 }
 
 // Restore saved edits on page load (synchronous localStorage first, then IndexedDB)
 export function restoreSavedContent() {
   ensureStableEditKeys();
+
+  // Enforce canonical title and eyebrow for Thư Viện section first
+  enforceCanonicalExplorationsHeader();
 
   try {
     let saved = localStorage.getItem(STORAGE_KEY);
@@ -236,7 +299,14 @@ export function restoreSavedContent() {
       saved = localStorage.getItem('loc_portfolio_tiptap_v1') || localStorage.getItem('loc_portfolio_edits_v4') || localStorage.getItem('loc_portfolio_edits_v3');
     }
     if (saved) {
-      applyEditsToDOM(JSON.parse(saved));
+      const parsed = JSON.parse(saved);
+      if (sanitizeEdits(parsed)) {
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+        } catch {}
+      }
+      applyEditsToDOM(parsed);
+      enforceCanonicalExplorationsHeader();
       console.info('[Tiptap] Restored persisted content from localStorage.');
     }
   } catch (e) {
@@ -247,7 +317,11 @@ export function restoreSavedContent() {
   dbGetSetting<Record<string, any> | null>('tiptap_content', null)
     .then((dbEdits) => {
       if (dbEdits && typeof dbEdits === 'object' && Object.keys(dbEdits).length > 0) {
+        if (sanitizeEdits(dbEdits)) {
+          dbSetSetting('tiptap_content', dbEdits);
+        }
         applyEditsToDOM(dbEdits);
+        enforceCanonicalExplorationsHeader();
         try {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(dbEdits));
         } catch {}
