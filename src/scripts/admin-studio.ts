@@ -2289,15 +2289,20 @@ export async function initAdminStudio() {
   });
 
   // 5. URL Hash Trigger (#admin)
+  // Prompt PIN if unauthenticated; do not block page with full overlay if authenticated
   if (window.location.hash === '#admin') {
-    setTimeout(() => {
-      requestAdminAccess();
-    }, 400);
+    if (!isAdminAuthenticated()) {
+      setTimeout(() => {
+        openAuthModal();
+      }, 400);
+    }
   }
 
   window.addEventListener('hashchange', () => {
     if (window.location.hash === '#admin') {
-      requestAdminAccess();
+      if (!isAdminAuthenticated()) {
+        openAuthModal();
+      }
     }
   });
 

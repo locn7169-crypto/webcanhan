@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Realtime Database — Inline Editable Webpage Demo</title>
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- ========================================================================= -->
+  <!-- FIREBASE COMPAT CDN SCRIPTS (v9.23.0 LTS)                                -->
+  <!-- Thư viện Firebase tương thích toàn diện, hoạt động không cần build step  -->
+  <!-- ========================================================================= -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    /* --------------------------------------------------
+       CSS RESET & DESIGN TOKENS
+       -------------------------------------------------- */
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --bg-body: #0b0f19;
+      --bg-surface: #111827;
+      --bg-surface-elevated: #1f2937;
+      --bg-surface-glass: rgba(17, 24, 39, 0.75);
+
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-focus: #3b82f6;
+
+      --text-main: #f9fafb;
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --success: #10b981;
+      --success-hover: #059669;
+      --amber: #f59e0b;
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-pill: 9999px;
+
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3);
+      --shadow-glow: 0 0 25px rgba(59, 130, 246, 0.25);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Ambient background gradient glow */
+    body::before {
+      content: "";
+      position: fixed;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 600px;
+      background: radial-gradient(circle, rgba(59, 130, 246, 0.12) 0%, rgba(139, 92, 246, 0.05) 45%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* --------------------------------------------------
+       ADMIN BANNER (Top Indicator)
+       -------------------------------------------------- */
+    #adminBanner {
+      display: none; /* Controlled dynamically by JavaScript */
+      background: linear-gradient(90deg, rgba(30, 58, 138, 0.95), rgba(88, 28, 135, 0.95));
+      border-bottom: 1px solid rgba(147, 197, 253, 0.3);
+      color: #ffffff;
+      padding: 10px 20px;
+      font-size: 13.5px;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    #adminBanner .banner-content {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 1100px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .banner-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 700;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-size: 11px;
+    }
+
+    .banner-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .banner-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .banner-link {
+      color: #93c5fd;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      transition: background 0.2s ease, color 0.2s ease;
+    }
+
+    .banner-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+    }
+
+    /* --------------------------------------------------
+       HEADER NAVIGATION
+       -------------------------------------------------- */
+    header {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+
+    .brand-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: white;
+      font-size: 18px;
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.4);
+    }
+
+    .brand-name {
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: var(--text-main);
+    }
+
+    .mode-pill {
+      font-size: 12px;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-weight: 600;
+      border: 1px solid var(--border-subtle);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .mode-pill .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--text-dim);
+    }
+
+    body.admin-active .mode-pill {
+      border-color: rgba(59, 130, 246, 0.5);
+      background: rgba(59, 130, 246, 0.15);
+      color: #93c5fd;
+    }
+
+    body.admin-active .mode-pill .dot {
+      background: #3b82f6;
+      box-shadow: 0 0 8px #3b82f6;
+    }
+
+    /* --------------------------------------------------
+       HERO SECTION
+       -------------------------------------------------- */
+    .hero {
+      padding: 72px 0 48px;
+      text-align: left;
+    }
+
+    .hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: clamp(34px, 5vw, 56px);
+      font-weight: 800;
+      letter-spacing: -1.2px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      background: linear-gradient(180deg, #ffffff 30%, #cbd5e1 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 2.5vw, 22px);
+      color: #93c5fd;
+      font-weight: 500;
+      line-height: 1.45;
+      margin-bottom: 18px;
+      max-width: 780px;
+    }
+
+    .hero-bio {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 720px;
+      margin-bottom: 32px;
+    }
+
+    /* --------------------------------------------------
+       PROJECTS / SHOWCASE GRID
+       -------------------------------------------------- */
+    .section-title-wrap {
+      margin-bottom: 32px;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      font-size: 14.5px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(59, 130, 246, 0.4);
+      box-shadow: var(--shadow-lg), 0 0 20px rgba(59, 130, 246, 0.1);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card-tag {
+      align-self: flex-start;
+      font-size: 11.5px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.12);
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 12px;
+      color: var(--text-main);
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 14.5px;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    /* --------------------------------------------------
+       DOCUMENTATION / SETUP GUIDE ACCORDION
+       -------------------------------------------------- */
+    .guide-box {
+      background: rgba(17, 24, 39, 0.85);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 28px;
+      margin-bottom: 80px;
+    }
+
+    .guide-title {
+      font-size: 18px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+      color: #facc15;
+    }
+
+    .guide-text {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .guide-code {
+      background: #090d16;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: #e2e8f0;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* --------------------------------------------------
+       EDITABLE ELEMENT STATES
+       Chế độ thường: tĩnh, không viền
+       Chế độ admin: viền chấm, hover/focus sáng màu
+       -------------------------------------------------- */
+    .editable {
+      transition: background-color 0.15s ease, outline 0.15s ease, box-shadow 0.15s ease;
+      min-height: 1.2em;
+    }
+
+    /* Chế độ Admin kích hoạt */
+    body.admin-active .editable {
+      cursor: text;
+      position: relative;
+      border-radius: 4px;
+    }
+
+    body.admin-active .editable:hover {
+      outline: 1.5px dashed rgba(59, 130, 246, 0.6);
+      background-color: rgba(59, 130, 246, 0.08);
+    }
+
+    body.admin-active .editable:focus {
+      outline: 2px solid #3b82f6;
+      background-color: rgba(59, 130, 246, 0.12);
+      box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
+    }
+
+    /* --------------------------------------------------
+       FLOATING SAVE BUTTON (#saveBtn)
+       -------------------------------------------------- */
+    #saveBtn {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 9999;
+      display: none; /* Controlled dynamically by JavaScript: display: inline-flex when admin */
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 14.5px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 25px -3px rgba(16, 185, 129, 0.45), 0 4px 6px -2px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, opacity 0.2s ease;
+      user-select: none;
+    }
+
+    #saveBtn:hover {
+      transform: translateY(-2px) scale(1.02);
+      box-shadow: 0 14px 30px -4px rgba(16, 185, 129, 0.55);
+    }
+
+    #saveBtn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    #saveBtn:disabled {
+      opacity: 0.65;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    #saveBtn svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    /* --------------------------------------------------
+       NOTIFICATION TOAST (#notificationToast)
+       Hiển thị thông điệp "Đã lưu thành công"
+       -------------------------------------------------- */
+    #notificationToast, #statusToast {
+      position: fixed;
+      bottom: 96px;
+      right: 28px;
+      z-index: 10000;
+      background: #111827;
+      color: #ffffff;
+      padding: 14px 22px;
+      border-radius: var(--radius-md);
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 20px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.3);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(16px) scale(0.96);
+      pointer-events: none;
+      transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    #notificationToast.show, #statusToast.show {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .toast-icon {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: var(--success);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    /* --------------------------------------------------
+       FOOTER & QUICK SWITCH BAR
+       -------------------------------------------------- */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--border-subtle);
+      padding: 32px 0 64px;
+      color: var(--text-dim);
+      font-size: 13.5px;
+    }
+
+    .footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .admin-toggle-link {
+      color: #60a5fa;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      transition: color 0.2s ease;
+    }
+
+    .admin-toggle-link:hover {
+      color: #93c5fd;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 640px) {
+      .hero {
+        padding: 40px 0 32px;
+      }
+      #saveBtn {
+        bottom: 16px;
+        right: 16px;
+        padding: 12px 20px;
+        font-size: 13.5px;
+      }
+      #notificationToast, #statusToast {
+        bottom: 80px;
+        right: 16px;
+        left: 16px;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- ADMIN BANNER (Chỉ hiển thị khi URL có hash #admin)                        -->
+  <!-- ========================================================================= -->
+  <aside id="adminBanner" role="region" aria-label="Bảng quản trị viên">
+    <div class="banner-content">
+      <div class="banner-text">
+        <span class="banner-badge">Admin Mode</span>
+        <span>Chế độ chỉnh sửa đang <strong>BẬT</strong>. Nhấp trực tiếp vào bất kỳ văn bản nào để sửa.</span>
+      </div>
+      <div class="banner-actions">
+        <a href="#" class="banner-link" id="exitAdminLink" title="Quay lại giao diện người xem bình thường">
+          <span>✕ Thoát chế độ Admin</span>
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="brand">
+        <div class="brand-icon">L</div>
+        <span class="brand-name">Lộc Studio</span>
+      </a>
+
+      <div style="display: flex; align-items: center; gap: 16px;">
+        <div class="mode-pill" id="modeIndicator">
+          <span class="dot"></span>
+          <span id="modeLabel">Chế độ xem</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    <!-- HERO SECTION -->
+    <section class="hero">
+      <div class="hero-tag">
+        <span>⚡</span>
+        <span class="editable" id="hero-badge" data-key="hero-badge">Firebase RTDB · Zero-Build Inline CMS</span>
+      </div>
+
+      <h1 class="hero-title editable" id="hero-title" data-key="hero-title">
+        Nguyễn Thành Lộc
+      </h1>
+
+      <p class="hero-subtitle editable" id="hero-subtitle" data-key="hero-subtitle">
+        Product Builder & Software Craftsman — Xây dựng trải nghiệm số tối giản, hiệu quả và thanh lịch.
+      </p>
+
+      <div class="hero-bio editable" id="hero-bio" data-key="hero-bio">
+        Chào mừng bạn đến với trang giới thiệu ứng dụng công nghệ Firebase Realtime Database. Mọi phần văn bản được đánh dấu đều có thể chỉnh sửa trực tiếp trên trình duyệt khi kích hoạt chế độ quản trị viên qua URL hash <code>#admin</code>.
+      </div>
+    </section>
+
+    <!-- SHOWCASE / PROJECTS -->
+    <section>
+      <div class="section-title-wrap">
+        <h2 class="section-title editable" id="section-title" data-key="section-title">Dự án tiêu biểu</h2>
+        <p class="section-desc editable" id="section-desc" data-key="section-desc">Những sản phẩm được thiết kế và chế tác với độ hoàn thiện cao nhất.</p>
+      </div>
+
+      <div class="cards-grid">
+        <!-- Card 1 -->
+        <article class="card">
+          <div class="card-tag editable" id="card-1-tag" data-key="card-1-tag">AI Language Learning</div>
+          <h3 class="card-title editable" id="card-1-title" data-key="card-1-title">Lộc Learn</h3>
+          <p class="card-desc editable" id="card-1-desc" data-key="card-1-desc">
+            Ứng dụng luyện thi HSK 1-6 ứng dụng mô hình lặp lại ngắt quãng (Spaced Repetition) và phản xạ giao tiếp tự nhiên.
+          </p>
+        </article>
+
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="card-tag editable" id="card-2-tag" data-key="card-2-tag">Personal Finance</div>
+          <h3 class="card-title editable" id="card-2-title" data-key="card-2-title">Lộc Money</h3>
+          <p class="card-desc editable" id="card-2-desc" data-key="card-2-desc">
+            Công cụ quản lý dòng tiền, đầu tư và tài chính cá nhân với bảo mật cục bộ và đồng bộ đám mây tức thời.
+          </p>
+        </article>
+
+        <!-- Card 3 -->
+        <article class="card">
+          <div class="card-tag editable" id="card-3-tag" data-key="card-3-tag">Creative Photography</div>
+          <h3 class="card-title editable" id="card-3-title" data-key="card-3-title">Ngoài màn hình</h3>
+          <p class="card-desc editable" id="card-3-desc" data-key="card-3-desc">
+            Không gian lưu giữ những khoảnh khắc đời thường, góc nhìn đường phố và nhiếp ảnh điện ảnh đương đại.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- SETUP INSTRUCTIONS -->
+    <section class="guide-box">
+      <h3 class="guide-title">
+        <span>📖</span> Hướng dẫn sử dụng & Kết nối Firebase Realtime Database
+      </h3>
+      <p class="guide-text">
+        <strong>1. Cách kích hoạt chế độ Admin:</strong> Thêm <code>#admin</code> vào cuối đường dẫn trên thanh địa chỉ (ví dụ: <code>.../firebase-editable-demo.html#admin</code>) và nhấn Enter.
+      </p>
+      <p class="guide-text">
+        <strong>2. Kết nối cơ sở dữ liệu thật:</strong> Mở tệp HTML này bằng trình soạn thảo và điền thông tin dự án Firebase của bạn vào biến <code>firebaseConfig</code> trong thẻ <code>&lt;script&gt;</code>.
+      </p>
+      <pre class="guide-code">// Quy tắc bảo mật Realtime Database khuyến nghị (tab Rules trong Firebase Console):
+{
+  "rules": {
+    ".read": true,
+    ".write": true // Hoặc "auth != null" khi có xác thực
+  }
+}</pre>
+    </section>
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container footer-inner">
+      <div class="editable" id="footer-text" data-key="footer-text">
+        © 2026 Nguyễn Thành Lộc. Tự do chỉnh sửa và lưu trữ thời gian thực.
+      </div>
+      <div>
+        <a href="#admin" class="admin-toggle-link" id="quickAdminToggle">
+          <span>🛠️ Bật chế độ Quản trị (#admin)</span>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================= -->
+  <!-- NÚT LƯU NỘI DUNG (#saveBtn)                                              -->
+  <!-- Hiển thị khi ở chế độ admin (#admin), ẩn ở chế độ thường                 -->
+  <!-- ========================================================================= -->
+  <button id="saveBtn" type="button" aria-label="Lưu thay đổi nội dung">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+      <polyline points="17 21 17 13 7 13 7 21"></polyline>
+      <polyline points="7 3 7 8 15 8"></polyline>
+    </svg>
+    <span id="saveBtnText">Lưu thay đổi</span>
+  </button>
+
+  <!-- ========================================================================= -->
+  <!-- THÔNG BÁO XÁC NHẬN (#notificationToast / #statusToast)                   -->
+  <!-- ========================================================================= -->
+  <div id="notificationToast" role="status" aria-live="polite">
+    <span class="toast-icon">✓</span>
+    <span id="toastMessage">Đã lưu thành công</span>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT LOGIC                                                          -->
+  <!-- ========================================================================= -->
+  <script>
+    // =========================================================================
+    // HƯỚNG DẪN CẤU HÌNH FIREBASE REALTIME DATABASE / FIREBASE CONFIGURATION
+    // =========================================================================
+    // 1. Truy cập https://console.firebase.google.com/ và tạo một dự án mới (hoặc chọn dự án có sẵn).
+    // 2. Đi tới "Project Settings" (biểu tượng bánh răng) -> tab "General" -> mục "Your apps".
+    // 3. Chọn biểu tượng Web (</>), đặt tên ứng dụng và sao chép đối tượng `firebaseConfig`.
+    // 4. Đi tới menu bên trái: "Build" -> "Realtime Database" -> bấm "Create Database".
+    //    - Chọn khu vực (Region), ví dụ: Singapore (asia-southeast1) hoặc US (us-central1).
+    //    - Tại bước Security Rules: chọn "Start in test mode" (hoặc chỉnh trong tab Rules:
+    //      { "rules": { ".read": true, ".write": true } } ).
+    // 5. SAO CHÉP URL của Realtime Database (ở đầu tab Data) và điền vào trường `databaseURL` bên dưới.
+    // 6. Dán các thông tin vào đối tượng `firebaseConfig` dưới đây:
+    // =========================================================================
+
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+
+    // Đường dẫn node lưu trữ trên Firebase Realtime Database
+    const DB_CONTENT_PATH = 'page_content';
+    const LOCAL_STORAGE_KEY = 'firebase_demo_page_content';
+
+    // -------------------------------------------------------------------------
+    // 1. KIỂM TRA CẤU HÌNH & KHỞI TẠO FIREBASE
+    // -------------------------------------------------------------------------
+
+    /**
+     * Kiểm tra xem cấu hình Firebase đã được điền thông tin thật hay đang ở chế độ placeholder
+     */
+    function isFirebaseConfigured(config) {
+      return Boolean(
+        config &&
+        typeof config.apiKey === 'string' &&
+        !config.apiKey.includes('YOUR_') &&
+        typeof config.databaseURL === 'string' &&
+        !config.databaseURL.includes('YOUR_') &&
+        typeof config.projectId === 'string' &&
+        !config.projectId.includes('YOUR_')
+      );
+    }
+
+    /**
+     * Lấy thực thể Database (Firebase RTDB hoặc mock, trả về null nếu fallback về localStorage)
+     */
+    function getDatabaseInstance() {
+      // Hỗ trợ kiểm thử tự động: nếu môi trường test tiêm mock database (window.__mockDb)
+      if (typeof window !== 'undefined' && window.firebase && typeof window.firebase.database === 'function') {
+        try {
+          if (Array.isArray(window.firebase.apps)) {
+            if (window.firebase.apps.length === 0) {
+              window.firebase.initializeApp(firebaseConfig);
+            }
+          } else if (typeof window.firebase.initializeApp === 'function') {
+            try {
+              window.firebase.initializeApp(firebaseConfig);
+            } catch (e) {
+              // App có thể đã được khởi tạo trước đó
+            }
+          }
+
+          const db = window.firebase.database();
+          if (db && typeof db.ref === 'function') {
+            // Nếu có mock database từ test harness HOẶC có config thật
+            if (window.__mockDb !== undefined || isFirebaseConfigured(firebaseConfig)) {
+              return db;
+            }
+          }
+        } catch (err) {
+          console.warn('Lỗi khi khởi tạo Firebase RTDB:', err);
+        }
+      }
+      return null;
+    }
+
+    // -------------------------------------------------------------------------
+    // 2. QUẢN LÝ CHẾ ĐỘ ADMIN QUA URL HASH (#admin)
+    // -------------------------------------------------------------------------
+
+    /**
+     * Kiểm tra hash hiện tại có phải là #admin hay không (không phân biệt hoa thường)
+     */
+    function isAdminMode() {
+      if (typeof window === 'undefined' || !window.location) return false;
+      const rawHash = (window.location.hash || '').trim();
+      if (!rawHash) return false;
+
+      // Chuẩn hóa hash: cắt bỏ query parameters nếu có (vd: #admin?mode=1)
+      const cleanHash = rawHash.split('?')[0].toLowerCase();
+      return cleanHash === '#admin';
+    }
+
+    /**
+     * Cập nhật trạng thái giao diện: toggle contenteditable và nút #saveBtn
+     */
+    function updateAdminUI() {
+      const isAdmin = isAdminMode();
+      const editableElements = document.querySelectorAll('.editable');
+      const saveBtn = document.getElementById('saveBtn');
+      const adminBanner = document.getElementById('adminBanner');
+      const modeIndicator = document.getElementById('modeIndicator');
+      const modeLabel = document.getElementById('modeLabel');
+      const quickAdminToggle = document.getElementById('quickAdminToggle');
+
+      // 1. Bật / Tắt contenteditable cho tất cả phần tử .editable
+      editableElements.forEach(el => {
+        if (isAdmin) {
+          el.setAttribute('contenteditable', 'true');
+          el.contentEditable = 'true';
+        } else {
+          el.setAttribute('contenteditable', 'false');
+          el.contentEditable = 'false';
+        }
+        el.setAttribute('spellcheck', 'false');
+      });
+
+      // 2. Hiển thị / Ẩn nút Lưu (#saveBtn)
+      if (saveBtn) {
+        saveBtn.style.display = isAdmin ? 'inline-flex' : 'none';
+      }
+
+      // 3. Hiển thị / Ẩn thanh Banner Admin ở đầu trang
+      if (adminBanner) {
+        adminBanner.style.display = isAdmin ? 'flex' : 'none';
+      }
+
+      // 4. Cập nhật nhãn trạng thái và class trên body
+      if (modeLabel) {
+        modeLabel.textContent = isAdmin ? 'Chế độ Quản trị (Admin)' : 'Chế độ xem';
+      }
+
+      if (quickAdminToggle) {
+        if (isAdmin) {
+          quickAdminToggle.href = '#';
+          quickAdminToggle.innerHTML = '<span>👁️ Chuyển sang Chế độ xem</span>';
+        } else {
+          quickAdminToggle.href = '#admin';
+          quickAdminToggle.innerHTML = '<span>🛠️ Bật chế độ Quản trị (#admin)</span>';
+        }
+      }
+
+      document.body.classList.toggle('admin-active', isAdmin);
+    }
+
+    // -------------------------------------------------------------------------
+    // 3. THÔNG BÁO XÁC NHẬN (TOAST NOTIFICATION)
+    // -------------------------------------------------------------------------
+
+    let toastTimer = null;
+
+    /**
+     * Hiển thị thông báo nổi xác nhận cho người dùng
+     */
+    function showNotification(message = 'Đã lưu thành công', isError = false) {
+      let toast = document.getElementById('notificationToast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'notificationToast';
+        toast.setAttribute('role', 'status');
+        toast.setAttribute('aria-live', 'polite');
+        document.body.appendChild(toast);
+      }
+
+      const toastMessage = document.getElementById('toastMessage') || toast;
+      toastMessage.textContent = message;
+
+      if (isError) {
+        toast.style.borderColor = '#ef4444';
+        toast.style.boxShadow = '0 20px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(239, 68, 68, 0.4)';
+      } else {
+        toast.style.borderColor = 'rgba(16, 185, 129, 0.5)';
+        toast.style.boxShadow = '0 20px 30px -5px rgba(0, 0, 0, 0.6), 0 0 15px rgba(16, 185, 129, 0.3)';
+      }
+
+      toast.classList.add('show');
+
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3500);
+    }
+
+    // -------------------------------------------------------------------------
+    // 4. HÀM NẠP DỮ LIỆU: loadData()
+    // -------------------------------------------------------------------------
+
+    /**
+     * Trích xuất định danh duy nhất của phần tử editable
+     */
+    function getElementKey(el, index) {
+      return el.getAttribute('data-key') || el.id || ('field_' + index);
+    }
+
+    /**
+     * Tự động chạy khi tải trang: kết nối Firebase RTDB (hoặc fallback)
+     * nạp nội dung đã lưu và cập nhật vào các phần tử .editable
+     */
+    async function loadData() {
+      const editableElements = document.querySelectorAll('.editable');
+      if (editableElements.length === 0) return;
+
+      try {
+        const db = getDatabaseInstance();
+        let data = null;
+
+        if (db) {
+          // Lấy dữ liệu từ Firebase Realtime Database
+          try {
+            const snapshot = await db.ref(DB_CONTENT_PATH).once('value');
+            if (snapshot && typeof snapshot.val === 'function') {
+              data = snapshot.val();
+            }
+            // Hỗ trợ dự phòng nếu node được lưu tên khác
+            if (!data) {
+              const altSnapshot = await db.ref('pageContent').once('value');
+              if (altSnapshot && typeof altSnapshot.val === 'function') {
+                data = altSnapshot.val();
+              }
+            }
+          } catch (fetchErr) {
+            console.warn('Không thể tải từ Firebase RTDB, thử localStorage fallback:', fetchErr);
+          }
+        }
+
+        // Nếu Firebase chưa cấu hình hoặc không có mạng, đọc từ localStorage fallback
+        if (!data) {
+          try {
+            const cached = localStorage.getItem(LOCAL_STORAGE_KEY);
+            if (cached) {
+              data = JSON.parse(cached);
+            }
+          } catch (storageErr) {
+            console.warn('Không thể đọc từ localStorage:', storageErr);
+          }
+        }
+
+        // Cập nhật dữ liệu vào các phần tử tương ứng trong DOM
+        if (data && typeof data === 'object') {
+          editableElements.forEach((el, index) => {
+            const key = getElementKey(el, index);
+            if (data[key] !== undefined && data[key] !== null) {
+              el.innerHTML = data[key];
+            }
+          });
+          console.info('✅ Dữ liệu đã được nạp thành công:', Object.keys(data).length, 'mục');
+        } else {
+          console.info('ℹ️ Chưa có dữ liệu lưu trữ, hiển thị nội dung mặc định.');
+        }
+      } catch (err) {
+        console.warn('⚠️ Lỗi trong quá trình nạp dữ liệu (loadData):', err);
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 5. HÀM LƯU DỮ LIỆU: saveData()
+    // -------------------------------------------------------------------------
+
+    /**
+     * Kích hoạt khi bấm nút #saveBtn trong chế độ Admin:
+     * Quét nội dung các phần tử .editable, lưu vào Firebase RTDB (hoặc fallback)
+     * và hiển thị thông báo "Đã lưu thành công"
+     */
+    async function saveData() {
+      const saveBtn = document.getElementById('saveBtn');
+      const saveBtnText = document.getElementById('saveBtnText');
+      const editableElements = document.querySelectorAll('.editable');
+
+      if (editableElements.length === 0) return;
+
+      // 1. Quét nội dung các phần tử .editable thành từ điển dữ liệu
+      const payload = {};
+      editableElements.forEach((el, index) => {
+        const key = getElementKey(el, index);
+        if (key) {
+          payload[key] = el.innerHTML.trim();
+        }
+      });
+
+      // 2. Hiệu ứng đang lưu trên nút bấm (tránh double-click)
+      const originalText = saveBtnText ? saveBtnText.textContent : 'Lưu thay đổi';
+      if (saveBtn) {
+        saveBtn.disabled = true;
+      }
+      if (saveBtnText) {
+        saveBtnText.textContent = 'Đang lưu...';
+      }
+
+      try {
+        const db = getDatabaseInstance();
+        let savedToFirebase = false;
+
+        if (db) {
+          try {
+            await db.ref(DB_CONTENT_PATH).set(payload);
+            savedToFirebase = true;
+            console.info('✅ Đã lưu thành công lên Firebase RTDB:', payload);
+          } catch (rtdbErr) {
+            console.warn('⚠️ Ghi lên Firebase RTDB thất bại, lưu dự phòng vào localStorage:', rtdbErr);
+          }
+        }
+
+        // Luôn luôn sao lưu dự phòng vào localStorage
+        try {
+          localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+        } catch (storageErr) {
+          console.warn('Không thể ghi vào localStorage:', storageErr);
+        }
+
+        // 3. Hiển thị thông báo xác nhận chính xác theo yêu cầu: "Đã lưu thành công"
+        showNotification('Đã lưu thành công');
+
+      } catch (err) {
+        console.error('❌ Lỗi khi lưu dữ liệu:', err);
+        showNotification('Lỗi khi lưu dữ liệu: ' + (err.message || err), true);
+      } finally {
+        // Khôi phục trạng thái nút bấm
+        if (saveBtn) {
+          saveBtn.disabled = false;
+        }
+        if (saveBtnText) {
+          saveBtnText.textContent = originalText;
+        }
+      }
+    }
+
+    // -------------------------------------------------------------------------
+    // 6. ĐĂNG KÝ SỰ KIỆN VÀ KHỞI TẠO HỆ THỐNG
+    // -------------------------------------------------------------------------
+
+    // Gắn sự kiện click cho nút Lưu
+    const saveButtonElement = document.getElementById('saveBtn');
+    if (saveButtonElement) {
+      saveButtonElement.addEventListener('click', saveData);
+    }
+
+    // Lắng nghe sự kiện hashchange để chuyển đổi chế độ tức thời mà không cần reload
+    window.addEventListener('hashchange', updateAdminUI);
+
+    // Khi tài liệu tải xong, đồng thời cập nhật UI admin và tự động nạp dữ liệu
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        updateAdminUI();
+        loadData();
+      });
+    } else {
+      updateAdminUI();
+      loadData();
+    }
+
+    // -------------------------------------------------------------------------
+    // 7. EXPORT HOOKS CHO TEST HARNESS TỰ ĐỘNG (PLAYWRIGHT)
+    // -------------------------------------------------------------------------
+    window.loadData = loadData;
+    window.saveData = saveData;
+    window.updateAdminUI = updateAdminUI;
+    window.isAdminMode = isAdminMode;
+    window.isFirebaseConfigured = isFirebaseConfigured;
+    window.getDatabaseInstance = getDatabaseInstance;
+    window.firebaseConfig = firebaseConfig;
+  </script>
+</body>
+</html>

@@ -159,9 +159,24 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
+  <!-- Firebase App & Realtime Database Compat CDN (v9.23.0 LTS) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <link rel="stylesheet" href="./src/styles/main.css">
 </head>
 <body>
+
+  <!-- Top Admin Mode Indicator Banner -->
+  <div id="adminBanner" class="admin-top-banner" style="display: none;">
+    <div class="admin-banner-container">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="admin-badge">ADMIN</span>
+        <span>Chế độ Quản trị (#admin) đang bật — Bạn có thể nhấp trực tiếp vào bất kỳ chữ nào để sửa</span>
+      </div>
+      <a href="#" class="admin-banner-exit-link" id="adminExitBtn">✕ Thoát Admin</a>
+    </div>
+  </div>
 
   <!-- Lusion Studio Ambient Ivory Backdrop System -->
   <div class="site-backdrop-system" aria-hidden="true">
@@ -471,8 +486,8 @@
 
           <div class="hero-name-signature-wrap">
             <h1 class="hero-display-name">
-              <span class="name-line-first">Nguyễn</span>
-              <span class="name-line-second">Thành Lộc</span>
+              <span class="name-line-first editable" data-edit-key="hero-name-first">Nguyễn</span>
+              <span class="name-line-second editable" data-edit-key="hero-name-second">Thành Lộc</span>
             </h1>
             <!-- Calligraphy Golden Flourish Stroke beneath Thành Lộc -->
             <svg class="hero-name-flourish" viewBox="0 0 220 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -487,17 +502,17 @@
             </svg>
 
             <div class="hero-signature-subtitle">
-              <span class="sig-cn">阮城禄</span>
+              <span class="sig-cn editable" data-edit-key="hero-sig-cn">阮城禄</span>
               <span class="sig-sep">·</span>
-              <span class="sig-studio">Lộc Studio</span>
+              <span class="sig-studio editable" data-edit-key="hero-sig-studio">Lộc Studio</span>
             </div>
           </div>
 
           <div class="hero-portfolio-tagline-box">
-            <div class="hero-portfolio-italic">Personal Website &amp; Portfolio</div>
+            <div class="hero-portfolio-italic editable" data-edit-key="hero-tagline-en">Personal Website &amp; Portfolio</div>
             <div class="hero-quote-bar">
               <span class="quote-bar-gold-line"></span>
-              <p class="quote-bar-text">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</p>
+              <p class="quote-bar-text editable" data-edit-key="hero-quote-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</p>
             </div>
           </div>
 
@@ -2264,6 +2279,18 @@
         </div>
       </div>
     </div>
+  </div>
+
+  <!-- Floating Admin Save Button (#saveBtn) -->
+  <button id="saveBtn" type="button" class="admin-floating-save-btn" style="display: none;" aria-label="Lưu thay đổi nội dung">
+    <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+    <span id="saveBtnText">Lưu thay đổi</span>
+  </button>
+
+  <!-- Notification Toast (#notificationToast) -->
+  <div id="notificationToast" role="status" aria-live="polite" class="save-toast-notice">
+    <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #10b981;"></i>
+    <span id="toastMessage">Đã lưu thành công</span>
   </div>
 
   <script type="module" src="./src/scripts/main.ts"></script>
