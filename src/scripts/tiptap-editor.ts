@@ -222,6 +222,21 @@ export function enforceCanonicalExplorationsHeader() {
   }
 }
 
+export function stripEditableArtifacts(html: string): string {
+  if (!html || typeof html !== 'string') return html;
+  return html
+    .replace(/\s*contenteditable=(["']).*?\1/gi, '')
+    .replace(/\s*spellcheck=(["']).*?\1/gi, '')
+    .replace(/\bclass=(["'])(.*?)\1/gi, (_match, quote, classes) => {
+      const filtered = classes
+        .split(/\s+/)
+        .filter((c: string) => c !== 'editable')
+        .join(' ')
+        .trim();
+      return filtered ? `class=${quote}${filtered}${quote}` : '';
+    });
+}
+
 function sanitizeEdits(edits: Record<string, any>): boolean {
   if (!edits || typeof edits !== 'object') return false;
   let changed = false;
@@ -241,6 +256,9 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
     const isObsolete = obsoleteStrings.some((s) => text.includes(s));
     if (isObsolete || key === 'explorations-subtitle' || key.includes('explorations-subtitle')) {
       delete edits[key];
+      changed = true;
+    } else if (typeof edits[key] === 'string' && (edits[key].includes('contenteditable') || edits[key].includes('editable'))) {
+      edits[key] = stripEditableArtifacts(edits[key]);
       changed = true;
     }
   });
@@ -272,14 +290,22 @@ function applyEditsToDOM(edits: Record<string, any>) {
         const src = typeof val === 'string' ? val : (val?.src || val?.html);
         if (src) (el as HTMLImageElement).src = src;
       } else if (typeof val === 'string') {
-        el.innerHTML = val;
+        el.innerHTML = stripEditableArtifacts(val);
       } else if (val && typeof val === 'object') {
-        if (val.html !== undefined) el.innerHTML = val.html;
+        if (val.html !== undefined) el.innerHTML = stripEditableArtifacts(val.html);
         if (val.style) {
           Object.assign(el.style, val.style);
         }
       }
+      el.removeAttribute('contenteditable');
+      el.classList.remove('editable');
     }
+  });
+
+  // Strip any leftover contenteditable or editable class across whole document
+  document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((node) => {
+    node.removeAttribute('contenteditable');
+    node.classList.remove('editable');
   });
 
   // Re-assert canonical header immediately after any DOM write

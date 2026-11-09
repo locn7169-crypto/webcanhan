@@ -167,17 +167,6 @@
 </head>
 <body>
 
-  <!-- Top Admin Mode Indicator Banner -->
-  <div id="adminBanner" class="admin-top-banner" style="display: none;">
-    <div class="admin-banner-container">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span class="admin-badge">ADMIN</span>
-        <span>Chế độ Quản trị (#admin) đang bật — Bạn có thể nhấp trực tiếp vào bất kỳ chữ nào để sửa</span>
-      </div>
-      <a href="#" class="admin-banner-exit-link" id="adminExitBtn">✕ Thoát Admin</a>
-    </div>
-  </div>
-
   <!-- Lusion Studio Ambient Ivory Backdrop System -->
   <div class="site-backdrop-system" aria-hidden="true">
     <div class="studio-ambient-layer"></div>
@@ -369,10 +358,6 @@
         Developer · Creator<br>Product Builder
       </div>
       <div class="menu-footer-actions">
-        <button type="button" class="menu-action-btn admin-nav-trigger" aria-label="Quản trị website" title="Quản trị website · Admin">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="16" height="10" x="4" y="11" rx="2" ry="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-          <span>Admin</span>
-        </button>
         <a href="tel:0866192413" class="menu-action-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
           <span>Gọi điện</span>
@@ -416,14 +401,6 @@
       </nav>
 
       <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <!-- Admin Studio Entrance (Discrete, Elegant) -->
-        <button type="button" class="admin-nav-trigger" aria-label="Quản trị website Lộc Studio (Option + A)" title="Quản trị website · Admin (⌥A)">
-          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
-            <rect width="16" height="10" x="4" y="11" rx="2" ry="2"/>
-            <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
-          </svg>
-        </button>
-
         <!-- Le-Lab Signature Organic Liquid Morphing Magnetic Button -->
         <a href="#contact" class="le-lab-magnetic-btn" aria-label="Connect with Nguyễn Thành Lộc">
           <div class="le-lab-wrap">
@@ -486,8 +463,8 @@
 
           <div class="hero-name-signature-wrap">
             <h1 class="hero-display-name">
-              <span class="name-line-first editable" data-edit-key="hero-name-first">Nguyễn</span>
-              <span class="name-line-second editable" data-edit-key="hero-name-second">Thành Lộc</span>
+              <span class="name-line-first" data-edit-key="hero-name-first">Nguyễn</span>
+              <span class="name-line-second" data-edit-key="hero-name-second">Thành Lộc</span>
             </h1>
             <!-- Calligraphy Golden Flourish Stroke beneath Thành Lộc -->
             <svg class="hero-name-flourish" viewBox="0 0 220 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -502,17 +479,17 @@
             </svg>
 
             <div class="hero-signature-subtitle">
-              <span class="sig-cn editable" data-edit-key="hero-sig-cn">阮城禄</span>
+              <span class="sig-cn" data-edit-key="hero-sig-cn">阮城禄</span>
               <span class="sig-sep">·</span>
-              <span class="sig-studio editable" data-edit-key="hero-sig-studio">Lộc Studio</span>
+              <span class="sig-studio" data-edit-key="hero-sig-studio">Lộc Studio</span>
             </div>
           </div>
 
           <div class="hero-portfolio-tagline-box">
-            <div class="hero-portfolio-italic editable" data-edit-key="hero-tagline-en">Personal Website &amp; Portfolio</div>
+            <div class="hero-portfolio-italic" data-edit-key="hero-tagline-en">Personal Website &amp; Portfolio</div>
             <div class="hero-quote-bar">
               <span class="quote-bar-gold-line"></span>
-              <p class="quote-bar-text editable" data-edit-key="hero-quote-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</p>
+              <p class="quote-bar-text" data-edit-key="hero-quote-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</p>
             </div>
           </div>
 
@@ -2177,7 +2154,7 @@
             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
             <span>← Quay lại trang chủ</span>
           </button>
-          <span class="journal-pill-tag">✦ FIELD NOTES · BẢN NHẬT KÝ &amp; GHI CHÉP</span>
+          <span class="journal-pill-tag">✦ LIBRARY · THƯ VIỆN</span>
         </div>
         <div class="journal-modal-top-actions">
           <button type="button" class="btn btn-secondary journal-modal-save-btn" style="display: none;" title="Lưu các ghi chép">
@@ -2279,18 +2256,6 @@
         </div>
       </div>
     </div>
-  </div>
-
-  <!-- Floating Admin Save Button (#saveBtn) -->
-  <button id="saveBtn" type="button" class="admin-floating-save-btn" style="display: none;" aria-label="Lưu thay đổi nội dung">
-    <i data-lucide="check" style="width: 18px; height: 18px;"></i>
-    <span id="saveBtnText">Lưu thay đổi</span>
-  </button>
-
-  <!-- Notification Toast (#notificationToast) -->
-  <div id="notificationToast" role="status" aria-live="polite" class="save-toast-notice">
-    <i data-lucide="check-circle" style="width: 18px; height: 18px; color: #10b981;"></i>
-    <span id="toastMessage">Đã lưu thành công</span>
   </div>
 
   <script type="module" src="./src/scripts/main.ts"></script>

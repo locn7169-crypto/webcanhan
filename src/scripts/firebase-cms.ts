@@ -8,7 +8,7 @@
 import { fetchCloudCMS, pushCloudCMS } from './cloud-cms-sync';
 import { isAdminAuthenticated, requestAdminAccess, getStoredPin } from './auth-gate';
 import { dbGetAllMedia, dbGetSetting } from './admin-studio';
-import { enforceCanonicalExplorationsHeader } from './tiptap-editor';
+import { enforceCanonicalExplorationsHeader, stripEditableArtifacts } from './tiptap-editor';
 
 // ============================================================================
 // STEP 2: FIREBASE CONFIGURATION PLACEHOLDER & INSTRUCTIONS
@@ -117,9 +117,16 @@ export function applyDataToDOM(data: Record<string, string>) {
       if (el.tagName.toLowerCase() === 'img') {
         (el as HTMLImageElement).src = val;
       } else {
-        el.innerHTML = val;
+        el.innerHTML = stripEditableArtifacts(val);
       }
+      el.removeAttribute('contenteditable');
+      el.classList.remove('editable');
     }
+  });
+
+  document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((node) => {
+    node.removeAttribute('contenteditable');
+    node.classList.remove('editable');
   });
 
   enforceCanonicalExplorationsHeader();
@@ -252,93 +259,51 @@ export async function saveData() {
 }
 
 // ============================================================================
-// STEP 1: KIỂM TRA URL #admin & BẬT/TẮT CHẾ ĐỘ CHỈNH SỬA
+// BẢO VỆ CHẾ ĐỘ XEM TRÊN TRANG CHÍNH: 100% CHỈ ĐỌC (READ-ONLY)
 // ============================================================================
+
+export function enforceStrictReadOnly() {
+  if (typeof document === 'undefined') return;
+  document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((el) => {
+    el.removeAttribute('contenteditable');
+    el.classList.remove('editable');
+  });
+  const saveBtn = document.getElementById('saveBtn');
+  if (saveBtn) saveBtn.style.display = 'none';
+  const adminBanner = document.getElementById('adminBanner');
+  if (adminBanner) adminBanner.style.display = 'none';
+  document.body.classList.remove('admin-active');
+}
 
 export function checkAdminMode() {
   if (typeof window === 'undefined') return;
   const hash = (window.location.hash || '').trim().toLowerCase();
-  const isAdminHash = hash === '#admin' || hash.startsWith('#admin?');
-  const isAuth = isAdminAuthenticated();
-
-  if (isAdminHash) {
-    if (!isAuth) {
-      // Yêu cầu nhập mã PIN nếu chưa đăng nhập
-      requestAdminAccess();
-      applyEditableState(false);
-      return;
-    }
-    // Đã xác thực admin: bật chế độ chỉnh sửa
-    applyEditableState(true);
-  } else {
-    // Người xem bình thường: khóa chỉnh sửa hoàn toàn
-    applyEditableState(false);
+  if (hash.includes('#admin')) {
+    requestAdminAccess();
   }
+  enforceStrictReadOnly();
 }
 
-export function applyEditableState(isAdmin: boolean) {
-  const editables = document.querySelectorAll<HTMLElement>('.editable, [data-edit-key]');
-  const saveBtn = document.getElementById('saveBtn');
-  const adminBanner = document.getElementById('adminBanner');
-
-  editables.forEach((el) => {
-    if (el.closest('#adminBanner, #saveBtn, #admin-auth-overlay, #admin-studio-overlay, .toast-notice, script, style')) return;
-    el.classList.add('editable');
-    if (isAdmin) {
-      el.setAttribute('contenteditable', 'true');
-      el.setAttribute('spellcheck', 'false');
-    } else {
-      el.setAttribute('contenteditable', 'false');
-    }
-  });
-
-  if (saveBtn) {
-    saveBtn.style.display = isAdmin ? 'inline-flex' : 'none';
-  }
-  if (adminBanner) {
-    adminBanner.style.display = isAdmin ? 'flex' : 'none';
-  }
-
-  document.body.classList.toggle('admin-active', isAdmin);
-}
-
-// Khởi tạo toàn bộ hệ thống
+// Khởi tạo hệ thống CMS
 export function initFirebaseCMS() {
-  // 1. Nạp dữ liệu đã lưu
+  // 1. Tự động nạp dữ liệu đã lưu từ Firebase RTDB & Cloud Gist
   loadData();
 
-  // 2. Gắn sự kiện click nút Lưu
-  const saveBtn = document.getElementById('saveBtn');
-  if (saveBtn) {
-    saveBtn.addEventListener('click', saveData);
-  }
+  // 2. Tuyệt đối đảm bảo trang chính 100% chỉ đọc (loại bỏ mọi yếu tố chỉnh sửa trực tiếp)
+  enforceStrictReadOnly();
 
-  // 3. Gắn nút thoát admin trên banner
-  const exitBtn = document.getElementById('adminExitBtn');
-  if (exitBtn) {
-    exitBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      window.location.hash = '';
-      applyEditableState(false);
-    });
-  }
-
-  // 4. Lắng nghe thay đổi URL hash (#admin)
+  // 3. Lắng nghe thay đổi URL hash (#admin)
   window.addEventListener('hashchange', checkAdminMode);
 
-  // 5. Lắng nghe sự kiện đăng nhập Admin thành công
-  window.addEventListener('loc-admin-auth-changed', (e: any) => {
-    if (e.detail?.authenticated) {
-      if ((window.location.hash || '').toLowerCase().includes('#admin')) {
-        applyEditableState(true);
-      }
-    } else {
-      applyEditableState(false);
-    }
+  // 4. Lắng nghe trạng thái đăng nhập
+  window.addEventListener('loc-admin-auth-changed', () => {
+    enforceStrictReadOnly();
   });
 
-  // 6. Kiểm tra trạng thái URL ngay khi mở trang
-  checkAdminMode();
+  // 5. Kiểm tra trạng thái URL khi vừa mở trang
+  if ((window.location.hash || '').toLowerCase().includes('#admin')) {
+    setTimeout(checkAdminMode, 300);
+  }
 }
 
 // Expose ra window để dễ gọi hoặc kiểm thử
@@ -346,6 +311,6 @@ if (typeof window !== 'undefined') {
   (window as any).loadData = loadData;
   (window as any).saveData = saveData;
   (window as any).checkAdminMode = checkAdminMode;
-  (window as any).applyEditableState = applyEditableState;
+  (window as any).enforceStrictReadOnly = enforceStrictReadOnly;
   (window as any).firebaseConfig = firebaseConfig;
 }

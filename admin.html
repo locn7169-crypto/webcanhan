@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nguyễn Thành Lộc — Lộc Studio | Trang Quản Trị Hệ Thống (Admin)</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Firebase Compat CDN -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+  <style>
+    :root {
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --bg: #0b0f19;
+      --bg-surface: #111827;
+      --bg-card: #1f2937;
+      --border: rgba(255, 255, 255, 0.1);
+      --border-focus: #3b82f6;
+      --text: #f9fafb;
+      --text-muted: #9ca3af;
+      --gold: #d4af37;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #10b981;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    header {
+      background: rgba(17, 24, 39, 0.95);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 800;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      letter-spacing: 0.5px;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+      border-color: var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-hover);
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #d4af37, #b8860b);
+      color: #000;
+      font-weight: 700;
+    }
+
+    .btn-gold:hover {
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 24px;
+      width: 100%;
+      flex: 1;
+    }
+
+    /* PIN Gate Modal */
+    #pinGateModal {
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 15, 25, 0.95);
+      backdrop-filter: blur(12px);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .pin-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 36px 32px;
+      width: 100%;
+      max-width: 420px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .pin-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .pin-subtitle {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .pin-input {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: 18px;
+      font-family: var(--font-mono);
+      color: var(--text);
+      text-align: center;
+      letter-spacing: 4px;
+      margin-bottom: 16px;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .pin-input:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Tabs */
+    .tabs-nav {
+      display: flex;
+      gap: 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 28px;
+      padding-bottom: 12px;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-family: inherit;
+      font-size: 14.5px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+      color: #fff;
+      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+    }
+
+    /* Panels */
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    /* Form Card */
+    .form-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13.5px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+
+    .form-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-family: inherit;
+      font-size: 14px;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-control:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    textarea.form-control {
+      min-height: 85px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Toast */
+    #adminToast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #064e3b;
+      border: 1px solid var(--success);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+      pointer-events: none;
+      z-index: 10000;
+    }
+
+    #adminToast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PIN GATE OVERLAY -->
+  <div id="pinGateModal">
+    <div class="pin-card">
+      <div style="font-size: 32px; margin-bottom: 12px;">🔒</div>
+      <h2 class="pin-title">Đăng nhập Quản trị</h2>
+      <p class="pin-subtitle">Vui lòng nhập mã PIN để vào trang quản trị Lộc Studio</p>
+      
+      <form id="pinForm">
+        <input type="password" id="adminPinInput" class="pin-input" placeholder="••••" maxlength="8" autofocus autocomplete="off">
+        <div style="display: flex; gap: 10px;">
+          <button type="submit" class="btn btn-primary" style="flex: 1; justify-content: center;">Mở khóa</button>
+          <a href="./" class="btn btn-secondary">Về trang chính</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-badge">ADMIN PORTAL</span>
+        <span class="brand-title">Lộc Studio — Trang Quản Trị Hệ Thống</span>
+      </div>
+
+      <div class="header-actions">
+        <a href="./" target="_blank" class="btn btn-secondary">
+          <span>👁️ Xem trang web chính</span>
+        </a>
+        <button type="button" id="logoutBtn" class="btn btn-secondary">
+          <span>Đăng xuất</span>
+        </button>
+        <button type="button" id="saveAndPublishBtn" class="btn btn-gold">
+          <span>💾 Lưu &amp; Xuất bản toàn bộ</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container">
+    <!-- TABS NAVIGATION -->
+    <div class="tabs-nav">
+      <button type="button" class="tab-btn active" data-tab="tab-text">
+        <span>📝 Quản lý Nội dung Văn bản</span>
+      </button>
+      <button type="button" class="tab-btn" data-tab="tab-cloud">
+        <span>☁️ Cấu hình Firebase &amp; Đám mây</span>
+      </button>
+    </div>
+
+    <!-- TAB 1: TEXT CONTENT MANAGER -->
+    <section id="tab-text" class="tab-panel active">
+      <!-- HERO SECTION -->
+      <div class="form-card">
+        <div class="card-header">
+          <h3 class="card-title">✨ Phần Mở Đầu &amp; Danh Xưng (Hero Section)</h3>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Họ (First Name)</label>
+            <input type="text" class="form-control" id="field-hero-name-first" data-key="hero-name-first">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tên (Second Name)</label>
+            <input type="text" class="form-control" id="field-hero-name-second" data-key="hero-name-second">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Tên chữ Hán (Chinese Name)</label>
+            <input type="text" class="form-control" id="field-hero-sig-cn" data-key="hero-sig-cn">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tên Studio</label>
+            <input type="text" class="form-control" id="field-hero-sig-studio" data-key="hero-sig-studio">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Khẩu hiệu / Định vị tiếng Anh (Tagline)</label>
+          <input type="text" class="form-control" id="field-hero-tagline-en" data-key="hero-tagline-en">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Câu trích dẫn mào đầu tiếng Việt (Hero Quote)</label>
+          <textarea class="form-control" id="field-hero-quote-vi" data-key="hero-quote-vi"></textarea>
+        </div>
+      </div>
+
+      <!-- ABOUT SECTION -->
+      <div class="form-card">
+        <div class="card-header">
+          <h3 class="card-title">📖 Phần Giới Thiệu Bản Thân (About Me)</h3>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tiêu đề phần Giới thiệu</label>
+          <input type="text" class="form-control" id="field-hero-about-title" data-key="hero-about-title">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Đoạn giới thiệu 1 (Paragraph 1)</label>
+          <textarea class="form-control" id="field-hero-about-p-0" data-key="hero-about-p-0"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Đoạn giới thiệu 2 (Paragraph 2)</label>
+          <textarea class="form-control" id="field-hero-about-p-1" data-key="hero-about-p-1"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Câu trích dẫn ngắn (Bio Quote)</label>
+          <textarea class="form-control" id="field-hero-bio-quote" data-key="hero-bio-quote"></textarea>
+        </div>
+      </div>
+
+      <!-- LIBRARY & EXPLORATIONS SECTION -->
+      <div class="form-card">
+        <div class="card-header">
+          <h3 class="card-title">📚 Phần Thư Viện (Library Section)</h3>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Nhãn mào đầu (Eyebrow)</label>
+            <input type="text" class="form-control" id="field-explorations-eyebrow" data-key="explorations-eyebrow" value="LIBRARY · THƯ VIỆN" readonly style="opacity: 0.8;">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tiêu đề phần Thư viện</label>
+            <input type="text" class="form-control" id="field-explorations-title" data-key="explorations-title" value="Thư Viện · Library" readonly style="opacity: 0.8;">
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNECT & FOOTER SECTION -->
+      <div class="form-card">
+        <div class="card-header">
+          <h3 class="card-title">🤝 Phần Kết Nối &amp; Chân Trang (Connect &amp; Footer)</h3>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Tên hiển thị thẻ kết nối</label>
+            <input type="text" class="form-control" id="field-carrd-name" data-key="carrd-name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Chức danh / Nghề nghiệp phụ</label>
+            <input type="text" class="form-control" id="field-carrd-subtitle" data-key="carrd-subtitle">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Trích ngôn Hán tự (Chinese Quote)</label>
+            <input type="text" class="form-control" id="field-carrd-quote-cn" data-key="carrd-quote-cn">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dịch nghĩa tiếng Việt</label>
+            <input type="text" class="form-control" id="field-carrd-quote-vi" data-key="carrd-quote-vi">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Câu triết lý chân trang (Footer Quote)</label>
+          <textarea class="form-control" id="field-footer-quote" data-key="footer-quote"></textarea>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: FIREBASE & CLOUD CONFIG -->
+    <section id="tab-cloud" class="tab-panel">
+      <div class="form-card">
+        <div class="card-header">
+          <h3 class="card-title">☁️ Cấu hình Firebase Realtime Database</h3>
+        </div>
+
+        <p class="form-desc" style="line-height: 1.6; margin-bottom: 16px;">
+          Hệ thống hiện đang sử dụng cơ chế lưu trữ <strong>Hybrid Cloud Sync</strong> (Đồng bộ đa thiết bị tự động qua GitHub Gist CDN &amp; IndexedDB). Nếu bạn muốn kết nối thêm vào tài khoản Firebase riêng của bạn, chỉ cần điền thông tin cấu hình vào file <code>src/scripts/firebase-cms.ts</code>.
+        </p>
+
+        <div style="background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; font-family: var(--font-mono); font-size: 13px; color: #93c5fd; margin-bottom: 20px;">
+          Status: Đang kích hoạt đồng bộ đám mây toàn cầu (Permanent Global Cloud Sync).
+        </div>
+
+        <button type="button" class="btn btn-primary" id="cloudSyncTriggerBtn">
+          <span>🔄 Đồng bộ dữ liệu đám mây ngay lập tức</span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="adminToast">
+    <span>✓</span>
+    <span id="toastMsg">Đã lưu và xuất bản thành công!</span>
+  </div>
+
+  <script type="module" src="./src/scripts/admin-page.ts"></script>
+</body>
+</html>
