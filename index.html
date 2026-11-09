@@ -817,7 +817,7 @@
                   <span class="badge-pill">Lộ trình học tập · Roadmaps</span>
                   <span class="badge-pill">Flashcard SM-2</span>
                   <span class="badge-pill">Luyện viết &amp; Phát âm · Writing &amp; Audio</span>
-                  <span class="badge-pill">AI Bài học · AI Lessons</span>
+                  <span class="badge-pill" style="color: #059669; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">✦ 8 Màn hình giao diện</span>
                 </div>
 
                 <!-- Direct Showcase & Web App Action CTAs -->
@@ -1885,39 +1885,39 @@
       </div>
 
       <!-- Segmented Navigation Tabs -->
-      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Learn · Lộc Learn Modules">
+      <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Learn · DuoLearn Modules">
         <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-learn-tab="tong-quan">
-          <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
+          <i data-lucide="layout" style="width: 14px; height: 14px;"></i>
           <span>Tổng quan · Overview</span>
+        </button>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="dong-co">
+          <i data-lucide="play-circle" style="width: 14px; height: 14px;"></i>
+          <span>Động Cơ 4 Giác Quan · Playground</span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="lo-trinh">
           <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
-          <span>Lộ trình &amp; SM-2 · Roadmaps</span>
+          <span>Lộ Trình &amp; SM-2 · Roadmaps</span>
         </button>
-        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="luyen-tap">
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="tu-dai-thu-thach">
           <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-          <span>Luyện tập &amp; Thi · Practice</span>
+          <span>Tứ Đại Thử Thách · Features</span>
         </button>
-        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="thu-vien">
-          <i data-lucide="terminal" style="width: 14px; height: 14px;"></i>
-          <span>Thư viện · Library</span>
-        </button>
-        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="hanh-trinh">
-          <i data-lucide="cpu" style="width: 14px; height: 14px;"></i>
-          <span>Hành trình &amp; AI · Future</span>
+        <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="thu-vien-anh">
+          <i data-lucide="image" style="width: 14px; height: 14px;"></i>
+          <span>Bộ Sưu Tập Giao Diện · Gallery</span>
         </button>
       </nav>
 
       <!-- Modal Body Tab Panes -->
       <div class="loc-modal-body">
         
-        <!-- PANE 1: TỔNG QUAN & TẦM NHÌN -->
+        <!-- PANE 1: TỔNG QUAN & DUAL DEVICE STAGING -->
         <div class="loc-modal-tab-pane active" data-learn-pane="tong-quan">
-          <!-- Showcase Highlight Banner -->
+          <!-- Showcase Highlight Action Banner -->
           <div class="loc-modal-cta-banner">
             <div>
-              <div style="font-size: 0.88rem; font-weight: 800; color: #10B981; display: flex; align-items: center; gap: 0.45rem;">
-                <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+              <div style="font-size: 0.9rem; font-weight: 800; color: #10B981; display: flex; align-items: center; gap: 0.45rem;">
+                <i data-lucide="sparkles" style="width: 17px; height: 17px;"></i>
                 <span>Trang Giới Thiệu (Showcase Landing Page) Đã Ra Mắt Trực Tuyến</span>
               </div>
               <div style="font-size: 0.78rem; color: var(--ink-secondary); margin-top: 0.25rem;">
@@ -1936,253 +1936,366 @@
             </div>
           </div>
 
-          <div class="loc-split-layout">
-            <div class="loc-phone-mockup">
+          <!-- Dual Device Staging (Desktop Browser Mockup + Mobile Phone Mockup) -->
+          <div class="loc-dual-device-wrap">
+            <!-- Desktop Mockup Frame -->
+            <div class="loc-desktop-mockup">
+              <div class="loc-browser-topbar">
+                <div class="loc-browser-dots">
+                  <span class="loc-browser-dot red"></span>
+                  <span class="loc-browser-dot yellow"></span>
+                  <span class="loc-browser-dot green"></span>
+                </div>
+                <div class="loc-browser-url">
+                  <i data-lucide="lock" style="width: 12px; height: 12px; color: #10B981;"></i>
+                  <span>https://duolearn-hsk.pages.dev/#showcase</span>
+                </div>
+                <div style="font-size: 0.65rem; color: #6EE7B7; font-weight: 700; display: flex; align-items: center; gap: 0.3rem;">
+                  <span>● Live</span>
+                </div>
+              </div>
+              <div class="loc-browser-screen">
+                <img src="./assets/loclearn/web_showcase_desktop_hero.png" alt="DuoLearn Showcase Bản Máy Tính — Nền Tảng Hán Ngữ Cổ Phong & Hiện Đại 3D" loading="lazy" decoding="async" />
+              </div>
+            </div>
+
+            <!-- Mobile Phone Mockup Frame -->
+            <div class="loc-phone-mockup" style="max-width: 260px; margin: 0 auto;">
               <div class="loc-phone-island"></div>
               <div class="loc-phone-screen">
-                <img src="./assets/loclearn/screen_khoahoc.jpg" alt="Màn hình Danh sách khóa học Lộc Learn" loading="lazy" decoding="async" />
+                <img src="./assets/loclearn/web_showcase_mobile_hero.png" alt="DuoLearn Mobile Showcase Tối Ưu Điện Thoại" loading="lazy" decoding="async" />
               </div>
-              <div class="loc-phone-caption">Giao diện Đa khóa học: Tiếng Trung, Piano, Tiếng Anh, AI</div>
-            </div>
-
-            <div class="loc-module-desc-col">
-              <div class="loc-module-header">
-                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-                  <i data-lucide="book-open" style="width: 13px; height: 13px;"></i>
-                  <span>Phân hệ 01 // Nền tảng học tập mở</span>
-                </div>
-                <h3 class="loc-module-title">LỘC LEARN — Learn Anything, Your Way</h3>
-                <p class="loc-module-subtitle">Một nền tảng học tập cá nhân hóa. Một kho kiến thức không giới hạn. Học mọi thứ theo cách của bạn.</p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>Mục Tiêu Phát Triển</h4>
-                <p>
-                  LỘC LEARN là dự án học tập được phát triển với mục tiêu xây dựng một ứng dụng miễn phí, nơi người dùng có thể tiếp nhận, tổ chức và ghi nhớ kiến thức từ nhiều nguồn khác nhau. Thay vì giới hạn việc học trong một môn học hay một bộ giáo trình cố định, LỘC LEARN hướng đến một hệ thống mở, nơi bất kỳ lĩnh vực nào cũng có thể trở thành nội dung học tập — từ ngoại ngữ, âm nhạc, cờ vua đến những kỹ năng và kiến thức chuyên ngành khác.
-                </p>
-                <p style="margin-top: 0.65rem;">
-                  Ý tưởng ban đầu chỉ là một website học tập đơn giản. Qua nhiều lần phát triển và cải tiến, dự án dần trở thành một ứng dụng với hệ thống học tập đa chức năng, giao diện riêng và các cơ chế hỗ trợ ghi nhớ kiến thức.
-                </p>
-              </div>
-
-              <div class="loc-blueprint-card">
-                <h4>Tầm Nhìn Dự Án</h4>
-                <p>
-                  LỘC LEARN được xây dựng từ một câu hỏi đơn giản: <em>Nếu có thể học bất cứ điều gì, tại sao chúng ta phải giới hạn việc học trong những ứng dụng chỉ dành cho một lĩnh vực?</em>
-                </p>
-                <p style="margin-top: 0.65rem;">
-                  Một ngôn ngữ mới, một bản nhạc piano, một khai cuộc cờ vua hay một kiến thức chuyên ngành — tất cả đều có thể được tổ chức thành nội dung học tập. LỘC LEARN hướng đến việc đưa các công cụ ghi nhớ, luyện tập và tổ chức kiến thức vào một nền tảng thống nhất, để người dùng có thể tự xây dựng con đường học tập của chính mình.
-                </p>
-                <div style="font-family: var(--font-serif); font-style: italic; font-size: 1rem; color: #10B981; margin-top: 0.85rem; text-align: center; font-weight: 600;">
-                  “LỘC LEARN — Không giới hạn điều bạn có thể học.”
-                </div>
+              <div class="loc-phone-caption" style="text-align: center; padding: 0.5rem 0.25rem 0.15rem; font-size: 0.7rem; color: #9CA3AF; font-weight: 600;">
+                Giao diện Mobile Responsive
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- PANE 2: LỘ TRÌNH & FLASHCARD SM-2 -->
-        <div class="loc-modal-tab-pane" data-learn-pane="lo-trinh">
-          <div class="loc-split-layout">
-            <div class="loc-phone-mockup">
-              <div class="loc-phone-island"></div>
-              <div class="loc-phone-screen">
-                <img src="./assets/loclearn/screen_lotrinh.jpg" alt="Màn hình Lộ trình học tập Lộc Learn" loading="lazy" decoding="async" />
-              </div>
-              <div class="loc-phone-caption">Lộ trình học tập phân chặng rõ ràng với thanh tiến độ thấu triệt</div>
-            </div>
-
-            <div class="loc-module-desc-col">
-              <div class="loc-module-header">
-                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-                  <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
-                  <span>Phân hệ 02 // Spaced Repetition & Flashcards</span>
-                </div>
-                <h3 class="loc-module-title">Lộ Trình Từng Chặng & Flashcard Thông Minh</h3>
-                <p class="loc-module-subtitle">Cơ chế ôn tập lặp lại ngắt quãng (SM-2) tập trung tối đa vào phần chưa nắm vững.</p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>1. Lộ Trình Học Tập Bài Bản</h4>
-                <p>
-                  Tổ chức kiến thức thành các cấp độ, bài học và chặng học cụ thể. Người dùng có thể theo dõi tiến độ, xác định nội dung đã hoàn thành và tiếp tục học từ vị trí trước đó một cách liền mạch.
-                </p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>2. Flashcard Thông Minh</h4>
-                <p>
-                  Hệ thống thẻ ghi nhớ hỗ trợ học từ vựng và nhiều dạng kiến thức khác nhau. Người học có thể đánh dấu nội dung <strong>chưa thuộc</strong>, <strong>yêu thích</strong> hoặc <strong>đã thành thạo</strong>.
-                </p>
-                <p style="margin-top: 0.65rem;">
-                  Cơ chế luyện tập phân loại theo kết quả: những nội dung trả lời sai được tự động đưa trở lại để ôn luyện, giúp người học tập trung vào phần còn yếu thay vì liên tục học lại những gì đã nắm vững.
-                </p>
-              </div>
-
-              <div class="loc-blueprint-card">
-                <h4>3. Ôn Tập Cách Quãng — Spaced Repetition (SM-2)</h4>
-                <p>
-                  LỘC LEARN tích hợp cơ chế ôn tập hỗ trợ củng cố kiến thức theo thời gian. Mục tiêu là giúp người học ghi nhớ lâu hơn, loại bỏ việc học dồn và tối ưu hóa thời gian học tập hiệu quả.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PANE 3: LUYỆN VIẾT & KIỂM TRA -->
-        <div class="loc-modal-tab-pane" data-learn-pane="luyen-tap">
-          <div class="loc-split-layout">
-            <div class="loc-phone-mockup">
-              <div class="loc-phone-island"></div>
-              <div class="loc-phone-screen">
-                <img src="./assets/loclearn/screen_kiemtra.jpg" alt="Màn hình Kiểm tra trắc nghiệm Lộc Learn" loading="lazy" decoding="async" />
-              </div>
-              <div class="loc-phone-caption">Hệ thống bài thi trắc nghiệm bấm giờ theo chuẩn đề thi Hanban</div>
-            </div>
-
-            <div class="loc-module-desc-col">
-              <div class="loc-module-header">
-                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-                  <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
-                  <span>Phân hệ 03 // Luyện tập & Đánh giá năng lực</span>
-                </div>
-                <h3 class="loc-module-title">Luyện Viết Chữ, Phát Âm & Kiểm Tra Đánh Giá</h3>
-                <p class="loc-module-subtitle">Kết hợp đa giác quan: Nghe, nói, viết tay và thi thử thực chiến.</p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>4. Luyện Viết & Phát Âm Trực Quan</h4>
-                <ul class="loc-flow-list">
-                  <li>
-                    <span class="loc-flow-dot"></span>
-                    <div><strong>Luyện viết chữ Hán:</strong> Thực hành viết chữ trực tiếp trên màn hình, làm quen với cấu trúc và thứ tự nét, theo dõi từng bước quá trình luyện tập.</div>
-                  </li>
-                  <li>
-                    <span class="loc-flow-dot"></span>
-                    <div><strong>Luyện phát âm chuẩn:</strong> Tích hợp các chức năng âm thanh chuẩn bản ngữ phục vụ xuyên suốt quá trình học.</div>
-                  </li>
-                  <li>
-                    <span class="loc-flow-dot"></span>
-                    <div><strong>Học qua nghe:</strong> Hỗ trợ phát âm từ vựng và luyện phản xạ nghe thông qua hệ thống audio tích hợp trong ứng dụng.</div>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="loc-blueprint-card">
-                <h4>5. Kiểm Tra & Đánh Giá Năng Lực</h4>
-                <p>
-                  Hệ thống bài kiểm tra thử giúp người học tự đánh giá mức độ hiểu bài, kiểm tra kiến thức và nhận biết những phần cần cải thiện với bộ đề trắc nghiệm chuẩn chỉnh, thời gian làm bài đếm ngược và bảng điểm chi tiết.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PANE 4: THƯ VIỆN & TỰ TẠO NỘI DUNG -->
-        <div class="loc-modal-tab-pane" data-learn-pane="thu-vien">
-          <div class="loc-split-layout">
-            <div class="loc-phone-mockup">
-              <div class="loc-phone-island"></div>
-              <div class="loc-phone-screen">
-                <img src="./assets/loclearn/screen_thehoc.jpg" alt="Màn hình Thẻ học Flashcard Lộc Learn" loading="lazy" decoding="async" />
-              </div>
-              <div class="loc-phone-caption">Thẻ từ vựng sinh động với hình ảnh minh họa và phiên âm chuẩn</div>
-            </div>
-
-            <div class="loc-module-desc-col">
-              <div class="loc-module-header">
-                <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-                  <i data-lucide="terminal" style="width: 13px; height: 13px;"></i>
-                  <span>Phân hệ 04 // Quản lý & Cá nhân hóa</span>
-                </div>
-                <h3 class="loc-module-title">Thư Viện Kiến Thức & Tự Tạo Nội Dung</h3>
-                <p class="loc-module-subtitle">Không giới hạn trong giáo trình có sẵn — biến mọi tài liệu thành bài học của riêng bạn.</p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>6. Thư Viện Kiến Thức Cá Nhân</h4>
-                <p>
-                  Người dùng có thể tổ chức nội dung thành các học phần, thư mục và nhóm học tập riêng biệt. Thư viện hỗ trợ quản lý các bộ thẻ linh hoạt, tìm kiếm kiến thức tức thì và xây dựng kho tài liệu phù hợp với mục tiêu cá nhân.
-                </p>
-              </div>
-
-              <div class="loc-blueprint-card" style="margin-bottom: 1.25rem;">
-                <h4>7. Tự Tạo Nội Dung Học Tập</h4>
-                <p>
-                  Người dùng có thể tự thêm từ vựng hoặc thuật ngữ thủ công, nhập phiên âm, nghĩa tiếng Việt, câu ví dụ, hình ảnh minh họa và phân loại theo cấp độ.
-                </p>
-                <p style="margin-top: 0.65rem;">
-                  Điều này giúp LỘC LEARN không phụ thuộc hoàn toàn vào nội dung có sẵn. Người dùng hoàn toàn chủ động xây dựng bộ tài liệu của riêng mình từ những gì đang học, đọc hoặc nghiên cứu ngoài đời thực.
-                </p>
-              </div>
-
-              <div class="loc-blueprint-card">
-                <h4>8. Giao Diện & Trải Nghiệm Á Đông Tối Giản</h4>
-                <p>
-                  Ứng dụng được thiết kế theo phong cách tối giản kết hợp các yếu tố thẩm mỹ Á Đông (giấy dó, ngọc bích, mực xạ), với hệ thống màu sắc trang nhã, thẻ nội dung nổi khối, hiệu ứng chuyển động mượt mà và thanh điều hướng tối ưu cho điện thoại.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- PANE 5: HÀNH TRÌNH & AI TƯƠNG LAI -->
-        <div class="loc-modal-tab-pane" data-learn-pane="hanh-trinh">
-          <div class="loc-module-header" style="margin-bottom: 1.5rem;">
-            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
-              <i data-lucide="cpu" style="width: 13px; height: 13px;"></i>
-              <span>Product Roadmap // Evolution & AI Integration</span>
-            </div>
-            <h3 class="loc-module-title">Hành Trình Phát Triển & Định Hướng AI</h3>
-            <p class="loc-module-subtitle">Từ website tĩnh ban đầu đến nền tảng thông minh tạo bài học tự động bằng Trí tuệ Nhân tạo.</p>
-          </div>
-
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+          <!-- Narrative Blueprint Cards -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.25rem;">
             <div class="loc-blueprint-card">
-              <h4>Hành Trình Đã Đi Qua</h4>
-              <ul class="loc-flow-list">
-                <li>
-                  <span class="loc-flow-dot" style="background: #10B981;"></span>
-                  <div><strong>Giai đoạn đầu:</strong> Xây dựng nền tảng web và các chức năng học tập cơ bản.</div>
-                </li>
-                <li>
-                  <span class="loc-flow-dot" style="background: #10B981;"></span>
-                  <div><strong>Giai đoạn 2.0:</strong> Mở rộng thành ứng dụng hoàn chỉnh, phát triển thêm các tính năng và xử lý những bài toán kỹ thuật phức tạp, đặc biệt là hệ thống âm thanh thời gian thực.</div>
-                </li>
-                <li>
-                  <span class="loc-flow-dot" style="background: #10B981;"></span>
-                  <div><strong>Giai đoạn hiện tại:</strong> Hoàn thiện các cơ chế flashcard, thuật toán ôn tập SM-2, quản lý thư viện, tạo nội dung thủ công, luyện viết chữ và kiểm tra kiến thức.</div>
-                </li>
-              </ul>
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.2rem;">🏮</span>
+                <h4 style="margin: 0;">Giao Thoa Cổ Phong &amp; Hiện Đại 3D Pop</h4>
+              </div>
+              <p>
+                DuoLearn là dự án học tập tiên phong kết hợp giữa nét trầm mặc của <strong>thư pháp Thủy Mặc Giang Sơn</strong> và nguồn năng lượng tươi trẻ, hứng khởi của <strong>gamification 3D phong cách Duolingo</strong>.
+              </p>
+              <p style="margin-top: 0.65rem;">
+                Người học có thể tự do chuyển đổi giao diện tức thì theo tâm trạng: từ tĩnh lặng tập trung ngắm tranh thủy mặc đến chế độ 3D nổi khối tactile đầy phấn chấn.
+              </p>
             </div>
 
             <div class="loc-blueprint-card">
-              <h4>Định Hướng AI Tương Lai</h4>
-              <ul class="loc-flow-list">
-                <li>
-                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
-                  <div><strong>Phân tích văn bản bằng AI:</strong> Cho phép nhập văn bản tùy ý hoặc dùng AI tách từ vựng, phân tích ngữ pháp, giải thích cấu trúc câu và tự sinh bài học từ đoạn văn hoàn chỉnh.</div>
-                </li>
-                <li>
-                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
-                  <div><strong>Chuyển video thành bài học:</strong> Phân tích nội dung video, nhận diện những phần kiến thức quan trọng và chuyển đổi chúng thành tài liệu học tập có cấu trúc.</div>
-                </li>
-                <li>
-                  <span class="loc-flow-dot" style="background: #3B82F6;"></span>
-                  <div><strong>Xây dựng bài học tự động:</strong> Tự động hóa toàn bộ quy trình: trích xuất nội dung → phân loại kiến thức → tạo câu hỏi luyện tập → xuất flashcard hoàn chỉnh.</div>
-                </li>
-              </ul>
+              <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+                <span style="font-size: 1.2rem;">⚡</span>
+                <h4 style="margin: 0;">Hiệu Năng Cao &amp; Hoạt Động 100% Offline</h4>
+              </div>
+              <p>
+                Toàn bộ dữ liệu <strong>2.648 chữ Hán vector</strong>, <strong>4.994 thẻ flashcard Anki</strong> và toàn bộ lộ trình HSK 1–6 được đóng gói nội bộ trong ứng dụng.
+              </p>
+              <p style="margin-top: 0.65rem;">
+                Khởi động dưới 300ms, không yêu cầu kết nối mạng khi học, tự động đồng bộ tiến độ học tập trên bộ nhớ thiết bị.
+              </p>
             </div>
           </div>
 
           <div class="loc-blueprint-card" style="margin-top: 1.25rem;">
-            <h4>Tầm Nhìn Chung</h4>
-            <p>
-              Tầm nhìn là giúp người dùng tận dụng tối đa những nguồn tài liệu mình đã có thay vì phải tạo lại mọi thứ từ đầu. LỘC LEARN hướng đến việc đưa các công cụ ghi nhớ, luyện tập và tổ chức kiến thức vào một nền tảng thống nhất, để người dùng có thể tự xây dựng con đường học tập của chính mình.
-            </p>
-            <div style="font-family: var(--font-serif); font-style: italic; font-size: 1.15rem; color: #10B981; margin-top: 1rem; text-align: center; font-weight: 700;">
-              “LỘC LEARN — Không giới hạn điều bạn có thể học.”
+            <div style="font-family: var(--font-serif); font-style: italic; font-size: 1.1rem; color: #10B981; text-align: center; font-weight: 700;">
+              “DuoLearn — Học Tiếng Trung Đa Giác Quan &amp; Chuẩn Bút Thuận.”
             </div>
+          </div>
+        </div>
+
+        <!-- PANE 2: ĐỘNG CƠ 4 GIÁC QUAN (PLAYGROUND INTERACTIVE) -->
+        <div class="loc-modal-tab-pane" data-learn-pane="dong-co">
+          <div class="loc-module-header" style="margin-bottom: 1.25rem;">
+            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+              <i data-lucide="play-circle" style="width: 13px; height: 13px;"></i>
+              <span>Interactive Playground // Trải nghiệm trực tiếp</span>
+            </div>
+            <h3 class="loc-module-title">Chạm &amp; Trải Nghiệm Động Cơ DuoLearn</h3>
+            <p class="loc-module-subtitle">Không cần cài đặt — bấm chọn các chế độ bên dưới để xem giao diện thực nghiệm của 4 phân hệ tương tác cốt lõi.</p>
+          </div>
+
+          <!-- Engine Mode Selector Buttons -->
+          <div class="loc-engine-nav">
+            <button type="button" class="loc-engine-btn active" data-engine-mode="write">
+              <i data-lucide="edit-3" style="width: 14px; height: 14px;"></i>
+              <span>1. Luyện Viết (Bút Thuận)</span>
+            </button>
+            <button type="button" class="loc-engine-btn" data-engine-mode="match">
+              <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
+              <span>2. Ghép Thẻ Phản Xạ</span>
+            </button>
+            <button type="button" class="loc-engine-btn" data-engine-mode="breakdown">
+              <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
+              <span>3. Chiết Tự &amp; Điển Cố</span>
+            </button>
+            <button type="button" class="loc-engine-btn" data-engine-mode="sound">
+              <i data-lucide="volume-2" style="width: 14px; height: 14px;"></i>
+              <span>4. Âm Thanh Ngũ Cung</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Engine Preview Browser Mockup -->
+          <div class="loc-desktop-mockup" style="margin-bottom: 1.5rem;">
+            <div class="loc-browser-topbar">
+              <div class="loc-browser-dots">
+                <span class="loc-browser-dot red"></span>
+                <span class="loc-browser-dot yellow"></span>
+                <span class="loc-browser-dot green"></span>
+              </div>
+              <div class="loc-browser-url">
+                <i data-lucide="cpu" style="width: 12px; height: 12px; color: #10B981;"></i>
+                <span>duolearn-engine://interactive-playground</span>
+              </div>
+            </div>
+            <div class="loc-browser-screen">
+              <img id="loc-engine-preview-img" src="./assets/loclearn/web_showcase_interactive_playground.png" alt="Bảng Luyện Viết Bút Thuận Ô Mễ Tự" style="transition: opacity 0.25s ease;" loading="lazy" decoding="async" />
+            </div>
+          </div>
+
+          <!-- Interactive Engine Description Card -->
+          <div class="loc-blueprint-card">
+            <h4 id="loc-engine-preview-title" style="color: #059669; margin-bottom: 0.4rem;">
+              01. Luyện Viết Chữ Hán Theo Bút Thuận (Hanzi Canvas)
+            </h4>
+            <p id="loc-engine-preview-desc">
+              Mô phỏng bảng viết chữ Ái (ài) 10 nét bút thuận trên giấy kẻ ô mễ tự. Tự động cảnh báo sai nét, hỗ trợ phím tắt Nét mẫu, Gợi ý, Viết lại và Lưu mộc triện ấn.
+            </p>
+            <div style="margin-top: 1rem; display: flex; gap: 0.6rem; flex-wrap: wrap;">
+              <a href="https://duolearn-hsk.pages.dev/#showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta">
+                <i data-lucide="external-link" style="width: 13px; height: 13px;"></i>
+                <span>Trải Nghiệm Trực Tiếp Trên Web ↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 3: LỘ TRÌNH & SM-2 SPACED REPETITION -->
+        <div class="loc-modal-tab-pane" data-learn-pane="lo-trinh">
+          <div class="loc-module-header" style="margin-bottom: 1.25rem;">
+            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+              <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
+              <span>Phân hệ 02 // Lộ trình Thủy Mặc & SM-2</span>
+            </div>
+            <h3 class="loc-module-title">Giao Diện Web App &amp; Ôn Tập Lặp Lại Ngắt Quãng</h3>
+            <p class="loc-module-subtitle">Bản đồ học tập Thủy Mặc Giang Sơn, Chiếu Chỉ Ôn Tập Anki SM-2 và bảng vàng vinh danh.</p>
+          </div>
+
+          <!-- Real Web App Launched Desktop Screenshot -->
+          <div class="loc-desktop-mockup" style="margin-bottom: 1.5rem;">
+            <div class="loc-browser-topbar">
+              <div class="loc-browser-dots">
+                <span class="loc-browser-dot red"></span>
+                <span class="loc-browser-dot yellow"></span>
+                <span class="loc-browser-dot green"></span>
+              </div>
+              <div class="loc-browser-url">
+                <i data-lucide="globe" style="width: 12px; height: 12px; color: #10B981;"></i>
+                <span>https://duolearn-hsk.pages.dev/</span>
+              </div>
+            </div>
+            <div class="loc-browser-screen">
+              <img src="./assets/loclearn/web_app_launched_desktop.png" alt="Giao diện thực tế Web App DuoLearn máy tính với Lộ trình Thủy Mặc và Chiếu Chỉ Ôn Tập" loading="lazy" decoding="async" />
+            </div>
+          </div>
+
+          <!-- Feature Annotations -->
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;">
+            <div class="loc-blueprint-card">
+              <h4>1. Chiếu Chỉ Ôn Tập Anki SM-2</h4>
+              <p>
+                Kho <strong>4.994 Hán tự</strong> được quản lý bằng thuật toán SM-2 (SuperMemo-2). Hệ thống tự động tính toán hệ số quên lãng để phân bổ thẻ cần ôn tập đúng thời điểm vàng của não bộ.
+              </p>
+            </div>
+
+            <div class="loc-blueprint-card">
+              <h4>2. Lộ Trình HSK 1–6 Thọ Giáo</h4>
+              <p>
+                Từng bài học được xâu chuỗi thành chặng leo núi Thủy Mặc: HSK1 Chặng 1 (爱 &amp; từ vựng), bài kiểm tra bấm giờ, cửa hàng Long Nhi và thanh tiến độ hoàn thành thấu triệt.
+              </p>
+            </div>
+
+            <div class="loc-blueprint-card">
+              <h4>3. Gamification Tu Luyện</h4>
+              <p>
+                Duy trì động lực bền bỉ mỗi ngày thông qua <strong>Chuỗi Tu Luyện (Streak)</strong>, điểm tích lũy Khí (XP), bảng vàng xếp hạng Trạng Nguyên và hệ thống sinh lực tim vô hạn.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 4: TỨ ĐẠI THỬ THÁCH & KIẾN TRÚC -->
+        <div class="loc-modal-tab-pane" data-learn-pane="tu-dai-thu-thach">
+          <div class="loc-module-header" style="margin-bottom: 1.25rem;">
+            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+              <i data-lucide="sparkles" style="width: 13px; height: 13px;"></i>
+              <span>Phân hệ 03 // Hệ sinh thái thử thách</span>
+            </div>
+            <h3 class="loc-module-title">Tứ Đại Thử Thách Đa Giác Quan &amp; Kiến Trúc Kỹ Thuật</h3>
+            <p class="loc-module-subtitle">Kích hoạt đồng thời thính giác, thị giác, vận động cơ bắp ngón tay và tư duy phản xạ.</p>
+          </div>
+
+          <!-- Features Bento Screenshot -->
+          <div class="loc-desktop-mockup" style="margin-bottom: 1.5rem;">
+            <div class="loc-browser-topbar">
+              <div class="loc-browser-dots">
+                <span class="loc-browser-dot red"></span>
+                <span class="loc-browser-dot yellow"></span>
+                <span class="loc-browser-dot green"></span>
+              </div>
+              <div class="loc-browser-url">
+                <i data-lucide="shield-check" style="width: 12px; height: 12px; color: #10B981;"></i>
+                <span>duolearn://core-architecture-and-features</span>
+              </div>
+            </div>
+            <div class="loc-browser-screen">
+              <img src="./assets/loclearn/web_showcase_features.png" alt="Tứ Đại Thử Thách Đa Giác Quan — Ghép Câu 3D, Đối Đáp Hội Thoại AI, Bút Thuận Ô Mễ Tự, Anki SM-2" loading="lazy" decoding="async" />
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+            <div class="loc-blueprint-card">
+              <div style="font-weight: 800; color: #10B981; margin-bottom: 0.35rem;">🧩 Ghép Câu 3D</div>
+              <p style="font-size: 0.82rem;">Khay lắp ghép từ ngữ vật lý. Chạm vào từng khối từ để nghe phát âm tức thời và sắp xếp chuẩn ngữ pháp.</p>
+            </div>
+            <div class="loc-blueprint-card">
+              <div style="font-weight: 800; color: #10B981; margin-bottom: 0.35rem;">🏮 Đối Đáp Hội Thoại AI</div>
+              <p style="font-size: 0.82rem;">Trò chuyện theo ngữ cảnh thực tế với Avatar nhân vật, nghe đàm thoại tiếng Trung và chọn câu đối đáp phù hợp.</p>
+            </div>
+            <div class="loc-blueprint-card">
+              <div style="font-weight: 800; color: #10B981; margin-bottom: 0.35rem;">✍️ Bút Thuận Ô Mễ Tự</div>
+              <p style="font-size: 0.82rem;">Tập viết chữ Hán nét theo nét với cảnh báo sai sót viền đỏ, xem diễn họa nét mực và lưu mộc triện ấn.</p>
+            </div>
+            <div class="loc-blueprint-card">
+              <div style="font-weight: 800; color: #10B981; margin-bottom: 0.35rem;">🧠 Anki SM-2 Spaced Repetition</div>
+              <p style="font-size: 0.82rem;">Chiếu chỉ ôn tập thông minh tự động tính toán chu kỳ lãng quên, đưa từ vựng ra ôn tập đúng điểm vàng não bộ.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- PANE 5: BỘ SƯU TẬP GIAO DIỆN BẢN QUYỀN (SHOWCASE GALLERY) -->
+        <div class="loc-modal-tab-pane" data-learn-pane="thu-vien-anh">
+          <div class="loc-module-header" style="margin-bottom: 1rem;">
+            <div class="loc-module-badge" style="color: #10B981; border-color: rgba(16, 185, 129, 0.35);">
+              <i data-lucide="image" style="width: 13px; height: 13px;"></i>
+              <span>Visual Showcase Gallery // 8 Ảnh Giao Diện Chính Thức</span>
+            </div>
+            <h3 class="loc-module-title">Bộ Sưu Tập Hình Ảnh Giao Diện Bản Quyền</h3>
+            <p class="loc-module-subtitle">Toàn bộ 8 màn hình giao diện thực tế của dự án DuoLearn từ bản Showcase máy tính, ứng dụng Web App đến bản Mobile.</p>
+          </div>
+
+          <!-- Gallery Grid with all 8 screenshots -->
+          <div class="loc-showcase-gallery-grid">
+            <!-- Card 1 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">01 // Desktop Hero</span>
+                <img src="./assets/loclearn/web_showcase_desktop_hero.png" alt="Trang Giới Thiệu Bản Máy Tính — Desktop Hero" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Trang Giới Thiệu (Showcase Desktop)</div>
+                <div class="loc-gallery-sub">Hero Section với mockup điện thoại 3D, huy hiệu nổi streak và CTA vào Web App.</div>
+              </div>
+            </div>
+
+            <!-- Card 2 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">02 // Mobile Hero</span>
+                <img src="./assets/loclearn/web_showcase_mobile_hero.png" alt="Giao Diện Showcase Bản Điện Thoại — Mobile Hero" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Showcase Tối Ưu Điện Thoại (Mobile Hero)</div>
+                <div class="loc-gallery-sub">Thiết kế responsive hoàn hảo trên màn hình di động, phím bấm tactile chạm tức thì.</div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">03 // Web App Landscape</span>
+                <img src="./assets/loclearn/web_app_launched_desktop.png" alt="Giao Diện Thực Tế Web App DuoLearn Máy Tính" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Giao Diện Web App Máy Tính (Landscape)</div>
+                <div class="loc-gallery-sub">Lộ trình leo núi Thủy Mặc, Chiếu Chỉ Ôn Tập Anki SM-2 và Bảng Vàng Trạng Nguyên.</div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">04 // Hanzi Canvas</span>
+                <img src="./assets/loclearn/web_showcase_interactive_playground.png" alt="Bảng Luyện Viết Bút Thuận Ô Mễ Tự" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Luyện Viết Chữ Hán (Bút Thuận Chuẩn)</div>
+                <div class="loc-gallery-sub">Mô phỏng viết chữ Ái 10 nét, giấy kẻ ô mễ tự, hướng dẫn nét và lưu mộc triện.</div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">05 // Match Game</span>
+                <img src="./assets/loclearn/web_showcase_tab_match.png" alt="Động Cơ Ghép Thẻ Từ Vựng Phản Xạ 3D" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Động Cơ Ghép Thẻ Phản Xạ (Match Game)</div>
+                <div class="loc-gallery-sub">Ghép cặp song ngữ Việt - Trung tức thì, kích hoạt phản xạ nhanh cho não bộ.</div>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">06 // Radical Breakdown</span>
+                <img src="./assets/loclearn/web_showcase_tab_breakdown.png" alt="Phân Tích Chiết Tự & Điển Cố Văn Hóa" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Chiết Tự Thủy Mặc &amp; Điển Cố Văn Hóa</div>
+                <div class="loc-gallery-sub">Phân rã cấu trúc bộ thủ và câu chuyện điển cố ghi nhớ chiều sâu Hán ngữ.</div>
+              </div>
+            </div>
+
+            <!-- Card 7 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">07 // Web Audio Engine</span>
+                <img src="./assets/loclearn/web_showcase_tab_sound.png" alt="Hệ Thống Âm Thanh Đa Giác Quan Ngũ Cung" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Hệ Thống Âm Thanh Đa Giác Quan (Web Audio)</div>
+                <div class="loc-gallery-sub">Chuông ngọc ngũ cung, mõ trúc thiền định, nhã nhạc trạng nguyên và giọng đọc AI.</div>
+              </div>
+            </div>
+
+            <!-- Card 8 -->
+            <div class="loc-gallery-card">
+              <div class="loc-gallery-img-wrap">
+                <span class="loc-gallery-badge emerald">08 // Features Bento</span>
+                <img src="./assets/loclearn/web_showcase_features.png" alt="Tứ Đại Thử Thách Đa Giác Quan" loading="lazy" decoding="async" />
+              </div>
+              <div class="loc-gallery-caption">
+                <div class="loc-gallery-title">Tứ Đại Thử Thách Đa Giác Quan (Bento)</div>
+                <div class="loc-gallery-sub">Tổng hòa Ghép câu 3D, Hội thoại AI, Bút thuận ô mễ tự và Anki SM-2 SRS.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Bottom Action Buttons -->
+          <div style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.85rem; flex-wrap: wrap;">
+            <a href="https://duolearn-hsk.pages.dev/#showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta" style="padding: 0.75rem 1.4rem; font-size: 0.88rem;">
+              <i data-lucide="sparkles" style="width: 16px; height: 16px;"></i>
+              <span>Mở Trang Giới Thiệu (Showcase) ↗</span>
+            </a>
+            <a href="https://duolearn-hsk.pages.dev/" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn live-cta" style="padding: 0.75rem 1.4rem; font-size: 0.88rem;">
+              <i data-lucide="external-link" style="width: 16px; height: 16px; color: var(--accent-gold);"></i>
+              <span>Khởi Chạy Bản Web (Web App) ↗</span>
+            </a>
           </div>
         </div>
 
