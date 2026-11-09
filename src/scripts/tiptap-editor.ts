@@ -1150,7 +1150,6 @@ export function toggleTiptapEditMode(enable: boolean) {
   // BẮT BUỘC: Chỉ cho phép chỉnh sửa khi URL có đuôi #admin
   const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
   if (enable && !isUrlAdmin) {
-    showToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để chỉnh sửa.');
     return;
   }
 
@@ -1278,11 +1277,9 @@ export function initTiptapEditor() {
       (e as KeyboardEvent).keyCode === 69;
 
     if (e.altKey && isEKey) {
-      e.preventDefault();
-      // BẮT BUỘC: Nếu URL không có đuôi #admin (ví dụ: #explorations, trang chủ...) -> KHÔNG CHO PHÉP SỬA
+      // BẮT BUỘC: Nếu URL không có đuôi #admin (ví dụ: #explorations, trang chủ...) -> KHÔNG LÀM GÌ CẢ
       const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
       if (!isUrlAdmin) {
-        showToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để chỉnh sửa.');
         return;
       }
 
