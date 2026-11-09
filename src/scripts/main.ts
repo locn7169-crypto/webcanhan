@@ -36,6 +36,7 @@ import {
   Languages,
   Coins,
   Bot,
+  Mail,
 } from 'lucide';
 import { initSmoothScroll } from './lenis-scroll';
 import { initMagneticAndCursor } from './magnetic-cursor';
@@ -94,6 +95,7 @@ function setupIcons() {
       Languages,
       Coins,
       Bot,
+      Mail,
     },
   });
 }
