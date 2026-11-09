@@ -7030,3 +7030,49 @@ ul[data-type="taskList"] li > div {
     font-size: 0.7rem;
   }
 }
+
+/* ============================================================================
+   ADMIN EDITABLE & SAVE BUTTON (STRICTLY RESTRICTED TO BODY.ADMIN-ACTIVE ON #ADMIN)
+   ============================================================================ */
+#saveBtn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4), 0 8px 10px -6px rgba(16, 185, 129, 0.2);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+#saveBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.5);
+}
+
+body:not(.admin-active) #saveBtn {
+  display: none !important;
+}
+
+body.admin-active .editable[contenteditable="true"] {
+  outline: 2px dashed rgba(217, 119, 6, 0.4);
+  outline-offset: 4px;
+  border-radius: 4px;
+  cursor: text;
+}
+
+body:not(.admin-active) [contenteditable],
+body:not(.admin-active) .editable {
+  outline: none !important;
+  cursor: default !important;
+}

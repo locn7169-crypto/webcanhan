@@ -1147,6 +1147,13 @@ function closeTiptapComposerModal() {
 
 // Toggle Tiptap Visual Editor Mode
 export function toggleTiptapEditMode(enable: boolean) {
+  // BẮT BUỘC: Chỉ cho phép chỉnh sửa khi URL có đuôi #admin
+  const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+  if (enable && !isUrlAdmin) {
+    showToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để chỉnh sửa.');
+    return;
+  }
+
   if (enable && !isAdminAuthenticated()) {
     showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để kích hoạt chế độ chỉnh sửa.');
     requestAdminAccess();
@@ -1205,6 +1212,11 @@ export function toggleTiptapEditMode(enable: boolean) {
         el.style.cursor = '';
         el.title = '';
       }
+    });
+
+    // Cưỡng chế gỡ bỏ toàn bộ contenteditable khi tắt chế độ sửa
+    document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+      el.removeAttribute('contenteditable');
     });
 
     window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: false } }));
@@ -1267,6 +1279,13 @@ export function initTiptapEditor() {
 
     if (e.altKey && isEKey) {
       e.preventDefault();
+      // BẮT BUỘC: Nếu URL không có đuôi #admin (ví dụ: #explorations, trang chủ...) -> KHÔNG CHO PHÉP SỬA
+      const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+      if (!isUrlAdmin) {
+        showToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để chỉnh sửa.');
+        return;
+      }
+
       if (!isAdminAuthenticated()) {
         showToast('🔒 Vui lòng nhập mật khẩu PIN quản trị để chỉnh sửa.');
         requestAdminAccess();
@@ -1283,6 +1302,31 @@ export function initTiptapEditor() {
       }
     }
   });
+
+  // Lắng nghe thay đổi URL hash: Nếu rời khỏi #admin (như bấm vào #explorations) -> TẮT NGAY lập tức
+  window.addEventListener('hashchange', () => {
+    const isNowAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+    if (!isNowAdmin) {
+      if (isEditMode) {
+        toggleTiptapEditMode(false);
+      }
+      document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+        el.removeAttribute('contenteditable');
+      });
+      document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
+      document.getElementById('visual-editor-dock')?.remove();
+      document.getElementById('tiptap-bubble-menu')?.remove();
+    }
+  });
+
+  // Đảm bảo khi mở trang mà không có #admin thì 100% chỉ đọc
+  if (!(window.location.hash || '').toLowerCase().includes('#admin')) {
+    isEditMode = false;
+    document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+      el.removeAttribute('contenteditable');
+    });
+    document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
+  }
 
   (window as any).toggleTiptapEditMode = toggleTiptapEditMode;
   (window as any).saveAllTiptapContent = saveAllTiptapContent;

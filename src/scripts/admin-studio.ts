@@ -2276,6 +2276,11 @@ export async function initAdminStudio() {
     // Option + A
     if (e.altKey && isAKey) {
       e.preventDefault();
+      const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+      if (!isUrlAdmin) {
+        showAdminToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để quản trị.');
+        return;
+      }
       requestAdminAccess();
       return;
     }
@@ -2283,6 +2288,11 @@ export async function initAdminStudio() {
     // Cmd + Shift + A or Ctrl + Shift + A
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && isAKey) {
       e.preventDefault();
+      const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+      if (!isUrlAdmin) {
+        showAdminToast('🔒 Trang này chỉ để xem. Vui lòng vào trang #admin để quản trị.');
+        return;
+      }
       requestAdminAccess();
       return;
     }
@@ -2303,6 +2313,10 @@ export async function initAdminStudio() {
       if (!isAdminAuthenticated()) {
         openAuthModal();
       }
+    } else {
+      // Khi chuyển sang các trang khác (ví dụ #explorations, #works...) -> ĐÓNG TOÀN BỘ BẢNG QUẢN TRỊ
+      closeAdminStudioPanel();
+      closeAuthModal();
     }
   });
 

@@ -210,7 +210,7 @@ export async function saveData() {
       if (el.tagName.toLowerCase() === 'img') {
         payload[key] = (el as HTMLImageElement).src;
       } else {
-        payload[key] = el.innerHTML.trim();
+        payload[key] = stripEditableArtifacts(el.innerHTML.trim());
       }
     }
   });
@@ -266,22 +266,66 @@ export function enforceStrictReadOnly() {
   if (typeof document === 'undefined') return;
   document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((el) => {
     el.removeAttribute('contenteditable');
-    el.classList.remove('editable');
   });
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) saveBtn.style.display = 'none';
   const adminBanner = document.getElementById('adminBanner');
   if (adminBanner) adminBanner.style.display = 'none';
-  document.body.classList.remove('admin-active');
+  document.body.classList.remove('admin-active', 'visual-editor-active', 'tiptap-mode-active');
+  const dock = document.getElementById('visual-editor-dock');
+  if (dock) dock.remove();
+  const bubble = document.getElementById('tiptap-bubble-menu');
+  if (bubble) bubble.remove();
+}
+
+export function applyAdminEditableState(editable: boolean) {
+  if (typeof document === 'undefined') return;
+  const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+  if (!isUrlAdmin || !editable || !isAdminAuthenticated()) {
+    enforceStrictReadOnly();
+    return;
+  }
+
+  // Trên trang #admin và đã đăng nhập: Kích hoạt contenteditable cho các thẻ editable
+  document.querySelectorAll<HTMLElement>('.editable').forEach((el) => {
+    el.contentEditable = 'true';
+    el.spellcheck = false;
+  });
+
+  // Hiển thị nút Lưu saveBtn
+  let saveBtn = document.getElementById('saveBtn');
+  if (!saveBtn) {
+    saveBtn = document.createElement('button');
+    saveBtn.id = 'saveBtn';
+    saveBtn.className = 'admin-floating-save-btn';
+    saveBtn.innerHTML = `
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+        <polyline points="17 21 17 13 7 13 7 21"></polyline>
+        <polyline points="7 3 7 8 15 8"></polyline>
+      </svg>
+      <span>Lưu thay đổi</span>
+    `;
+    saveBtn.addEventListener('click', saveData);
+    document.body.appendChild(saveBtn);
+  }
+  saveBtn.style.display = 'inline-flex';
+  document.body.classList.add('admin-active');
 }
 
 export function checkAdminMode() {
   if (typeof window === 'undefined') return;
   const hash = (window.location.hash || '').trim().toLowerCase();
   if (hash.includes('#admin')) {
-    requestAdminAccess();
+    if (!isAdminAuthenticated()) {
+      requestAdminAccess();
+    } else {
+      applyAdminEditableState(true);
+    }
+  } else {
+    // URL KHÔNG CÓ đuôi #admin (ví dụ: #explorations, #works...) -> Khóa tuyệt đối 100% chỉ đọc
+    enforceStrictReadOnly();
   }
-  enforceStrictReadOnly();
 }
 
 // Khởi tạo hệ thống CMS
@@ -289,21 +333,16 @@ export function initFirebaseCMS() {
   // 1. Tự động nạp dữ liệu đã lưu từ Firebase RTDB & Cloud Gist
   loadData();
 
-  // 2. Tuyệt đối đảm bảo trang chính 100% chỉ đọc (loại bỏ mọi yếu tố chỉnh sửa trực tiếp)
-  enforceStrictReadOnly();
+  // 2. Kiểm tra chế độ ban đầu: nếu không phải #admin thì tuyệt đối chỉ đọc
+  checkAdminMode();
 
-  // 3. Lắng nghe thay đổi URL hash (#admin)
+  // 3. Lắng nghe thay đổi URL hash (#admin, #explorations, ...)
   window.addEventListener('hashchange', checkAdminMode);
 
   // 4. Lắng nghe trạng thái đăng nhập
   window.addEventListener('loc-admin-auth-changed', () => {
-    enforceStrictReadOnly();
+    checkAdminMode();
   });
-
-  // 5. Kiểm tra trạng thái URL khi vừa mở trang
-  if ((window.location.hash || '').toLowerCase().includes('#admin')) {
-    setTimeout(checkAdminMode, 300);
-  }
 }
 
 // Expose ra window để dễ gọi hoặc kiểm thử
@@ -312,5 +351,6 @@ if (typeof window !== 'undefined') {
   (window as any).saveData = saveData;
   (window as any).checkAdminMode = checkAdminMode;
   (window as any).enforceStrictReadOnly = enforceStrictReadOnly;
+  (window as any).applyAdminEditableState = applyAdminEditableState;
   (window as any).firebaseConfig = firebaseConfig;
 }
