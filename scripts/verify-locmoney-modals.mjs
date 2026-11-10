@@ -221,6 +221,20 @@ async function main() {
       });
 
       await runTest('All 23 showcase images render with naturalWidth > 0', async () => {
+        await page.evaluate(async () => {
+          const imgs = Array.from(document.querySelectorAll('#loc-money-modal img'));
+          await Promise.all(
+            imgs.map((img) => {
+              if (img.complete) return Promise.resolve();
+              return new Promise((resolve) => {
+                img.onload = resolve;
+                img.onerror = resolve;
+                setTimeout(resolve, 3000);
+              });
+            })
+          );
+        });
+
         const brokenImages = await page.$$eval('#loc-money-modal img', (imgs) => {
           return imgs
             .filter((img) => img.src.includes('/assets/locmoney/') && img.naturalWidth === 0)

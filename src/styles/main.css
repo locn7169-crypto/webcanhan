@@ -2938,20 +2938,34 @@ body.menu-active .hamburger-line:nth-child(3) {
 .moment-media-frame {
   aspect-ratio: 4 / 3;
   width: 100%;
-  border-radius: 18px;
+  border-radius: 20px;
   overflow: hidden;
   background: var(--bg-canvas-subtle);
   position: relative;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 8px 24px rgba(28, 26, 23, 0.04);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+  border: 1px solid rgba(184, 150, 90, 0.3);
+  box-shadow: 0 12px 32px rgba(28, 26, 23, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+.moment-media-frame::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.05) 0%, transparent 45%, rgba(20, 18, 16, 0.28) 100%);
+  border-radius: 20px;
+  transition: opacity 0.4s ease;
 }
 
 .moment-card:hover .moment-media-frame,
 .moment-card:focus-visible .moment-media-frame {
-  transform: translateY(-4px);
-  border-color: rgba(184, 142, 56, 0.4);
-  box-shadow: 0 16px 36px rgba(28, 26, 23, 0.09), 0 0 0 1px rgba(184, 142, 56, 0.18);
+  transform: translateY(-6px);
+  border-color: rgba(184, 142, 56, 0.7);
+  box-shadow: 0 22px 48px rgba(28, 26, 23, 0.16), 0 0 30px rgba(184, 142, 56, 0.28);
+}
+
+.moment-card:hover .moment-media-frame::after {
+  opacity: 0.6;
 }
 
 .moment-img {
@@ -2959,14 +2973,16 @@ body.menu-active .hamburger-line:nth-child(3) {
   height: 100%;
   object-fit: cover;
   display: block;
-  filter: grayscale(85%) contrast(102%) brightness(0.97);
-  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  /* 100% Màu sắc tự nhiên sắc nét, rực rỡ, không bị xám hay mờ */
+  filter: contrast(104%) saturate(106%) brightness(1.02);
+  image-rendering: -webkit-optimize-contrast;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
 }
 
 .moment-card:hover .moment-img,
 .moment-card:focus-visible .moment-img {
-  filter: grayscale(0%) contrast(104%) brightness(1);
-  transform: scale(1.045);
+  filter: contrast(107%) saturate(112%) brightness(1.04);
+  transform: scale(1.055);
 }
 
 .moment-zoom-badge {

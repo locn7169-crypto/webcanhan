@@ -1,5 +1,6 @@
 import { openExplorationJournal } from './exploration-journal';
 import { dbGetAllMedia, dbGetSetting, dbSetSetting, type MediaItem } from './admin-studio';
+import { fetchCloudCMS } from './cloud-cms-sync';
 
 export interface MomentItem {
   id: string;
@@ -82,6 +83,24 @@ export function loadCachedMoments() {
   }
 }
 
+function cleanMediaTitle(rawTitle?: string): string {
+  if (!rawTitle) return '';
+  const trimmed = rawTitle.trim();
+  if (/^[\d\s_-]{6,}$/.test(trimmed) || trimmed.includes('679579249')) {
+    return 'Bình hoa hồng trắng — Kỷ niệm cuối cấp 3';
+  }
+  return trimmed;
+}
+
+function cleanMediaCaption(rawCaption?: string): string {
+  if (!rawCaption) return '';
+  const trimmed = rawCaption.trim();
+  if (/^[\d\s_-]{6,}$/.test(trimmed) || trimmed.includes('679579249')) {
+    return 'Đây là bức ảnh mà tôi đã được chị Trâm Anh tặng vào cuối năm cấp 3. Hiện tại đang là tất cả các ảnh đại diện mạng xã hội của tôi';
+  }
+  return trimmed;
+}
+
 /**
  * Update moments array directly from media items (called by admin studio on upload, replace, reorder)
  */
@@ -92,36 +111,36 @@ export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
   const treks = mediaList.filter((m) => m.collectionId === 'trekking');
   const chinese = mediaList.filter((m) => m.collectionId === 'chinese');
 
-  // Moment 1: Latest photography
+  // Moment 1: Latest photography (Prioritize high-res dataUrl for razor-sharp Retina display)
   if (photos[0]) {
-    moments[0].image = photos[0].thumbUrl || photos[0].dataUrl;
-    if (photos[0].title) moments[0].title = photos[0].title;
-    if (photos[0].caption) moments[0].caption = photos[0].caption;
+    moments[0].image = photos[0].dataUrl || photos[0].thumbUrl;
+    if (photos[0].title) moments[0].title = cleanMediaTitle(photos[0].title);
+    if (photos[0].caption) moments[0].caption = cleanMediaCaption(photos[0].caption);
   }
 
-  // Moment 2: Latest trekking
+  // Moment 2: Latest trekking (Prioritize high-res dataUrl for crisp mountain panorama)
   if (treks[0]) {
-    moments[1].image = treks[0].thumbUrl || treks[0].dataUrl;
-    if (treks[0].title) moments[1].title = treks[0].title;
-    if (treks[0].caption) moments[1].caption = treks[0].caption;
+    moments[1].image = treks[0].dataUrl || treks[0].thumbUrl;
+    if (treks[0].title) moments[1].title = cleanMediaTitle(treks[0].title);
+    if (treks[0].caption) moments[1].caption = cleanMediaCaption(treks[0].caption);
   }
 
   // Moment 3: Latest Chinese
   if (chinese[0]) {
-    moments[2].image = chinese[0].thumbUrl || chinese[0].dataUrl;
-    if (chinese[0].title) moments[2].title = chinese[0].title;
-    if (chinese[0].caption) moments[2].caption = chinese[0].caption;
+    moments[2].image = chinese[0].dataUrl || chinese[0].thumbUrl;
+    if (chinese[0].title) moments[2].title = cleanMediaTitle(chinese[0].title);
+    if (chinese[0].caption) moments[2].caption = cleanMediaCaption(chinese[0].caption);
   }
 
   // Moment 4: Second photography (or next photo)
   if (photos[1]) {
-    moments[3].image = photos[1].thumbUrl || photos[1].dataUrl;
-    if (photos[1].title) moments[3].title = photos[1].title;
-    if (photos[1].caption) moments[3].caption = photos[1].caption;
+    moments[3].image = photos[1].dataUrl || photos[1].thumbUrl;
+    if (photos[1].title) moments[3].title = cleanMediaTitle(photos[1].title);
+    if (photos[1].caption) moments[3].caption = cleanMediaCaption(photos[1].caption);
   } else if (mediaList[3]) {
-    moments[3].image = mediaList[3].thumbUrl || mediaList[3].dataUrl;
-    if (mediaList[3].title) moments[3].title = mediaList[3].title;
-    if (mediaList[3].caption) moments[3].caption = mediaList[3].caption;
+    moments[3].image = mediaList[3].dataUrl || mediaList[3].thumbUrl;
+    if (mediaList[3].title) moments[3].title = cleanMediaTitle(mediaList[3].title);
+    if (mediaList[3].caption) moments[3].caption = cleanMediaCaption(mediaList[3].caption);
   }
 
   // Persist cache immediately
@@ -137,7 +156,20 @@ export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
 export async function syncMomentsWithStorage() {
   try {
     // 1. Check IndexedDB media items
-    const mediaList = await dbGetAllMedia();
+    let mediaList = await dbGetAllMedia();
+
+    // If local IndexedDB is empty (first visit or different browser), fetch directly from Cloud CMS!
+    if (!mediaList || mediaList.length === 0) {
+      try {
+        const cloud = await fetchCloudCMS();
+        if (cloud && Array.isArray(cloud.mediaItems) && cloud.mediaItems.length > 0) {
+          mediaList = cloud.mediaItems;
+        }
+      } catch (cloudErr) {
+        console.warn('[Moments] Cloud sync notice:', cloudErr);
+      }
+    }
+
     if (mediaList && mediaList.length > 0) {
       updateMomentsFromMediaList(mediaList);
     } else {

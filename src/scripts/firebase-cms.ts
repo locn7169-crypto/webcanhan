@@ -9,6 +9,7 @@ import { fetchCloudCMS, pushCloudCMS } from './cloud-cms-sync';
 import { isAdminAuthenticated, requestAdminAccess, getStoredPin, clearAdminAuthentication } from './auth-gate';
 import { dbGetAllMedia, dbGetSetting } from './admin-studio';
 import { enforceCanonicalExplorationsHeader, stripEditableArtifacts, toggleTiptapEditMode, deletedNodeKeys } from './tiptap-editor';
+import { moments, updateMomentsFromMediaList, renderMoments } from './explorations-moments';
 
 // ============================================================================
 // STEP 2: FIREBASE CONFIGURATION PLACEHOLDER & INSTRUCTIONS
@@ -135,15 +136,42 @@ export function applyDataToDOM(data: Record<string, any>) {
     if (el && !el.closest('#adminBanner, #saveBtn, #admin-auth-overlay, #admin-studio-overlay, .toast-notice')) {
       if (el.tagName.toLowerCase() === 'img') {
         const src = typeof val === 'string' ? val : (val as any).src;
-        if (src) (el as HTMLImageElement).src = src;
+        // Prevent stale placeholder images from overwriting newly uploaded high-res moments
+        const isMomentCover = key.startsWith('moment-img-');
+        const isStalePlaceholder = src && (src.includes('backdrop-works') || src.includes('loc-banner'));
+        const currentSrc = (el as HTMLImageElement).src || '';
+        const hasHighResUserPhoto = currentSrc.startsWith('data:image/');
+
+        if (!(isMomentCover && isStalePlaceholder && hasHighResUserPhoto)) {
+          if (src) (el as HTMLImageElement).src = src;
+        }
       } else if (typeof val === 'string') {
-        el.innerHTML = stripEditableArtifacts(val);
+        let cleanText = stripEditableArtifacts(val);
+        if (key.includes('moment-title') && (/^[\d\s_-]{6,}$/.test(cleanText.trim()) || cleanText.includes('679579249'))) {
+          cleanText = 'Bình hoa hồng trắng — Kỷ niệm cuối cấp 3';
+        } else if (key.includes('moment-caption') && (/^[\d\s_-]{6,}$/.test(cleanText.trim()) || cleanText.includes('679579249'))) {
+          cleanText = 'Đây là bức ảnh mà tôi đã được chị Trâm Anh tặng vào cuối năm cấp 3. Hiện tại đang là tất cả các ảnh đại diện mạng xã hội của tôi';
+        }
+        el.innerHTML = cleanText;
       } else if (typeof val === 'object' && val !== null) {
         if (val.src && el.tagName.toLowerCase() === 'img') {
-          (el as HTMLImageElement).src = val.src;
+          const isMomentCover = key.startsWith('moment-img-');
+          const isStalePlaceholder = val.src && (val.src.includes('backdrop-works') || val.src.includes('loc-banner'));
+          const currentSrc = (el as HTMLImageElement).src || '';
+          const hasHighResUserPhoto = currentSrc.startsWith('data:image/');
+
+          if (!(isMomentCover && isStalePlaceholder && hasHighResUserPhoto)) {
+            (el as HTMLImageElement).src = val.src;
+          }
         }
         if (val.html !== undefined) {
-          el.innerHTML = stripEditableArtifacts(val.html);
+          let cleanHtml = stripEditableArtifacts(val.html);
+          if (key.includes('moment-title') && (/^[\d\s_-]{6,}$/.test(cleanHtml.trim()) || cleanHtml.includes('679579249'))) {
+            cleanHtml = 'Bình hoa hồng trắng — Kỷ niệm cuối cấp 3';
+          } else if (key.includes('moment-caption') && (/^[\d\s_-]{6,}$/.test(cleanHtml.trim()) || cleanHtml.includes('679579249'))) {
+            cleanHtml = 'Đây là bức ảnh mà tôi đã được chị Trâm Anh tặng vào cuối năm cấp 3. Hiện tại đang là tất cả các ảnh đại diện mạng xã hội của tôi';
+          }
+          el.innerHTML = cleanHtml;
         }
         if (val.style && typeof val.style === 'object') {
           Object.assign(el.style, val.style);
@@ -200,9 +228,15 @@ export async function loadData() {
   if (!loadedData) {
     try {
       const cloud = await fetchCloudCMS();
-      if (cloud && cloud.tiptapContent && typeof cloud.tiptapContent === 'object') {
-        loadedData = cloud.tiptapContent as Record<string, string>;
-        console.info('[FirebaseCMS] Nạp dữ liệu từ Cloud Gist.');
+      if (cloud) {
+        if (cloud.tiptapContent && typeof cloud.tiptapContent === 'object') {
+          loadedData = cloud.tiptapContent as Record<string, string>;
+          console.info('[FirebaseCMS] Nạp dữ liệu từ Cloud Gist.');
+        }
+        if (cloud.mediaItems && Array.isArray(cloud.mediaItems) && cloud.mediaItems.length > 0) {
+          updateMomentsFromMediaList(cloud.mediaItems);
+          renderMoments();
+        }
       }
     } catch (err) {
       console.warn('[FirebaseCMS] Cloud Gist fetch notice:', err);
@@ -279,6 +313,14 @@ export async function saveData() {
         };
       }
     }
+  });
+
+  // Đồng bộ các thẻ khoảnh khắc Moments với ảnh bìa độ nét cao & tiêu đề vào payload
+  moments.forEach((m) => {
+    if (m.image) payload[`moment-img-${m.id}`] = { src: m.image };
+    if (m.title) payload[`moment-title-${m.id}`] = { html: m.title };
+    if (m.caption) payload[`moment-caption-${m.id}`] = { html: m.caption };
+    if (m.meta) payload[`moment-meta-${m.id}`] = { html: m.meta };
   });
 
   try {

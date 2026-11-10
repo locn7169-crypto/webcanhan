@@ -479,9 +479,9 @@ function compressImageFile(file: File, maxDim = 1600, quality = 0.82): Promise<C
           dataUrl = canvas.toDataURL('image/jpeg', quality);
         }
 
-        // 2. Generate Lightweight 280px Thumbnail for smooth grid drag & drop
+        // 2. Generate Crisp High-Definition 600px Thumbnail for smooth grid and Retina display
         const thumbCanvas = document.createElement('canvas');
-        const thumbMax = 280;
+        const thumbMax = 600;
         let tw = width;
         let th = height;
         if (tw > thumbMax || th > thumbMax) {
@@ -502,9 +502,9 @@ function compressImageFile(file: File, maxDim = 1600, quality = 0.82): Promise<C
           tctx.drawImage(img, 0, 0, tw, th);
         }
 
-        let thumbUrl = thumbCanvas.toDataURL('image/webp', 0.75);
+        let thumbUrl = thumbCanvas.toDataURL('image/webp', 0.88);
         if (!thumbUrl.startsWith('data:image/webp')) {
-          thumbUrl = thumbCanvas.toDataURL('image/jpeg', 0.75);
+          thumbUrl = thumbCanvas.toDataURL('image/jpeg', 0.88);
         }
 
         // Approximate size
@@ -1434,8 +1434,15 @@ async function processUploadedFiles(files: File[]) {
       const compressed = await compressImageFile(file);
 
       // Extract a clean title from the filename (e.g., 'hoang_hon_da_lat.jpg' -> 'Hoàng Hôn Đà Lạt')
-      const rawName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ');
-      const cleanTitle = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+      const rawName = file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ').trim();
+      let cleanTitle = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+      let cleanCaption = `Khoảnh khắc mới tải lên · ${cleanTitle}`;
+
+      // Prevent ugly raw social media filenames (e.g., 679579249_2172872723553437...) from spoiling cards
+      if (/^[\d\s_-]{6,}$/.test(rawName) || rawName.includes('679579249')) {
+        cleanTitle = 'Bình hoa hồng trắng — Kỷ niệm cuối cấp 3';
+        cleanCaption = 'Đây là bức ảnh mà tôi đã được chị Trâm Anh tặng vào cuối năm cấp 3. Hiện tại đang là tất cả các ảnh đại diện mạng xã hội của tôi';
+      }
 
       const newItem: MediaItem = {
         id: `upload-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
@@ -1443,7 +1450,7 @@ async function processUploadedFiles(files: File[]) {
         dataUrl: compressed.dataUrl,
         thumbUrl: compressed.thumbUrl,
         title: cleanTitle,
-        caption: `Khoảnh khắc mới tải lên · ${cleanTitle}`,
+        caption: cleanCaption,
         description: `Hình ảnh được tối ưu hóa chuẩn WebP 4K trong bộ sưu tập của Lộc Studio.`,
         collectionId: currentFilterCat !== 'all' ? currentFilterCat : 'photography',
         order: 1,
@@ -2392,13 +2399,13 @@ export async function syncCMSFromCloud(): Promise<boolean> {
     const localTiptapTs = localStorage.getItem('loc_local_tiptap_ts');
     const localTiptapTime = localTiptapTs ? new Date(localTiptapTs).getTime() : 0;
 
-    // 3. Sync Media Items - only if cloud is strictly newer than local edits!
+    // 3. Sync Media Items & Update Moments Outside the Screen Grid across all devices
     if (cloud.mediaItems && Array.isArray(cloud.mediaItems) && cloud.mediaItems.length > 0) {
       const lastApplied = localStorage.getItem('loc_last_applied_cloud_ts');
       const isCloudNewer = cloudTime > localMediaTime;
       const isInitialVisit = !localMediaTs && !lastApplied;
 
-      if ((isCloudNewer || isInitialVisit) && lastApplied !== cloudTs) {
+      if (isCloudNewer || isInitialVisit || lastApplied !== cloudTs) {
         mediaItems = cloud.mediaItems;
         await dbSaveAllMedia(mediaItems);
         try {
@@ -2406,6 +2413,10 @@ export async function syncCMSFromCloud(): Promise<boolean> {
         } catch {}
         hasChanges = true;
       }
+
+      // Always synchronize and re-render Moments cards with latest high-res cover photos
+      updateMomentsFromMediaList(cloud.mediaItems);
+      renderMoments();
     }
 
     // 4. Sync Tiptap Text Content across all devices - only if cloud is strictly newer!
