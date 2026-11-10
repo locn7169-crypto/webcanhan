@@ -436,6 +436,20 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
     scrollContainer.scrollTop = 0;
   });
 
+  // Update modal header state (Single Post vs Gallery Grid)
+  const backLabel = modal.querySelector<HTMLElement>('#journalModalBackLabel, .journal-modal-back-btn span');
+  const pillTag = modal.querySelector<HTMLElement>('.journal-pill-tag');
+
+  if (activePostId) {
+    modal.classList.add('viewing-post');
+    if (backLabel) backLabel.textContent = '← Quay lại bộ sưu tập';
+    if (pillTag) pillTag.textContent = `✦ ${currentCat.titleVi}`;
+  } else {
+    modal.classList.remove('viewing-post');
+    if (backLabel) backLabel.textContent = '← Quay lại trang chủ';
+    if (pillTag) pillTag.textContent = '✦ LIBRARY · THƯ VIỆN';
+  }
+
   // ==========================================
   // VIEW A: Single Post View (Instagram Style)
   // ==========================================
@@ -457,11 +471,11 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
 
     scrollContainer.innerHTML = `
       <div class="insta-post-view">
-        <!-- Back Navigation Bar -->
+        <!-- Post Navigation Bar (Breadcrumb & Pagination) -->
         <div class="insta-post-nav-bar">
           <button type="button" class="btn btn-secondary insta-back-btn" title="Quay lại danh mục ảnh">
             <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
-            <span>← Quay lại danh mục</span>
+            <span>← Quay lại bộ sưu tập</span>
           </button>
 
           <div class="insta-pagination-group">
@@ -477,9 +491,27 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
           </div>
         </div>
 
-        <!-- Main Instagram Card Layout: Left Multi-Photo Carousel + Right Story -->
+        <!-- Main Instagram / Facebook Card: Edge-to-Edge on Mobile -->
         <article class="insta-card">
-          <!-- Left: Photo Stage with Ambient Glow & Carousel Slider -->
+          <!-- Author Header Row (Always at the top of the post on mobile & desktop!) -->
+          <div class="insta-author-row">
+            <div class="insta-author-left">
+              <img src="./assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="insta-avatar">
+              <div class="insta-author-meta">
+                <div class="insta-author-title-line">
+                  <span class="insta-author-name">Nguyễn Thành Lộc</span>
+                  <span class="insta-verified-badge" title="Tác giả chính thức">✓</span>
+                </div>
+                <span class="insta-category-tag">${currentCat.titleVi} · ${entry.date}</span>
+              </div>
+            </div>
+            
+            <div class="insta-author-right">
+              <span class="insta-post-counter-pill">${entryIndex + 1} / ${currentCat.entries.length}</span>
+            </div>
+          </div>
+
+          <!-- Photo Stage with Ambient Glow & Carousel Slider (Edge-to-Edge on Mobile) -->
           <div class="insta-photo-stage-wrapper">
             <div class="insta-photo-stage" id="insta-photo-stage">
               <!-- Ambient Glow Backlight reflecting photo colors -->
@@ -516,7 +548,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
               }
 
               <!-- Fullscreen Lightbox Button -->
-              <button type="button" class="insta-enlarge-btn" title="Phóng to ảnh rạp chiếu" aria-label="Phóng to ảnh">
+              <button type="button" class="insta-enlarge-btn insta-fullscreen-btn" title="Phóng to ảnh rạp chiếu" aria-label="Phóng to ảnh">
                 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
               </button>
 
@@ -594,32 +626,56 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
             }
           </div>
 
-          <!-- Right: Author & Story Panel -->
-          <div class="insta-detail-panel">
-            <!-- Author Header with Heart Like Button -->
-            <div class="insta-author-row">
-              <div class="insta-author-left">
-                <img src="./assets/loc-avatar.jpg" alt="Nguyễn Thành Lộc" class="insta-avatar">
-                <div class="insta-author-meta">
-                  <span class="insta-author-name">Nguyễn Thành Lộc</span>
-                  <span class="insta-category-tag">${currentCat.titleVi}</span>
-                </div>
-              </div>
-              
-              <div class="insta-author-right">
-                <button type="button" class="insta-like-btn ${entry.isLiked ? 'liked' : ''}" title="Thả tim khoảnh khắc này" aria-label="Thả tim">
-                  <svg class="insta-heart-icon" viewBox="0 0 24 24" fill="${entry.isLiked ? '#ef4444' : 'none'}" stroke="${entry.isLiked ? '#ef4444' : 'currentColor'}" stroke-width="2">
-                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
-                  </svg>
-                  <span class="insta-like-count">${entry.likes || 1}</span>
-                </button>
-                <span class="insta-post-date" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.date}</span>
-              </div>
+          <!-- Instagram Action Bar (Like, Comment, Share, Bookmark) -->
+          <div class="insta-actions-bar">
+            <div class="insta-actions-left">
+              <button type="button" class="insta-action-btn insta-like-btn ${entry.isLiked ? 'liked' : ''}" title="Thả tim khoảnh khắc này" aria-label="Thả tim">
+                <svg class="insta-heart-icon" viewBox="0 0 24 24" width="23" height="23" fill="${entry.isLiked ? '#ef4444' : 'none'}" stroke="${entry.isLiked ? '#ef4444' : 'currentColor'}" stroke-width="2">
+                  <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="insta-action-btn insta-comment-btn" title="Xem câu chuyện" aria-label="Ghi chú câu chuyện">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+                </svg>
+              </button>
+
+              <button type="button" class="insta-action-btn insta-share-btn" title="Chia sẻ liên kết khoảnh khắc" aria-label="Chia sẻ">
+                <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="22" y1="2" x2="11" y2="13"/>
+                  <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                </svg>
+              </button>
             </div>
 
+            <div class="insta-actions-right">
+              <button type="button" class="insta-action-btn insta-fullscreen-btn" title="Phóng to ảnh" aria-label="Toàn màn hình">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </button>
+              <button type="button" class="insta-action-btn insta-bookmark-btn" title="Lưu bài viết" aria-label="Lưu khoảnh khắc">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Likes Count Row -->
+          <div class="insta-likes-row">
+            <span class="insta-likes-count"><strong class="insta-like-count">${entry.likes || 1}</strong> lượt thích</span>
+          </div>
+
+          <!-- Right: Story & Detail Panel -->
+          <div class="insta-detail-panel">
             <!-- Scrollable Content Body -->
             <div class="insta-detail-body">
-              <h3 class="insta-post-title" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.title}</h3>
+              <div class="insta-caption-row">
+                <span class="insta-caption-author">nguyenthanhloc</span>
+                <h3 class="insta-post-title" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.title}</h3>
+              </div>
               
               <div class="insta-story-box">
                 <p class="insta-post-story" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.story}</p>
@@ -628,6 +684,17 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
               <div class="insta-caption-box">
                 <span class="insta-caption-label">Chú thích khoảnh khắc:</span>
                 <p class="insta-post-caption" ${isEditing ? 'contenteditable="true" spellcheck="false"' : ''}>${entry.caption || 'Nhấp để nhập chú thích ảnh...'}</p>
+              </div>
+
+              <div class="insta-tags-row">
+                <span class="insta-tag">#LocStudio</span>
+                <span class="insta-tag">#${currentCat.id}</span>
+                <span class="insta-tag">#VietNam</span>
+                <span class="insta-tag">#VisualMoments</span>
+              </div>
+
+              <div class="insta-date-row">
+                <time class="insta-timestamp">${entry.date}</time>
               </div>
             </div>
 
@@ -648,8 +715,16 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
                 </div>
               `
                   : `
-                <div class="insta-hint-row">
-                  <span class="insta-hint-text">✨ Chạm 2 lần vào ảnh để thả tim · Dùng phím ← → để chuyển ảnh</span>
+                <div class="insta-feed-nav-footer">
+                  <button type="button" class="insta-nav-bottom-btn insta-prev-btn" ${!prevEntry ? 'disabled' : ''}>
+                    ← Bài trước
+                  </button>
+                  <button type="button" class="insta-nav-bottom-btn insta-back-btn">
+                    Xem tất cả ảnh
+                  </button>
+                  <button type="button" class="insta-nav-bottom-btn insta-next-btn" ${!nextEntry ? 'disabled' : ''}>
+                    Bài tiếp theo →
+                  </button>
                 </div>
               `
               }
@@ -659,7 +734,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
       </div>
     `;
 
-    // 1. Double Click Heart Reaction
+    // 1. Double Click / Double Tap Heart Reaction
     const stageEl = scrollContainer.querySelector<HTMLElement>('#insta-photo-stage');
     stageEl?.addEventListener('dblclick', (e) => {
       const rect = stageEl.getBoundingClientRect();
@@ -670,43 +745,158 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
       if (!entry.isLiked) {
         entry.isLiked = true;
         entry.likes = (entry.likes || 0) + 1;
-        const likeBtn = scrollContainer.querySelector<HTMLElement>('.insta-like-btn');
-        const countEl = scrollContainer.querySelector<HTMLElement>('.insta-like-count');
-        likeBtn?.classList.add('liked');
-        const iconSvg = likeBtn?.querySelector('svg');
-        if (iconSvg) {
-          iconSvg.setAttribute('fill', '#ef4444');
-          iconSvg.setAttribute('stroke', '#ef4444');
-        }
-        if (countEl) countEl.textContent = String(entry.likes);
+        scrollContainer.querySelectorAll<HTMLElement>('.insta-like-btn').forEach((b) => b.classList.add('liked'));
+        scrollContainer.querySelectorAll<HTMLElement>('.insta-like-count').forEach((c) => (c.textContent = String(entry.likes)));
         saveJournalData();
       }
       showToast('❤️ Đã thả tim cho khoảnh khắc này!');
     });
 
-    // 2. Like Button Click
-    scrollContainer.querySelector<HTMLElement>('.insta-like-btn')?.addEventListener('click', () => {
-      entry.isLiked = !entry.isLiked;
-      entry.likes = (entry.likes || 0) + (entry.isLiked ? 1 : -1);
-      if (entry.likes < 0) entry.likes = 0;
+    // Mobile Touch Gestures: Swipe Left / Right to navigate photos & Double Tap to like
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let lastTapTime = 0;
 
-      const likeBtn = scrollContainer.querySelector<HTMLElement>('.insta-like-btn');
-      const countEl = scrollContainer.querySelector<HTMLElement>('.insta-like-count');
-      likeBtn?.classList.toggle('liked', entry.isLiked);
-      const iconSvg = likeBtn?.querySelector('svg');
-      if (iconSvg) {
-        iconSvg.setAttribute('fill', entry.isLiked ? '#ef4444' : 'none');
-        iconSvg.setAttribute('stroke', entry.isLiked ? '#ef4444' : 'currentColor');
-      }
-      if (countEl) countEl.textContent = String(entry.likes);
+    stageEl?.addEventListener(
+      'touchstart',
+      (e) => {
+        if (e.touches.length === 1) {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }
+      },
+      { passive: true }
+    );
 
-      if (entry.isLiked && stageEl) {
-        triggerHeartBurst(stageEl);
-      }
-      saveJournalData();
+    stageEl?.addEventListener(
+      'touchend',
+      (e) => {
+        if (e.changedTouches.length === 1) {
+          const touchEndX = e.changedTouches[0].clientX;
+          const touchEndY = e.changedTouches[0].clientY;
+          const diffX = touchEndX - touchStartX;
+          const diffY = touchEndY - touchStartY;
+
+          // Double tap detection
+          const now = Date.now();
+          if (Math.abs(diffX) < 12 && Math.abs(diffY) < 12 && now - lastTapTime < 320) {
+            triggerHeartBurst(stageEl, touchEndX, touchEndY);
+            if (!entry.isLiked) {
+              entry.isLiked = true;
+              entry.likes = (entry.likes || 0) + 1;
+              scrollContainer.querySelectorAll<HTMLElement>('.insta-like-btn').forEach((b) => b.classList.add('liked'));
+              scrollContainer.querySelectorAll<HTMLElement>('.insta-like-count').forEach((c) => (c.textContent = String(entry.likes)));
+              saveJournalData();
+              showToast('❤️ Đã thả tim cho khoảnh khắc này!');
+            }
+            lastTapTime = 0;
+            return;
+          }
+          lastTapTime = now;
+
+          // Horizontal swipe detection (> 40px)
+          if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY) * 1.4) {
+            if (diffX < 0) {
+              // Swipe Left: Next photo in carousel, or next post
+              if (currentPhotoIndex < photos.length - 1) {
+                currentPhotoIndex++;
+                renderJournalModal(currentCatId);
+              } else if (nextEntry) {
+                syncActivePostToState();
+                activePostId = nextEntry.id;
+                currentPhotoIndex = 0;
+                renderJournalModal(currentCatId);
+              }
+            } else {
+              // Swipe Right: Prev photo in carousel, or prev post
+              if (currentPhotoIndex > 0) {
+                currentPhotoIndex--;
+                renderJournalModal(currentCatId);
+              } else if (prevEntry) {
+                syncActivePostToState();
+                activePostId = prevEntry.id;
+                currentPhotoIndex = 0;
+                renderJournalModal(currentCatId);
+              }
+            }
+          }
+        }
+      },
+      { passive: true }
+    );
+
+    // 2. Like Button Click (Both Header & Action Bar)
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-like-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        entry.isLiked = !entry.isLiked;
+        entry.likes = (entry.likes || 0) + (entry.isLiked ? 1 : -1);
+        if (entry.likes < 0) entry.likes = 0;
+
+        scrollContainer.querySelectorAll<HTMLElement>('.insta-like-btn').forEach((b) => {
+          b.classList.toggle('liked', entry.isLiked);
+          const iconSvg = b.querySelector('svg');
+          if (iconSvg) {
+            iconSvg.setAttribute('fill', entry.isLiked ? '#ef4444' : 'none');
+            iconSvg.setAttribute('stroke', entry.isLiked ? '#ef4444' : 'currentColor');
+          }
+        });
+
+        scrollContainer.querySelectorAll<HTMLElement>('.insta-like-count').forEach((c) => {
+          c.textContent = String(entry.likes);
+        });
+
+        if (entry.isLiked && stageEl) {
+          triggerHeartBurst(stageEl);
+        }
+        saveJournalData();
+      });
     });
 
-    // 3. Carousel Navigation (< and >)
+    // 3. Share Button: Web Share API or Clipboard Copy
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-share-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const shareData = {
+          title: `Lộc Studio — ${entry.title}`,
+          text: entry.caption || entry.story,
+          url: window.location.href,
+        };
+        if (navigator.share && navigator.canShare && navigator.canShare(shareData)) {
+          try {
+            await navigator.share(shareData);
+          } catch {}
+        } else {
+          try {
+            await navigator.clipboard.writeText(window.location.href);
+            showToast('🔗 Đã sao chép liên kết khoảnh khắc!');
+          } catch {
+            showToast('🔗 Liên kết khoảnh khắc: ' + window.location.href);
+          }
+        }
+      });
+    });
+
+    // 4. Bookmark Button: Toggle saved state
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-bookmark-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const isBookmarked = btn.classList.toggle('bookmarked');
+        const iconSvg = btn.querySelector('svg');
+        if (iconSvg) {
+          iconSvg.setAttribute('fill', isBookmarked ? '#b8965a' : 'none');
+          iconSvg.setAttribute('stroke', isBookmarked ? '#b8965a' : 'currentColor');
+        }
+        showToast(isBookmarked ? '🔖 Đã lưu vào mục yêu thích!' : 'Đã bỏ lưu khoảnh khắc.');
+      });
+    });
+
+    // 5. Comment / Note button: Smooth scroll to caption & story
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-comment-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const storyBox = scrollContainer.querySelector('.insta-detail-body');
+        storyBox?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      });
+    });
+
+    // 6. Carousel Navigation (< and >)
     scrollContainer.querySelector('.insta-carousel-prev')?.addEventListener('click', () => {
       if (currentPhotoIndex > 0) {
         currentPhotoIndex--;
@@ -721,7 +911,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
       }
     });
 
-    // 4. Dot indicators and thumbnails jump
+    // 7. Dot indicators and thumbnails jump
     scrollContainer.querySelectorAll<HTMLElement>('.insta-dot, .insta-thumb-item').forEach((btn) => {
       btn.addEventListener('click', () => {
         const idx = Number(btn.getAttribute('data-photo-idx'));
@@ -732,34 +922,42 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
       });
     });
 
-    // 5. Lightbox expand
-    scrollContainer.querySelector('.insta-enlarge-btn')?.addEventListener('click', () => {
-      openFullscreenLightbox(currentPhoto, entry.title);
+    // 8. Fullscreen Lightbox expand
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-enlarge-btn, .insta-fullscreen-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        openFullscreenLightbox(currentPhoto, entry.title);
+      });
     });
 
-    // 6. Navigation between posts (Previous / Next post)
-    scrollContainer.querySelector('.insta-back-btn')?.addEventListener('click', () => {
-      syncActivePostToState();
-      activePostId = null;
-      renderJournalModal(currentCatId);
-    });
-
-    scrollContainer.querySelector('.insta-prev-btn')?.addEventListener('click', () => {
-      if (prevEntry) {
+    // 9. Navigation between posts (Previous / Next post & Back to Grid)
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-back-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
         syncActivePostToState();
-        activePostId = prevEntry.id;
-        currentPhotoIndex = 0;
+        activePostId = null;
         renderJournalModal(currentCatId);
-      }
+      });
     });
 
-    scrollContainer.querySelector('.insta-next-btn')?.addEventListener('click', () => {
-      if (nextEntry) {
-        syncActivePostToState();
-        activePostId = nextEntry.id;
-        currentPhotoIndex = 0;
-        renderJournalModal(currentCatId);
-      }
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-prev-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (prevEntry) {
+          syncActivePostToState();
+          activePostId = prevEntry.id;
+          currentPhotoIndex = 0;
+          renderJournalModal(currentCatId);
+        }
+      });
+    });
+
+    scrollContainer.querySelectorAll<HTMLElement>('.insta-next-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (nextEntry) {
+          syncActivePostToState();
+          activePostId = nextEntry.id;
+          currentPhotoIndex = 0;
+          renderJournalModal(currentCatId);
+        }
+      });
     });
 
     // 7. Edit Actions: Append multiple photos, Replace photo, Delete photo
@@ -1302,6 +1500,20 @@ export function initExplorationJournal() {
     const target = e.target as HTMLElement | null;
     if (target?.closest('[data-journal-close]')) {
       e.preventDefault();
+      closeExplorationJournal();
+    }
+  });
+
+  // Dedicated back button handling (Intelligent Instagram Back Navigation)
+  const backBtn = modal.querySelector<HTMLElement>('.journal-modal-back-btn');
+  backBtn?.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (activePostId) {
+      syncActivePostToState();
+      activePostId = null;
+      renderJournalModal(currentCatId);
+    } else {
       closeExplorationJournal();
     }
   });
