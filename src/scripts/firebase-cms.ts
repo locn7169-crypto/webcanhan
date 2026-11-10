@@ -264,8 +264,9 @@ export async function saveData() {
 
 export function enforceStrictReadOnly() {
   if (typeof document === 'undefined') return;
-  document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((el) => {
+  document.querySelectorAll<HTMLElement>('[contenteditable], .editable, [data-editable-active]').forEach((el) => {
     el.removeAttribute('contenteditable');
+    el.removeAttribute('data-editable-active');
   });
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) saveBtn.style.display = 'none';

@@ -165,7 +165,8 @@ let replacePhotoFileInput: HTMLInputElement | null = null;
 let newPostFileInput: HTMLInputElement | null = null;
 
 function isEditModeActive(): boolean {
-  return isAdminAuthenticated() && document.body.classList.contains('visual-editor-active');
+  const isUrlAdmin = typeof window !== 'undefined' && (window.location.hash || '').toLowerCase().includes('#admin');
+  return isUrlAdmin && isAdminAuthenticated() && document.body.classList.contains('visual-editor-active');
 }
 
 function showToast(msg: string) {

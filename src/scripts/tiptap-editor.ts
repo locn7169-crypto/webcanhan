@@ -225,12 +225,13 @@ export function enforceCanonicalExplorationsHeader() {
 export function stripEditableArtifacts(html: string): string {
   if (!html || typeof html !== 'string') return html;
   return html
-    .replace(/\s*contenteditable=(["']).*?\1/gi, '')
+    .replace(/\s*contenteditable(=(["'].*?["']|[^\s>]*))?/gi, '')
+    .replace(/\s*data-editable-active(=(["'].*?["']|[^\s>]*))?/gi, '')
     .replace(/\s*spellcheck=(["']).*?\1/gi, '')
     .replace(/\bclass=(["'])(.*?)\1/gi, (_match, quote, classes) => {
       const filtered = classes
         .split(/\s+/)
-        .filter((c: string) => c !== 'editable')
+        .filter((c: string) => c !== 'editable' && c !== 'tiptap-active-node')
         .join(' ')
         .trim();
       return filtered ? `class=${quote}${filtered}${quote}` : '';
@@ -1213,9 +1214,10 @@ export function toggleTiptapEditMode(enable: boolean) {
       }
     });
 
-    // Cưỡng chế gỡ bỏ toàn bộ contenteditable khi tắt chế độ sửa
-    document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+    // Cưỡng chế gỡ bỏ toàn bộ contenteditable và data-editable-active khi tắt chế độ sửa
+    document.querySelectorAll<HTMLElement>('[contenteditable], [data-editable-active]').forEach((el) => {
       el.removeAttribute('contenteditable');
+      el.removeAttribute('data-editable-active');
     });
 
     window.dispatchEvent(new CustomEvent('loc-edit-mode-changed', { detail: { isEditMode: false } }));
@@ -1307,8 +1309,9 @@ export function initTiptapEditor() {
       if (isEditMode) {
         toggleTiptapEditMode(false);
       }
-      document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+      document.querySelectorAll<HTMLElement>('[contenteditable], [data-editable-active]').forEach((el) => {
         el.removeAttribute('contenteditable');
+        el.removeAttribute('data-editable-active');
       });
       document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
       document.getElementById('visual-editor-dock')?.remove();
@@ -1319,10 +1322,13 @@ export function initTiptapEditor() {
   // Đảm bảo khi mở trang mà không có #admin thì 100% chỉ đọc
   if (!(window.location.hash || '').toLowerCase().includes('#admin')) {
     isEditMode = false;
-    document.querySelectorAll<HTMLElement>('[contenteditable]').forEach((el) => {
+    document.querySelectorAll<HTMLElement>('[contenteditable], [data-editable-active]').forEach((el) => {
       el.removeAttribute('contenteditable');
+      el.removeAttribute('data-editable-active');
     });
     document.body.classList.remove('visual-editor-active', 'tiptap-mode-active');
+    document.getElementById('visual-editor-dock')?.remove();
+    document.getElementById('tiptap-bubble-menu')?.remove();
   }
 
   (window as any).toggleTiptapEditMode = toggleTiptapEditMode;
