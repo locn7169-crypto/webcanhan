@@ -69,6 +69,17 @@ declare module '@tiptap/core' {
 // Storage Key for persisted content
 const STORAGE_KEY = 'loc_portfolio_tiptap_v2';
 
+// Set of node keys deleted by the user during this session
+export const deletedNodeKeys = new Set<string>();
+
+// Canonical Font Family map for the editor
+export const FONT_MAP: Record<string, string> = {
+  sans: "system-ui, -apple-system, 'SF Pro Display', Inter, sans-serif",
+  cophong: "'Noto Serif SC', 'Playfair Display', 'Cinzel', serif",
+  editorial: "'Newsreader', 'Playfair Display', Georgia, serif",
+  mono: "ui-monospace, SFMono-Regular, Menlo, monospace",
+};
+
 // Global Tiptap State
 let activeEditor: Editor | null = null;
 let activeTargetEl: HTMLElement | null = null;
@@ -270,6 +281,13 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
 function applyEditsToDOM(edits: Record<string, any>) {
   if (!edits || typeof edits !== 'object') return;
   Object.entries(edits).forEach(([key, val]) => {
+    // 1. Kiểm tra nếu khối bị xóa
+    if (val && typeof val === 'object' && val.deleted) {
+      const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
+      if (el) el.remove();
+      return;
+    }
+
     // Never allow obsolete strings to overwrite DOM
     const valStr = typeof val === 'string' ? val : (val?.html || JSON.stringify(val) || '');
     if (
@@ -285,7 +303,19 @@ function applyEditsToDOM(edits: Record<string, any>) {
       return;
     }
 
-    const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
+    let el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"]`);
+
+    // 2. Chèn khối động nếu có insertAfter
+    if (!el && val && typeof val === 'object' && val.insertAfter) {
+      const prevEl = document.querySelector<HTMLElement>(`[data-edit-key="${val.insertAfter}"]`);
+      if (prevEl && prevEl.parentElement) {
+        const newEl = document.createElement(val.tagName || 'p');
+        newEl.setAttribute('data-edit-key', key);
+        prevEl.after(newEl);
+        el = newEl;
+      }
+    }
+
     if (el) {
       if (el.tagName.toLowerCase() === 'img') {
         const src = typeof val === 'string' ? val : (val?.src || val?.html);
@@ -369,7 +399,12 @@ export function saveAllTiptapContent() {
     activeTargetEl.innerHTML = html;
   }
 
-  const edits: Record<string, { html?: string; src?: string; style?: Record<string, string> }> = {};
+  const edits: Record<string, { html?: string; src?: string; style?: Record<string, string>; insertAfter?: string; tagName?: string; deleted?: boolean }> = {};
+  
+  deletedNodeKeys.forEach((k) => {
+    edits[k] = { deleted: true };
+  });
+
   document.querySelectorAll<HTMLElement>('[data-edit-key]').forEach((el) => {
     const key = el.getAttribute('data-edit-key');
     if (key) {
@@ -379,6 +414,8 @@ export function saveAllTiptapContent() {
         const styleObj: Record<string, string> = {};
         if (el.style.fontSize) styleObj.fontSize = el.style.fontSize;
         if (el.style.color) styleObj.color = el.style.color;
+        if (el.style.backgroundColor) styleObj.backgroundColor = el.style.backgroundColor;
+        if (el.style.fontFamily) styleObj.fontFamily = el.style.fontFamily;
         if (el.style.textAlign) styleObj.textAlign = el.style.textAlign;
         if (el.style.lineHeight) styleObj.lineHeight = el.style.lineHeight;
 
@@ -388,9 +425,13 @@ export function saveAllTiptapContent() {
           htmlContent = activeEditor.getHTML();
         }
 
+        const insertAfter = el.getAttribute('data-insert-after') || undefined;
+
         edits[key] = {
-          html: htmlContent,
-          style: styleObj,
+          html: stripEditableArtifacts(htmlContent.trim()),
+          style: Object.keys(styleObj).length > 0 ? styleObj : undefined,
+          insertAfter,
+          tagName: el.tagName.toLowerCase(),
         };
       }
     }
@@ -400,7 +441,12 @@ export function saveAllTiptapContent() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(edits));
     dbSetSetting('tiptap_content', edits).catch(() => {});
     window.dispatchEvent(new CustomEvent('loc-save-all-requested'));
-    showToast('💾 Tiptap: Đã lưu toàn bộ nội dung & định dạng thành công!');
+
+    if (typeof (window as any).saveData === 'function') {
+      (window as any).saveData();
+    } else {
+      showToast('🎉 Đã lưu & xuất bản thành công! Website https://nguyenthanhloc.pages.dev đã được cập nhật.');
+    }
   } catch (e) {
     console.error('[Tiptap] Save failed:', e);
     showToast('⚠️ Không thể lưu vào bộ nhớ tạm.');
@@ -598,6 +644,16 @@ function setupBubbleMenuDOM(): HTMLElement {
           <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 6h16M7 12h10M5 18h14"/></svg>
         </button>
       </div>
+
+      <div class="tt-sep"></div>
+
+      <div class="tt-bubble-group">
+        <label class="tt-bubble-color-label" title="Tự chọn màu chữ" style="position:relative;display:inline-flex;align-items:center;cursor:pointer;padding:0 3px;">
+          <input type="color" id="tt-bubble-custom-color" value="#B88E38" style="position:absolute;opacity:0;width:0;height:0;pointer-events:none;" />
+          <span style="font-size:12px;">🎨</span>
+        </label>
+        <button type="button" class="tt-btn" data-tt-action="delete-node" title="Xóa khối này" style="color:#ef4444;">🗑️</button>
+      </div>
     `;
     document.body.appendChild(menu);
 
@@ -625,6 +681,17 @@ function setupBubbleMenuDOM(): HTMLElement {
           activeEditor.chain().focus().setColor(color).run();
         }
       });
+    });
+
+    menu.querySelector<HTMLInputElement>('#tt-bubble-custom-color')?.addEventListener('input', (e) => {
+      const color = (e.target as HTMLInputElement).value;
+      if (color && activeEditor) {
+        activeEditor.chain().focus().setColor(color).run();
+      }
+    });
+
+    menu.querySelector('[data-tt-action="delete-node"]')?.addEventListener('click', () => {
+      deleteCurrentBlock();
     });
   }
 
@@ -688,6 +755,82 @@ function setupImageUploadInput() {
   });
 }
 
+// Block Management Helpers (Add paragraph, Add heading, Duplicate, Delete)
+function addParagraphBlock() {
+  if (!activeTargetEl) {
+    showToast('⚠️ Vui lòng nhấp chọn một vị trí hoặc đoạn văn trên web trước.');
+    return;
+  }
+  const newP = document.createElement('p');
+  newP.className = 'editable text-body';
+  const newKey = `tt-user-p-${Date.now()}`;
+  newP.setAttribute('data-edit-key', newKey);
+  newP.setAttribute('data-editable-active', 'true');
+  const prevKey = activeTargetEl.getAttribute('data-edit-key') || '';
+  if (prevKey) newP.setAttribute('data-insert-after', prevKey);
+  newP.innerHTML = 'Nội dung đoạn văn mới được thêm vào trang. Nhấp vào đây để chỉnh sửa nội dung này...';
+  
+  activeTargetEl.after(newP);
+  attachTiptapToElement(newP);
+  showToast('➕ Đã thêm đoạn văn mới! Bấm "Lưu" để cập nhật lên web.');
+}
+
+function addHeadingBlock() {
+  if (!activeTargetEl) {
+    showToast('⚠️ Vui lòng nhấp chọn một vị trí trên web trước.');
+    return;
+  }
+  const newH = document.createElement('h3');
+  newH.className = 'editable title-sub';
+  const newKey = `tt-user-h-${Date.now()}`;
+  newH.setAttribute('data-edit-key', newKey);
+  newH.setAttribute('data-editable-active', 'true');
+  const prevKey = activeTargetEl.getAttribute('data-edit-key') || '';
+  if (prevKey) newH.setAttribute('data-insert-after', prevKey);
+  newH.innerHTML = 'Tiêu đề mới';
+  
+  activeTargetEl.after(newH);
+  attachTiptapToElement(newH);
+  showToast('➕ Đã thêm tiêu đề mới! Bấm "Lưu" để cập nhật lên web.');
+}
+
+function duplicateCurrentBlock() {
+  if (!activeTargetEl) {
+    showToast('⚠️ Vui lòng nhấp chọn một khối để nhân bản.');
+    return;
+  }
+  const clone = activeTargetEl.cloneNode(true) as HTMLElement;
+  const newKey = `tt-user-dup-${Date.now()}`;
+  clone.setAttribute('data-edit-key', newKey);
+  clone.setAttribute('data-editable-active', 'true');
+  const prevKey = activeTargetEl.getAttribute('data-edit-key') || '';
+  if (prevKey) clone.setAttribute('data-insert-after', prevKey);
+  clone.classList.remove('tiptap-active-node');
+  
+  activeTargetEl.after(clone);
+  attachTiptapToElement(clone);
+  showToast('📋 Đã nhân bản khối thành công!');
+}
+
+function deleteCurrentBlock() {
+  if (!activeTargetEl) {
+    showToast('⚠️ Vui lòng nhấp chọn khối cần xóa.');
+    return;
+  }
+  const key = activeTargetEl.getAttribute('data-edit-key');
+  if (key) {
+    deletedNodeKeys.add(key);
+  }
+  const target = activeTargetEl;
+  if (activeEditor) {
+    activeEditor.destroy();
+    activeEditor = null;
+  }
+  activeTargetEl = null;
+  target.remove();
+  showToast('🗑️ Đã xóa khối khỏi trang. Nhớ bấm "Lưu thay đổi" để cập nhật lên web chính!');
+}
+
 // Global state for dock position and collapse
 let savedDockCoords: { x: number; y: number } | null = null;
 let isDockCollapsed = false;
@@ -738,6 +881,19 @@ function setupTiptapDock() {
 
         <div class="editor-tool-sep"></div>
 
+        <!-- Font Family Selector (Kiểu chữ) -->
+        <div class="editor-tool-group" title="Kiểu chữ (Phông chữ)">
+          <select id="tt-font-family-select" class="editor-select-font" title="Chọn kiểu chữ">
+            <option value="">Kiểu chữ (Mặc định)</option>
+            <option value="sans">Hiện đại (Sans-serif)</option>
+            <option value="cophong">Cổ phong (Thư pháp / Serif)</option>
+            <option value="editorial">Biên tập (Editorial Serif)</option>
+            <option value="mono">Kỹ thuật (Monospace)</option>
+          </select>
+        </div>
+
+        <div class="editor-tool-sep"></div>
+
         <!-- Typography Marks -->
         <div class="editor-tool-group" title="Kiểu chữ cơ bản">
           <button type="button" class="editor-tool-btn" data-tt-action="bold" title="In đậm (Cmd+B)"><strong>B</strong></button>
@@ -766,10 +922,25 @@ function setupTiptapDock() {
 
         <div class="editor-tool-sep"></div>
 
-        <!-- Font Size Scale -->
-        <div class="editor-tool-group" title="Tăng giảm cỡ chữ">
+        <!-- Font Size Scale & Selector -->
+        <div class="editor-tool-group" title="Cỡ chữ">
           <button type="button" class="editor-tool-btn editor-font-btn" data-tt-action="font-down" title="Giảm cỡ chữ (−2px)">A−</button>
           <button type="button" class="editor-tool-btn editor-font-btn" data-tt-action="font-up" title="Tăng cỡ chữ (+2px)">A+</button>
+          <select id="tt-font-size-select" class="editor-select-size" title="Chọn nhanh cỡ chữ">
+            <option value="">Cỡ chữ</option>
+            <option value="12px">12px</option>
+            <option value="14px">14px</option>
+            <option value="16px">16px</option>
+            <option value="18px">18px</option>
+            <option value="20px">20px</option>
+            <option value="24px">24px</option>
+            <option value="28px">28px</option>
+            <option value="32px">32px</option>
+            <option value="40px">40px</option>
+            <option value="48px">48px</option>
+            <option value="56px">56px</option>
+            <option value="64px">64px</option>
+          </select>
         </div>
 
         <div class="editor-tool-sep"></div>
@@ -790,22 +961,45 @@ function setupTiptapDock() {
 
         <div class="editor-tool-sep"></div>
 
-        <!-- Insert & Media -->
-        <div class="editor-tool-group" title="Chèn dòng, ảnh & Phân cách">
-          <button type="button" class="editor-tool-btn" data-tt-action="insert-image" title="Chèn ảnh từ máy">🖼️ Chèn ảnh</button>
-          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="hr" title="Chèn vạch ngăn cách (Horizontal Rule)">— Vạch ngăn</button>
-          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="composer-open" title="Mở Trình Soạn Bài Tiptap Chuyên Sâu">✨ Soạn thảo Pro</button>
+        <!-- Color Swatches & Native Color Pickers (Tô màu chữ) -->
+        <div class="editor-tool-group" title="Tô màu chữ">
+          <button type="button" class="editor-color-btn" data-color="#B88E38" style="background:#B88E38;" title="Vàng Hoàng gia"></button>
+          <button type="button" class="editor-color-btn" data-color="#1C1A17" style="background:#1C1A17;" title="Mực Đen"></button>
+          <button type="button" class="editor-color-btn" data-color="#FAF7F2" style="background:#FAF7F2; border:1px solid #777;" title="Trắng Kem"></button>
+          <button type="button" class="editor-color-btn" data-color="#E11D48" style="background:#E11D48;" title="Đỏ Chu Sa"></button>
+          <button type="button" class="editor-color-btn" data-color="#10B981" style="background:#10B981;" title="Xanh Ngọc"></button>
+          <button type="button" class="editor-color-btn" data-color="#3B82F6" style="background:#3B82F6;" title="Xanh Coban"></button>
+          <label class="editor-color-picker-label" title="Tự chọn màu chữ">
+            <input type="color" id="tt-custom-text-color" value="#B88E38" class="editor-color-picker-input" />
+            <span class="editor-color-picker-badge">🎨 Màu chữ</span>
+          </label>
         </div>
 
         <div class="editor-tool-sep"></div>
 
-        <!-- Color Swatches -->
-        <div class="editor-tool-group" title="Màu chữ">
-          <button type="button" class="editor-color-btn" data-color="#B88E38" style="background:#B88E38;" title="Vàng Hoàng gia"></button>
-          <button type="button" class="editor-color-btn" data-color="#1C1A17" style="background:#1C1A17;" title="Mực Đen"></button>
-          <button type="button" class="editor-color-btn" data-color="#FAF7F2" style="background:#FAF7F2; border:1px solid #777;" title="Trắng Kem"></button>
-          <button type="button" class="editor-color-btn" data-color="#685E51" style="background:#685E51;" title="Ghi Ấm"></button>
-          <button type="button" class="editor-tool-btn" data-tt-action="clear-format" title="Xóa định dạng (Reset)">🧹</button>
+        <!-- Highlight & Background Color (Tô màu nền / Dạ quang) -->
+        <div class="editor-tool-group" title="Tô màu nền / Dạ quang">
+          <button type="button" class="editor-color-btn" data-bg-color="#fef08a" style="background:#fef08a;" title="Dạ quang Vàng"></button>
+          <button type="button" class="editor-color-btn" data-bg-color="#bbf7d0" style="background:#bbf7d0;" title="Dạ quang Xanh lá"></button>
+          <button type="button" class="editor-color-btn" data-bg-color="#bfdbfe" style="background:#bfdbfe;" title="Dạ quang Xanh dương"></button>
+          <button type="button" class="editor-color-btn" data-bg-color="#fbcfe8" style="background:#fbcfe8;" title="Dạ quang Hồng"></button>
+          <label class="editor-color-picker-label" title="Tự chọn màu nền">
+            <input type="color" id="tt-custom-bg-color" value="#fef08a" class="editor-color-picker-input" />
+            <span class="editor-color-picker-badge">🖍️ Nền</span>
+          </label>
+        </div>
+
+        <div class="editor-tool-sep"></div>
+
+        <!-- Block Management (Quản lý khối trên trang) -->
+        <div class="editor-tool-group" title="Quản lý khối (Thêm / Bớt / Nhân bản / Xóa)">
+          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="add-paragraph" title="Thêm một đoạn văn mới bên dưới">+ Đoạn văn</button>
+          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="add-heading" title="Thêm một tiêu đề mới bên dưới">+ Tiêu đề</button>
+          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="duplicate-node" title="Nhân bản khối đang chọn">📋 Nhân bản</button>
+          <button type="button" class="editor-tool-btn editor-delete-btn" data-tt-action="delete-node" title="Xóa khối đang chọn khỏi trang">🗑️ Xóa khối</button>
+          <button type="button" class="editor-tool-btn" data-tt-action="insert-image" title="Đổi / Chèn ảnh từ máy tính">🖼️ Đổi ảnh</button>
+          <button type="button" class="editor-tool-btn" data-tt-action="clear-format" title="Xóa định dạng (Reset)">🧹 Xóa định dạng</button>
+          <button type="button" class="editor-tool-btn editor-insert-btn" data-tt-action="composer-open" title="Mở Trình Soạn Bài Tiptap Chuyên Sâu">✨ Soạn thảo Pro</button>
         </div>
 
         <div class="editor-tool-sep"></div>
@@ -826,9 +1020,9 @@ function setupTiptapDock() {
         </div>
 
         <div class="editor-dock-actions">
-          <button type="button" class="editor-btn editor-btn-save" id="tt-save-btn" title="Lưu thay đổi vào máy">
+          <button type="button" class="editor-btn editor-btn-save" id="tt-save-btn" title="Lưu và xuất bản ngay lên web chính https://nguyenthanhloc.pages.dev">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
-            <span>Lưu thay đổi</span>
+            <span>💾 Lưu &amp; Xuất bản lên web chính</span>
           </button>
           <button type="button" class="editor-btn editor-btn-export" id="tt-export-btn" title="Xuất file JSON">
             <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -852,6 +1046,77 @@ function setupTiptapDock() {
   dock.querySelectorAll('button').forEach((btn) => {
     btn.addEventListener('mousedown', (e) => e.preventDefault());
   });
+
+  // Font family selector change
+  const fontSelect = dock.querySelector<HTMLSelectElement>('#tt-font-family-select');
+  fontSelect?.addEventListener('change', () => {
+    const val = fontSelect.value;
+    const fontCss = FONT_MAP[val] || '';
+    if (activeTargetEl) {
+      activeTargetEl.style.fontFamily = fontCss;
+      showToast(`🔤 Kiểu chữ: ${val ? fontSelect.options[fontSelect.selectedIndex].text : 'Mặc định'}`);
+    }
+  });
+
+  // Font size selector change
+  const sizeSelect = dock.querySelector<HTMLSelectElement>('#tt-font-size-select');
+  sizeSelect?.addEventListener('change', () => {
+    const sizeVal = sizeSelect.value;
+    if (!sizeVal) return;
+    if (activeEditor && !activeEditor.state.selection.empty) {
+      activeEditor.chain().focus().setFontSize(sizeVal).run();
+    } else if (activeTargetEl) {
+      activeTargetEl.style.fontSize = sizeVal;
+    }
+    showToast(`🔠 Cỡ chữ: ${sizeVal}`);
+  });
+
+  // Custom text color input
+  dock.querySelector<HTMLInputElement>('#tt-custom-text-color')?.addEventListener('input', (e) => {
+    const col = (e.target as HTMLInputElement).value;
+    if (activeEditor && !activeEditor.state.selection.empty) {
+      activeEditor.chain().focus().setColor(col).run();
+    } else if (activeTargetEl) {
+      activeTargetEl.style.color = col;
+    }
+    showToast(`🎨 Màu chữ: ${col}`);
+  });
+
+  // Custom background color input
+  dock.querySelector<HTMLInputElement>('#tt-custom-bg-color')?.addEventListener('input', (e) => {
+    const bgCol = (e.target as HTMLInputElement).value;
+    if (activeEditor && !activeEditor.state.selection.empty) {
+      activeEditor.chain().focus().toggleHighlight({ color: bgCol }).run();
+    } else if (activeTargetEl) {
+      activeTargetEl.style.backgroundColor = bgCol;
+      activeTargetEl.style.borderRadius = '4px';
+      if (!activeTargetEl.style.padding) activeTargetEl.style.padding = '0.15em 0.35em';
+    }
+    showToast(`🖍️ Màu nền: ${bgCol}`);
+  });
+
+  // Background color swatches
+  dock.querySelectorAll<HTMLElement>('[data-bg-color]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const bgCol = btn.getAttribute('data-bg-color');
+      if (bgCol) {
+        if (activeEditor && !activeEditor.state.selection.empty) {
+          activeEditor.chain().focus().toggleHighlight({ color: bgCol }).run();
+        } else if (activeTargetEl) {
+          activeTargetEl.style.backgroundColor = bgCol;
+          activeTargetEl.style.borderRadius = '4px';
+          if (!activeTargetEl.style.padding) activeTargetEl.style.padding = '0.15em 0.35em';
+        }
+        showToast(`🖍️ Màu nền: ${bgCol}`);
+      }
+    });
+  });
+
+  // Block management actions
+  dock.querySelector('[data-tt-action="add-paragraph"]')?.addEventListener('click', addParagraphBlock);
+  dock.querySelector('[data-tt-action="add-heading"]')?.addEventListener('click', addHeadingBlock);
+  dock.querySelector('[data-tt-action="duplicate-node"]')?.addEventListener('click', duplicateCurrentBlock);
+  dock.querySelector('[data-tt-action="delete-node"]')?.addEventListener('click', deleteCurrentBlock);
 
   // Tiptap Command bindings
   dock.querySelector('[data-tt-action="bold"]')?.addEventListener('click', () => activeEditor?.chain().focus().toggleBold().run());
@@ -902,7 +1167,7 @@ function setupTiptapDock() {
     openTiptapComposerModal();
   });
 
-  dock.querySelectorAll<HTMLElement>('.editor-color-btn').forEach((btn) => {
+  dock.querySelectorAll<HTMLElement>('.editor-color-btn[data-color]').forEach((btn) => {
     btn.addEventListener('click', () => {
       const color = btn.getAttribute('data-color');
       if (color && activeEditor) {
@@ -917,6 +1182,8 @@ function setupTiptapDock() {
     if (activeTargetEl) {
       activeTargetEl.style.fontSize = '';
       activeTargetEl.style.color = '';
+      activeTargetEl.style.backgroundColor = '';
+      activeTargetEl.style.fontFamily = '';
       activeTargetEl.style.textAlign = '';
       activeTargetEl.style.lineHeight = '';
     }

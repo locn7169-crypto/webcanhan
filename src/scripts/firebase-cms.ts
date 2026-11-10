@@ -6,9 +6,9 @@
  * - Step 3: loadData() for automatic page hydration & saveData() for saving to Firebase & Cloud
  */
 import { fetchCloudCMS, pushCloudCMS } from './cloud-cms-sync';
-import { isAdminAuthenticated, requestAdminAccess, getStoredPin } from './auth-gate';
+import { isAdminAuthenticated, requestAdminAccess, getStoredPin, clearAdminAuthentication } from './auth-gate';
 import { dbGetAllMedia, dbGetSetting } from './admin-studio';
-import { enforceCanonicalExplorationsHeader, stripEditableArtifacts } from './tiptap-editor';
+import { enforceCanonicalExplorationsHeader, stripEditableArtifacts, toggleTiptapEditMode, deletedNodeKeys } from './tiptap-editor';
 
 // ============================================================================
 // STEP 2: FIREBASE CONFIGURATION PLACEHOLDER & INSTRUCTIONS
@@ -93,7 +93,7 @@ export function showSaveNotification(message = 'Đã lưu thành công', isError
   }, 3500);
 }
 
-export function applyDataToDOM(data: Record<string, string>) {
+export function applyDataToDOM(data: Record<string, any>) {
   if (!data || typeof data !== 'object') return;
 
   const obsoleteStrings = [
@@ -106,28 +106,67 @@ export function applyDataToDOM(data: Record<string, string>) {
   ];
 
   Object.entries(data).forEach(([key, val]) => {
-    if (!val || typeof val !== 'string') return;
+    if (!val) return;
 
-    if (obsoleteStrings.some((s) => val.includes(s)) || key.includes('explorations-subtitle')) {
+    // 1. Kiểm tra nếu khối bị xóa
+    if (typeof val === 'object' && val !== null && val.deleted) {
+      const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"], [data-key="${key}"], #${key}`);
+      if (el) el.remove();
       return;
     }
 
-    const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"], [data-key="${key}"], #${key}`);
+    if (typeof val === 'string' && obsoleteStrings.some((s) => val.includes(s))) {
+      return;
+    }
+
+    let el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"], [data-key="${key}"], #${key}`);
+
+    // 2. Tự động chèn khối mới được thêm động từ Admin
+    if (!el && typeof val === 'object' && val !== null && val.insertAfter) {
+      const prevEl = document.querySelector<HTMLElement>(`[data-edit-key="${val.insertAfter}"], [data-key="${val.insertAfter}"], #${val.insertAfter}`);
+      if (prevEl && prevEl.parentElement) {
+        const newEl = document.createElement(val.tagName || 'p');
+        newEl.setAttribute('data-edit-key', key);
+        prevEl.after(newEl);
+        el = newEl;
+      }
+    }
+
     if (el && !el.closest('#adminBanner, #saveBtn, #admin-auth-overlay, #admin-studio-overlay, .toast-notice')) {
       if (el.tagName.toLowerCase() === 'img') {
-        (el as HTMLImageElement).src = val;
-      } else {
+        const src = typeof val === 'string' ? val : (val as any).src;
+        if (src) (el as HTMLImageElement).src = src;
+      } else if (typeof val === 'string') {
         el.innerHTML = stripEditableArtifacts(val);
+      } else if (typeof val === 'object' && val !== null) {
+        if (val.src && el.tagName.toLowerCase() === 'img') {
+          (el as HTMLImageElement).src = val.src;
+        }
+        if (val.html !== undefined) {
+          el.innerHTML = stripEditableArtifacts(val.html);
+        }
+        if (val.style && typeof val.style === 'object') {
+          Object.assign(el.style, val.style);
+        }
       }
-      el.removeAttribute('contenteditable');
-      el.classList.remove('editable');
+      
+      // Strict read-only outside #admin
+      if (!(window.location.hash || '').toLowerCase().includes('#admin')) {
+        el.removeAttribute('contenteditable');
+        el.removeAttribute('data-editable-active');
+        el.classList.remove('editable', 'tiptap-active-node');
+      }
     }
   });
 
-  document.querySelectorAll<HTMLElement>('[contenteditable], .editable').forEach((node) => {
-    node.removeAttribute('contenteditable');
-    node.classList.remove('editable');
-  });
+  // Guarantee ZERO editable residues outside #admin
+  if (!(window.location.hash || '').toLowerCase().includes('#admin')) {
+    document.querySelectorAll<HTMLElement>('[contenteditable], .editable, [data-editable-active]').forEach((node) => {
+      node.removeAttribute('contenteditable');
+      node.removeAttribute('data-editable-active');
+      node.classList.remove('editable');
+    });
+  }
 
   enforceCanonicalExplorationsHeader();
 }
@@ -187,20 +226,26 @@ export async function loadData() {
 }
 
 /**
- * Hàm saveData(): Gắn vào sự kiện click của nút saveBtn (chỉ ở bản Admin).
- * Quét gom hết nội dung bên trong các thẻ editable và đẩy lên Firebase để lưu đè lại.
- * Sau khi lưu xong thì hiển thị thông báo "Đã lưu thành công".
+ * Hàm saveData(): Gắn vào sự kiện click của nút saveBtn & thanh công cụ Visual Editor (chỉ ở bản Admin).
+ * Quét gom hết nội dung văn bản, định dạng màu sắc, cỡ chữ, phông chữ, ảnh và đẩy lên Firebase RTDB & Cloud Gist.
+ * Sau khi lưu xong thì hiển thị thông báo xác nhận và web chính (nguyenthanhloc.pages.dev) lập tức hiển thị.
  */
 export async function saveData() {
   const saveBtn = document.getElementById('saveBtn');
   const saveBtnText = document.getElementById('saveBtnText');
-  const originalText = saveBtnText ? saveBtnText.textContent : 'Lưu thay đổi';
+  const originalText = saveBtnText ? saveBtnText.textContent : 'Lưu & Xuất bản lên web chính';
 
   if (saveBtn) saveBtn.setAttribute('disabled', 'true');
-  if (saveBtnText) saveBtnText.textContent = 'Đang lưu...';
+  if (saveBtnText) saveBtnText.textContent = 'Đang đồng bộ đám mây...';
 
-  // Quét gom hết nội dung từ các thẻ editable
-  const payload: Record<string, string> = {};
+  // Quét gom hết nội dung & style từ các phần tử có data-edit-key hoặc editable
+  const payload: Record<string, any> = {};
+
+  // Gom các khối đã bị xóa trong phiên biên tập
+  deletedNodeKeys.forEach((k) => {
+    payload[k] = { deleted: true };
+  });
+
   const editables = document.querySelectorAll<HTMLElement>('.editable, [data-edit-key]');
 
   editables.forEach((el) => {
@@ -208,9 +253,30 @@ export async function saveData() {
     const key = el.getAttribute('data-edit-key') || el.getAttribute('data-key') || el.id;
     if (key && !key.includes('saveBtn') && !key.includes('admin') && !key.includes('toast')) {
       if (el.tagName.toLowerCase() === 'img') {
-        payload[key] = (el as HTMLImageElement).src;
+        payload[key] = { src: (el as HTMLImageElement).src };
       } else {
-        payload[key] = stripEditableArtifacts(el.innerHTML.trim());
+        const styleObj: Record<string, string> = {};
+        if (el.style.fontSize) styleObj.fontSize = el.style.fontSize;
+        if (el.style.color) styleObj.color = el.style.color;
+        if (el.style.backgroundColor) styleObj.backgroundColor = el.style.backgroundColor;
+        if (el.style.fontFamily) styleObj.fontFamily = el.style.fontFamily;
+        if (el.style.textAlign) styleObj.textAlign = el.style.textAlign;
+        if (el.style.lineHeight) styleObj.lineHeight = el.style.lineHeight;
+
+        const insertAfter = el.getAttribute('data-insert-after') || undefined;
+
+        let content = el.innerHTML;
+        const pm = el.querySelector<HTMLElement>('.ProseMirror');
+        if (pm) {
+          content = pm.innerHTML;
+        }
+
+        payload[key] = {
+          html: stripEditableArtifacts(content.trim()),
+          style: Object.keys(styleObj).length > 0 ? styleObj : undefined,
+          insertAfter,
+          tagName: el.tagName.toLowerCase(),
+        };
       }
     }
   });
@@ -227,7 +293,7 @@ export async function saveData() {
       }
     }
 
-    // 2. Lưu đồng bộ lên Cloud Gist CMS để các thiết bị khác xem được ngay
+    // 2. Lưu đồng bộ lên Cloud Gist CMS để web chính nguyenthanhloc.pages.dev cập nhật ngay lập tức
     try {
       const media = await dbGetAllMedia();
       const collections = await dbGetSetting<any[]>('loc_collections', []);
@@ -245,12 +311,17 @@ export async function saveData() {
     // 3. Lưu vào LocalStorage
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(payload));
+      localStorage.setItem('loc_portfolio_tiptap_v2', JSON.stringify(payload));
     } catch (err) {}
 
-    // 4. Hiển thị thông báo xác nhận: "Đã lưu thành công"
-    showSaveNotification('Đã lưu thành công');
+    // 4. Hiển thị thông báo xác nhận thành công
+    if (saveBtn) saveBtn.removeAttribute('disabled');
+    if (saveBtnText) saveBtnText.textContent = originalText;
+    showSaveNotification('🎉 Đã lưu & xuất bản thành công! Website https://nguyenthanhloc.pages.dev đã được cập nhật.');
   } catch (err: any) {
     console.error('[FirebaseCMS] Lỗi khi lưu:', err);
+    if (saveBtn) saveBtn.removeAttribute('disabled');
+    if (saveBtnText) saveBtnText.textContent = originalText;
     showSaveNotification('Lỗi khi lưu: ' + (err?.message || err), true);
   } finally {
     if (saveBtn) saveBtn.removeAttribute('disabled');
@@ -267,6 +338,7 @@ export function enforceStrictReadOnly() {
   document.querySelectorAll<HTMLElement>('[contenteditable], .editable, [data-editable-active]').forEach((el) => {
     el.removeAttribute('contenteditable');
     el.removeAttribute('data-editable-active');
+    el.classList.remove('editable');
   });
   const saveBtn = document.getElementById('saveBtn');
   if (saveBtn) saveBtn.style.display = 'none';
@@ -287,25 +359,32 @@ export function applyAdminEditableState(editable: boolean) {
     return;
   }
 
-  // Trên trang #admin và đã đăng nhập: Kích hoạt contenteditable cho các thẻ editable
+  // Trên trang #admin và đã đăng nhập: Kích hoạt Tiptap Visual Editor trực tiếp trên toàn web
+  try {
+    toggleTiptapEditMode(true);
+  } catch (err) {
+    console.warn('[FirebaseCMS] toggleTiptapEditMode:', err);
+  }
+
+  // Kích hoạt thẻ editable
   document.querySelectorAll<HTMLElement>('.editable').forEach((el) => {
     el.contentEditable = 'true';
     el.spellcheck = false;
   });
 
-  // Hiển thị nút Lưu saveBtn
+  // Hiển thị nút Lưu to nổi bật góc dưới màn hình
   let saveBtn = document.getElementById('saveBtn');
   if (!saveBtn) {
     saveBtn = document.createElement('button');
     saveBtn.id = 'saveBtn';
     saveBtn.className = 'admin-floating-save-btn';
     saveBtn.innerHTML = `
-      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
         <polyline points="17 21 17 13 7 13 7 21"></polyline>
         <polyline points="7 3 7 8 15 8"></polyline>
       </svg>
-      <span>Lưu thay đổi</span>
+      <span id="saveBtnText">💾 Lưu &amp; Xuất bản lên web chính</span>
     `;
     saveBtn.addEventListener('click', saveData);
     document.body.appendChild(saveBtn);
@@ -319,12 +398,15 @@ export function checkAdminMode() {
   const hash = (window.location.hash || '').trim().toLowerCase();
   if (hash.includes('#admin')) {
     if (!isAdminAuthenticated()) {
+      // Yêu cầu mật khẩu mỗi lần vào #admin
+      enforceStrictReadOnly();
       requestAdminAccess();
     } else {
       applyAdminEditableState(true);
     }
   } else {
-    // URL KHÔNG CÓ đuôi #admin (ví dụ: #explorations, #works...) -> Khóa tuyệt đối 100% chỉ đọc
+    // URL KHÔNG CÓ đuôi #admin (ví dụ: #explorations, #works...) -> Khóa tuyệt đối 100% chỉ đọc & xóa session
+    clearAdminAuthentication();
     enforceStrictReadOnly();
   }
 }

@@ -843,9 +843,21 @@ function handlePinInput(digit: string) {
   if (currentEnteredPin.length === 4) {
     const isValid = verifyAdminPin(currentEnteredPin);
     if (isValid) {
-      setAdminAuthenticated(true);
+      setAdminAuthenticated(false);
       closeAuthModal();
-      openAdminStudioPanel();
+      currentEnteredPin = '';
+      updatePinDots();
+      
+      const isUrlAdmin = (window.location.hash || '').toLowerCase().includes('#admin');
+      if (isUrlAdmin) {
+        document.body.classList.add('admin-active');
+        toggleTiptapEditMode(true);
+        if (typeof (window as any).applyAdminEditableState === 'function') {
+          (window as any).applyAdminEditableState(true);
+        }
+      } else {
+        openAdminStudioPanel();
+      }
       showAdminToast('🔓 Đăng nhập thành công: Chào mừng anh Lộc trở lại!');
       return;
     }
@@ -2297,24 +2309,28 @@ export async function initAdminStudio() {
   });
 
   // 5. URL Hash Trigger (#admin)
-  // Prompt PIN if unauthenticated; do not block page with full overlay if authenticated
-  if (window.location.hash === '#admin') {
-    if (!isAdminAuthenticated()) {
-      setTimeout(() => {
-        openAuthModal();
-      }, 400);
-    }
+  // Requirement 1: Mỗi lần vào #admin đều yêu cầu mật khẩu PIN
+  if ((window.location.hash || '').toLowerCase().includes('#admin')) {
+    setTimeout(() => {
+      openAuthModal();
+    }, 350);
   }
 
   window.addEventListener('hashchange', () => {
-    if (window.location.hash === '#admin') {
+    if ((window.location.hash || '').toLowerCase().includes('#admin')) {
       if (!isAdminAuthenticated()) {
         openAuthModal();
       }
     } else {
-      // Khi chuyển sang các trang khác (ví dụ #explorations, #works...) -> ĐÓNG TOÀN BỘ BẢNG QUẢN TRỊ
+      // Khi chuyển sang các trang khác (ví dụ #explorations, #works...) -> ĐÓNG TOÀN BỘ BẢNG QUẢN TRỊ & XÓA AUTH
+      clearAdminAuthentication();
       closeAdminStudioPanel();
       closeAuthModal();
+      document.body.classList.remove('admin-active', 'visual-editor-active', 'tiptap-mode-active');
+      toggleTiptapEditMode(false);
+      if (typeof (window as any).enforceStrictReadOnly === 'function') {
+        (window as any).enforceStrictReadOnly();
+      }
     }
   });
 

@@ -6674,6 +6674,115 @@ body.visual-editor-active .tiptap-bubble-menu {
   box-shadow: 0 0 10px currentColor;
 }
 
+/* Custom Font Family & Size Dropdowns */
+.editor-select-font,
+.editor-select-size {
+  background: rgba(30, 28, 25, 0.9);
+  color: var(--accent-gold, #B88E38);
+  border: 1px solid rgba(184, 150, 90, 0.4);
+  border-radius: 6px;
+  padding: 3px 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 0.74rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.editor-select-font:hover,
+.editor-select-size:hover {
+  border-color: var(--accent-gold, #B88E38);
+  background: rgba(45, 40, 35, 0.98);
+}
+
+.editor-select-font option,
+.editor-select-size option {
+  background: #1c1a17;
+  color: #FAF7F2;
+}
+
+/* Native Color Picker Badge */
+.editor-color-picker-label {
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  padding: 2px 7px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  transition: all 0.2s ease;
+}
+
+.editor-color-picker-label:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: var(--accent-gold, #B88E38);
+}
+
+.editor-color-picker-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.editor-color-picker-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--ink-light, #FAF7F2);
+  user-select: none;
+}
+
+/* Block Delete Button */
+.editor-tool-btn.editor-delete-btn {
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.08);
+}
+
+.editor-tool-btn.editor-delete-btn:hover {
+  background: rgba(239, 68, 68, 0.22);
+  border-color: #ef4444;
+  color: #fff;
+}
+
+/* Floating Save & Publish Button */
+.admin-floating-save-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 100000;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 12px 22px;
+  background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 9999px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: 0 12px 30px rgba(5, 150, 105, 0.45), 0 0 20px rgba(16, 185, 129, 0.3);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.admin-floating-save-btn:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 18px 40px rgba(5, 150, 105, 0.6), 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+.admin-floating-save-btn:disabled {
+  opacity: 0.7;
+  cursor: wait;
+  transform: none;
+}
+
 /* Bottom Row: Status and Actions */
 .editor-dock-bottom-row {
   display: flex;
