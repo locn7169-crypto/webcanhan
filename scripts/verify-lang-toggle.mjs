@@ -107,6 +107,31 @@ async function runTestSuite() {
       assert.notStrictEqual(viDisplay, 'none', 'Vietnamese eyebrow must be visible');
     });
 
+    await test('In VI mode: Lộc Learn card displays ONLY Vietnamese description and clean slogan', async () => {
+      const enDescDisplay = await mobilePage.locator('.loc-learn-card .bilingual-en').evaluate(el => window.getComputedStyle(el).display);
+      const viDescDisplay = await mobilePage.locator('.loc-learn-card .bilingual-vi').evaluate(el => window.getComputedStyle(el).display);
+      assert.strictEqual(enDescDisplay, 'none', 'English description in Lộc Learn card must be hidden in VI mode');
+      assert.notStrictEqual(viDescDisplay, 'none', 'Vietnamese description in Lộc Learn card must be visible in VI mode');
+
+      const sloganVi = await mobilePage.locator('.loc-learn-card .lang-text-vi').filter({ hasText: 'Không giới hạn' }).innerText();
+      assert.strictEqual(sloganVi.includes('Learn Anything'), false, 'Vietnamese slogan must NOT contain English text');
+      assert.strictEqual(sloganVi.trim(), '“Không giới hạn điều bạn có thể học.”');
+    });
+
+    await test('In VI mode: Lộc Money 2 card displays ONLY Vietnamese description', async () => {
+      const enDescDisplay = await mobilePage.locator('.loc-money-card .bilingual-en').evaluate(el => window.getComputedStyle(el).display);
+      const viDescDisplay = await mobilePage.locator('.loc-money-card .bilingual-vi').evaluate(el => window.getComputedStyle(el).display);
+      assert.strictEqual(enDescDisplay, 'none', 'English description in Lộc Money card must be hidden in VI mode');
+      assert.notStrictEqual(viDescDisplay, 'none', 'Vietnamese description in Lộc Money card must be visible in VI mode');
+    });
+
+    await test('In VI mode: Synthesis framework displays ONLY Vietnamese steps', async () => {
+      const enStepDisplay = await mobilePage.locator('#synthesis .lang-text-en').first().evaluate(el => window.getComputedStyle(el).display);
+      const viStepDisplay = await mobilePage.locator('#synthesis .lang-text-vi').first().evaluate(el => window.getComputedStyle(el).display);
+      assert.strictEqual(enStepDisplay, 'none', 'English synthesis step must be hidden in VI mode');
+      assert.notStrictEqual(viStepDisplay, 'none', 'Vietnamese synthesis step must be visible in VI mode');
+    });
+
     // -------------------------------------------------------------
     // SUITE 3: Interactive Toggle to EN
     // -------------------------------------------------------------
@@ -131,6 +156,16 @@ async function runTestSuite() {
       const viDisplay = await mobilePage.locator('.hero-editorial-eyebrow .lang-text-vi').evaluate(el => window.getComputedStyle(el).display);
       assert.notStrictEqual(enDisplay, 'none', 'English eyebrow must be visible');
       assert.strictEqual(viDisplay, 'none', 'Vietnamese eyebrow must be hidden');
+    });
+
+    await test('In EN mode: Lộc Learn card displays ONLY English description and clean slogan', async () => {
+      const enDescDisplay = await mobilePage.locator('.loc-learn-card .bilingual-en').evaluate(el => window.getComputedStyle(el).display);
+      const viDescDisplay = await mobilePage.locator('.loc-learn-card .bilingual-vi').evaluate(el => window.getComputedStyle(el).display);
+      assert.notStrictEqual(enDescDisplay, 'none', 'English description in Lộc Learn card must be visible in EN mode');
+      assert.strictEqual(viDescDisplay, 'none', 'Vietnamese description in Lộc Learn card must be hidden in EN mode');
+
+      const sloganEn = await mobilePage.locator('.loc-learn-card .lang-text-en').filter({ hasText: 'Learn anything' }).innerText();
+      assert.strictEqual(sloganEn.trim(), '“Learn anything, your way.”');
     });
 
     await test('Preference is persisted to localStorage as "en"', async () => {

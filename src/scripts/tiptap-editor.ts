@@ -221,11 +221,11 @@ export function ensureStableEditKeys() {
 export function enforceCanonicalExplorationsHeader() {
   const titleEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-title"], #explorations .explorations-title');
   if (titleEl) {
-    titleEl.innerHTML = 'Thư Viện <span class="explorations-title-sub">· Library</span>';
+    titleEl.innerHTML = '<span class="lang-text-vi">Thư Viện</span><span class="lang-text-en">Library</span>';
   }
   const eyebrowEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-eyebrow"], #explorations .eyebrow span');
   if (eyebrowEl) {
-    eyebrowEl.innerHTML = 'LIBRARY · THƯ VIỆN';
+    eyebrowEl.innerHTML = '<span class="lang-text-vi">THƯ VIỆN &amp; KHOẢNH KHẮC</span><span class="lang-text-en">LIBRARY &amp; MOMENTS</span>';
   }
   const subtitleEl = document.querySelector<HTMLElement>('[data-edit-key="explorations-subtitle"], #explorations .explorations-subtitle');
   if (subtitleEl) {
@@ -260,13 +260,39 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
     'FIELD NOTES',
     'Một vài lát cắt về kỷ luật',
     'Một vài lát cắt',
+    'Tổng quan & Dự báo',
+    'Overview & Forecast',
+    'Giao dịch & Giỏ tiền',
+    'Transactions & Jars',
+    'bilingual-title-vi',
+    'bilingual-en',
+    'bilingual-vi',
+    'bilingual-sub',
+    'Learn Anything, Your Way — Nền tảng học tập',
+    'Không giới hạn điều bạn có thể học — Learn Anything',
+    'Hiểu tiền hôm nay. Nhìn thấy ngày mai. — Understand today\'s money',
+    'LIBRARY · THƯ VIỆN',
+    'Thư Viện · Library',
+    'Outside the Screen',
+    'EXPLORATIONS · OUTSIDE THE SCREEN',
+  ];
+
+  const obsoleteKeys = [
+    'explorations-subtitle',
+    'works-title',
+    'synthesis-title',
+    'contact-title',
+    'tt-works-span-34',
+    'tt-synthesis-div-47',
+    'tt-loc-learn-modal-p-109',
   ];
 
   Object.keys(edits).forEach((key) => {
     const val = edits[key];
     const text = typeof val === 'string' ? val : (val?.html || JSON.stringify(val));
-    const isObsolete = obsoleteStrings.some((s) => text.includes(s));
-    if (isObsolete || key === 'explorations-subtitle' || key.includes('explorations-subtitle')) {
+    const isObsoleteString = obsoleteStrings.some((s) => text.includes(s));
+    const isObsoleteKey = obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle'));
+    if (isObsoleteString || isObsoleteKey) {
       delete edits[key];
       changed = true;
     } else if (typeof edits[key] === 'string' && (edits[key].includes('contenteditable') || edits[key].includes('editable'))) {
@@ -280,6 +306,40 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
 
 function applyEditsToDOM(edits: Record<string, any>) {
   if (!edits || typeof edits !== 'object') return;
+  const obsoleteStrings = [
+    'Ngoài màn hình',
+    'Explorations Outside the Screen',
+    'FIELD NOTES & PERSPECTIVES',
+    'GHI CHÉP & GÓC NHÌN',
+    'FIELD NOTES',
+    'Một vài lát cắt',
+    'Tổng quan & Dự báo',
+    'Overview & Forecast',
+    'Giao dịch & Giỏ tiền',
+    'Transactions & Jars',
+    'bilingual-title-vi',
+    'bilingual-en',
+    'bilingual-vi',
+    'bilingual-sub',
+    'Learn Anything, Your Way — Nền tảng học tập',
+    'Không giới hạn điều bạn có thể học — Learn Anything',
+    'Hiểu tiền hôm nay. Nhìn thấy ngày mai. — Understand today\'s money',
+    'LIBRARY · THƯ VIỆN',
+    'Thư Viện · Library',
+    'Outside the Screen',
+    'EXPLORATIONS · OUTSIDE THE SCREEN',
+  ];
+
+  const obsoleteKeys = [
+    'explorations-subtitle',
+    'works-title',
+    'synthesis-title',
+    'contact-title',
+    'tt-works-span-34',
+    'tt-synthesis-div-47',
+    'tt-loc-learn-modal-p-109',
+  ];
+
   Object.entries(edits).forEach(([key, val]) => {
     // 1. Kiểm tra nếu khối bị xóa
     if (val && typeof val === 'object' && val.deleted) {
@@ -288,17 +348,11 @@ function applyEditsToDOM(edits: Record<string, any>) {
       return;
     }
 
-    // Never allow obsolete strings to overwrite DOM
+    // Never allow obsolete strings or keys to overwrite DOM
     const valStr = typeof val === 'string' ? val : (val?.html || JSON.stringify(val) || '');
     if (
-      valStr.includes('Ngoài màn hình') ||
-      valStr.includes('Explorations Outside the Screen') ||
-      valStr.includes('FIELD NOTES & PERSPECTIVES') ||
-      valStr.includes('GHI CHÉP & GÓC NHÌN') ||
-      valStr.includes('FIELD NOTES') ||
-      valStr.includes('Một vài lát cắt') ||
-      key === 'explorations-subtitle' ||
-      key.includes('explorations-subtitle')
+      obsoleteStrings.some((s) => valStr.includes(s)) ||
+      obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle'))
     ) {
       return;
     }

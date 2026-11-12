@@ -672,13 +672,31 @@ main {
    Eliminates bilingual clutter so the site is clean and compact
    ========================================================================== */
 html[data-lang="vi"] .lang-text-en,
-html[data-lang="vi"] .lang-en-only {
+html[data-lang="vi"] .lang-en-only,
+html[data-lang="vi"] .bilingual-en,
+html[data-lang="vi"] .bilingual-title-en,
+html[data-lang="vi"] .welcome-marquee-en,
+html[data-lang="vi"] .menu-quote-en,
+html[data-lang="vi"] .carrd-quote-en {
   display: none !important;
 }
 
 html[data-lang="en"] .lang-text-vi,
-html[data-lang="en"] .lang-vi-only {
+html[data-lang="en"] .lang-vi-only,
+html[data-lang="en"] .bilingual-vi,
+html[data-lang="en"] .bilingual-title-vi,
+html[data-lang="en"] .bilingual-tagline-vi,
+html[data-lang="en"] .welcome-marquee-vi,
+html[data-lang="en"] .menu-quote-vi,
+html[data-lang="en"] .carrd-quote-vi {
   display: none !important;
+}
+
+/* Ensure single language paragraph uses crisp primary typography */
+html[data-lang="vi"] .bilingual-vi {
+  color: var(--ink-primary);
+  font-size: 0.94rem;
+  line-height: 1.65;
 }
 
 .lang-text-vi,
