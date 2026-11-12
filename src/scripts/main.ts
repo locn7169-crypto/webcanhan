@@ -44,8 +44,6 @@ import { init3DTiltCards } from './tilt-cards';
 import { initHeroStage } from './hero-stage';
 import { initPinnedProjects } from './pinned-projects';
 import { initSynthesisMatrix } from './synthesis-matrix';
-import { initLocMoneyModal } from './loc-money-modal';
-import { initLocLearnModal } from './loc-learn-modal';
 import { initExplorationJournal } from './exploration-journal';
 import { initExplorationsMoments } from './explorations-moments';
 import { initScrollCinematics } from './scroll-cinematics';
@@ -244,8 +242,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initHeroStage();
   initPinnedProjects();
   initSynthesisMatrix();
-  initLocMoneyModal();
-  initLocLearnModal();
   initExplorationJournal();
   initScrollCinematics();
   initHeroAmbientConstellation();

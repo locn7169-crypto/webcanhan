@@ -2434,9 +2434,11 @@ body.menu-active .hamburger-line:nth-child(3) {
 
 .projects-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: clamp(1.25rem, 2vw, 2.25rem);
+  grid-template-columns: repeat(2, 1fr);
+  gap: clamp(1.5rem, 2.5vw, 2.5rem);
   width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
 }
 
 .project-card {
@@ -5739,7 +5741,7 @@ body.loc-modal-locked {
 
 /* Featured Works Card Enhancements */
 .project-card.loc-money-card {
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.35s var(--ease-out-editorial), border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
@@ -5791,7 +5793,7 @@ body.loc-modal-locked {
 
 /* Lộc Learn Card & Banner Styling */
 .project-card.loc-learn-card {
-  cursor: pointer;
+  cursor: default;
   transition: transform 0.4s var(--ease-out-editorial), box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
@@ -7771,6 +7773,21 @@ body:not(.admin-active) .editable {
   transform: translateY(-2px);
   box-shadow: 0 4px 16px rgba(16, 185, 129, 0.22);
   border-color: rgba(16, 185, 129, 0.6);
+}
+
+.loc-action-cta-btn.showcase-cta.showcase-cta-money {
+  background: rgba(245, 158, 11, 0.12);
+  color: #B45309;
+  border-color: rgba(245, 158, 11, 0.35);
+  box-shadow: 0 2px 10px rgba(245, 158, 11, 0.1);
+}
+
+.loc-action-cta-btn.showcase-cta.showcase-cta-money:hover {
+  background: rgba(245, 158, 11, 0.22);
+  color: #92400E;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.22);
+  border-color: rgba(245, 158, 11, 0.6);
 }
 
 .loc-action-cta-btn.live-cta {
