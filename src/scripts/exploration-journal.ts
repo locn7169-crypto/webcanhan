@@ -687,7 +687,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
               </div>
 
               <div class="insta-tags-row">
-                <span class="insta-tag">#LocStudio</span>
+                <span class="insta-tag">#NguyenThanhLoc</span>
                 <span class="insta-tag">#${currentCat.id}</span>
                 <span class="insta-tag">#VietNam</span>
                 <span class="insta-tag">#VisualMoments</span>
@@ -856,7 +856,7 @@ function renderJournalModal(catId: 'photography' | 'trekking' | 'chinese') {
     scrollContainer.querySelectorAll<HTMLElement>('.insta-share-btn').forEach((btn) => {
       btn.addEventListener('click', async () => {
         const shareData = {
-          title: `Lộc Studio — ${entry.title}`,
+          title: `Nguyễn Thành Lộc — ${entry.title}`,
           text: entry.caption || entry.story,
           url: window.location.href,
         };

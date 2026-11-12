@@ -109,8 +109,8 @@ export function applyDataToDOM(data: Record<string, any>) {
   Object.entries(data).forEach(([key, val]) => {
     if (!val) return;
 
-    // Ignore all volatile/corrupted synthesis keys from legacy snapshots
-    if (key.startsWith('tt-synthesis-') || key.includes('synthesis')) {
+    // Ignore all volatile/corrupted synthesis keys from legacy snapshots and obsolete studio key
+    if (key.startsWith('tt-synthesis-') || key.includes('synthesis') || key === 'hero-sig-studio') {
       return;
     }
 

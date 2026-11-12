@@ -164,7 +164,6 @@ export function ensureStableEditKeys() {
     ['.name-line-first', 'hero-name-first'],
     ['.name-line-second', 'hero-name-second'],
     ['.hero-signature-subtitle .sig-cn', 'hero-sig-cn'],
-    ['.hero-signature-subtitle .sig-studio', 'hero-sig-studio'],
     ['.hero-portfolio-italic', 'hero-tagline-en'],
     ['.quote-bar-text', 'hero-quote-vi'],
     ['.hero-about-title', 'hero-about-title'],
@@ -278,6 +277,7 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
   ];
 
   const obsoleteKeys = [
+    'hero-sig-studio',
     'explorations-subtitle',
     'works-title',
     'synthesis-title',
@@ -331,6 +331,7 @@ function applyEditsToDOM(edits: Record<string, any>) {
   ];
 
   const obsoleteKeys = [
+    'hero-sig-studio',
     'explorations-subtitle',
     'works-title',
     'synthesis-title',

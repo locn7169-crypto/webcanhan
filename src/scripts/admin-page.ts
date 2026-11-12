@@ -15,7 +15,6 @@ const DEFAULT_VALUES: Record<string, string> = {
   'hero-name-first': 'Nguyễn',
   'hero-name-second': 'Thành Lộc',
   'hero-sig-cn': '阮城禄',
-  'hero-sig-studio': 'Lộc Studio',
   'hero-tagline-en': 'Personal Website & Portfolio',
   'hero-quote-vi': 'Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.',
   'hero-about-title': 'Đôi chút về tôi',
@@ -25,7 +24,7 @@ const DEFAULT_VALUES: Record<string, string> = {
   'explorations-eyebrow': 'LIBRARY · THƯ VIỆN',
   'explorations-title': 'Thư Viện · Library',
   'carrd-name': 'Nguyễn Thành Lộc',
-  'carrd-subtitle': 'Lộc Studio · Creator & Developer',
+  'carrd-subtitle': '阮城禄 · Creator & Developer',
   'carrd-quote-cn': '知行合一',
   'carrd-quote-vi': 'Biết mà không làm thì chưa phải là biết thật sự.',
   'footer-quote': 'Được kiến tạo với sự tỉ mỉ, kỷ luật và niềm đam mê công nghệ vô tận.'
