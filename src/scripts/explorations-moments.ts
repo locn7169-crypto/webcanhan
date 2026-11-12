@@ -19,7 +19,7 @@ export const moments: MomentItem[] = [
   {
     id: 'moment-1',
     catId: 'photography',
-    title: 'Through My Lens · Qua ống kính của tôi',
+    title: 'Qua ống kính của tôi',
     meta: '2026 · NHIẾP ẢNH & THỊ GIÁC',
     caption: 'Một cuốn nhật ký bằng hình ảnh, nơi những chuyến đi, cảnh vật và khoảnh khắc đáng nhớ được lưu giữ theo cách riêng.',
     image: './assets/loc-banner.jpg',

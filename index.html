@@ -1,7 +1,16 @@
 <!DOCTYPE html>
-<html lang="vi" prefix="og: https://ogp.me/ns# profile: https://ogp.me/ns/profile#">
+<html lang="vi" data-lang="vi" prefix="og: https://ogp.me/ns# profile: https://ogp.me/ns/profile#">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function(){
+      try {
+        var l = localStorage.getItem('loc_portfolio_lang') || 'vi';
+        document.documentElement.setAttribute('data-lang', l);
+        document.documentElement.setAttribute('lang', l);
+      } catch(e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
   <!-- Primary SEO Metadata -->
@@ -216,15 +225,23 @@
           </div>
         </div>
       </div>
-      <button class="fullscreen-menu-close-btn" aria-label="Đóng menu" type="button">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+      <div class="menu-topbar-actions">
+        <!-- Language Switcher in Mobile Menu -->
+        <button type="button" class="lang-toggle-pill menu-lang-toggle" id="menuLangToggle" aria-label="Chuyển đổi ngôn ngữ Tiếng Việt / English" title="Chuyển ngôn ngữ / Switch language (VI / EN)">
+          <span class="lang-chip lang-chip-vi active" data-lang-opt="vi">VI</span>
+          <span class="lang-sep" aria-hidden="true">/</span>
+          <span class="lang-chip lang-chip-en" data-lang-opt="en">EN</span>
+        </button>
+        <button class="fullscreen-menu-close-btn" aria-label="Đóng menu" type="button">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
     </div>
 
-    <!-- Navigation List (6 Rows) -->
+    <!-- Navigation List (5 Rows) -->
     <nav class="fullscreen-menu-nav">
       <!-- 01: Index -->
       <a href="#hero" class="fullscreen-menu-link fullscreen-menu-item">
@@ -232,8 +249,14 @@
           <span class="menu-item-num">01</span>
           <span class="menu-item-sep">/</span>
           <div class="menu-item-text">
-            <span class="menu-item-title">INDEX · TRANG CHỦ</span>
-            <span class="menu-item-sub">Homepage · Trang chủ</span>
+            <span class="menu-item-title">
+              <span class="lang-text-vi">TRANG CHỦ</span>
+              <span class="lang-text-en">INDEX</span>
+            </span>
+            <span class="menu-item-sub">
+              <span class="lang-text-vi">Trang chủ &amp; Tổng quan</span>
+              <span class="lang-text-en">Homepage &amp; Overview</span>
+            </span>
           </div>
         </div>
         <div class="menu-item-arrow">
@@ -249,8 +272,14 @@
           <span class="menu-item-num">02</span>
           <span class="menu-item-sep">/</span>
           <div class="menu-item-text">
-            <span class="menu-item-title">WORKS · DỰ ÁN</span>
-            <span class="menu-item-sub">Projects · Dự án</span>
+            <span class="menu-item-title">
+              <span class="lang-text-vi">DỰ ÁN</span>
+              <span class="lang-text-en">WORKS</span>
+            </span>
+            <span class="menu-item-sub">
+              <span class="lang-text-vi">Dự án chọn lọc</span>
+              <span class="lang-text-en">Curated Projects</span>
+            </span>
           </div>
         </div>
         <div class="menu-item-arrow">
@@ -266,8 +295,14 @@
           <span class="menu-item-num">03</span>
           <span class="menu-item-sep">/</span>
           <div class="menu-item-text">
-            <span class="menu-item-title">MY JOURNEY · HÀNH TRÌNH</span>
-            <span class="menu-item-sub">My Journey · Hành trình</span>
+            <span class="menu-item-title">
+              <span class="lang-text-vi">HÀNH TRÌNH</span>
+              <span class="lang-text-en">MY JOURNEY</span>
+            </span>
+            <span class="menu-item-sub">
+              <span class="lang-text-vi">Hành trình &amp; Trưởng thành</span>
+              <span class="lang-text-en">Milestones &amp; Growth</span>
+            </span>
           </div>
         </div>
         <div class="menu-item-arrow">
@@ -283,8 +318,14 @@
           <span class="menu-item-num">04</span>
           <span class="menu-item-sep">/</span>
           <div class="menu-item-text">
-            <span class="menu-item-title">LIBRARY · THƯ VIỆN</span>
-            <span class="menu-item-sub">Thư Viện · Library</span>
+            <span class="menu-item-title">
+              <span class="lang-text-vi">THƯ VIỆN</span>
+              <span class="lang-text-en">LIBRARY</span>
+            </span>
+            <span class="menu-item-sub">
+              <span class="lang-text-vi">Khoảnh khắc &amp; Nhiếp ảnh</span>
+              <span class="lang-text-en">Visuals &amp; Contemplation</span>
+            </span>
           </div>
         </div>
         <div class="menu-item-arrow">
@@ -300,8 +341,14 @@
           <span class="menu-item-num">05</span>
           <span class="menu-item-sep">/</span>
           <div class="menu-item-text">
-            <span class="menu-item-title">CONNECT · KẾT NỐI</span>
-            <span class="menu-item-sub">Connect · Kết nối</span>
+            <span class="menu-item-title">
+              <span class="lang-text-vi">KẾT NỐI</span>
+              <span class="lang-text-en">CONNECT</span>
+            </span>
+            <span class="menu-item-sub">
+              <span class="lang-text-vi">Danh tính &amp; Liên hệ</span>
+              <span class="lang-text-en">Socials &amp; Direct Channels</span>
+            </span>
           </div>
         </div>
         <div class="menu-item-arrow">
@@ -315,8 +362,11 @@
     <!-- Motto Box (Trích dẫn phong cách Thư họa) -->
     <div class="menu-quote-box">
       <div class="menu-quote-chinese">“我努力不一定会成功 但我不努力一定会失败”</div>
-      <div class="menu-quote-vi">
+      <div class="menu-quote-vi lang-text-vi">
         Tôi nỗ lực chưa chắc sẽ thành công, nhưng nếu tôi không nỗ lực chắc chắn sẽ thất bại.
+      </div>
+      <div class="menu-quote-en lang-text-en">
+        Effort may not guarantee success, but without effort, failure is certain.
       </div>
     </div>
 
@@ -393,14 +443,21 @@
 
       <nav aria-label="Primary Navigation">
         <ul class="nav-links">
-          <li><a href="#works" class="nav-link">Works · Dự án</a></li>
-          <li><a href="#synthesis" class="nav-link">My Journey · Hành trình</a></li>
-          <li><a href="#explorations" class="nav-link">Thư Viện · Library</a></li>
-          <li><a href="#contact" class="nav-link">Connect · Kết nối</a></li>
+          <li><a href="#works" class="nav-link"><span class="lang-text-vi">Dự án</span><span class="lang-text-en">Works</span></a></li>
+          <li><a href="#synthesis" class="nav-link"><span class="lang-text-vi">Hành trình</span><span class="lang-text-en">Journey</span></a></li>
+          <li><a href="#explorations" class="nav-link"><span class="lang-text-vi">Thư Viện</span><span class="lang-text-en">Library</span></a></li>
+          <li><a href="#contact" class="nav-link"><span class="lang-text-vi">Kết nối</span><span class="lang-text-en">Connect</span></a></li>
         </ul>
       </nav>
 
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
+      <div class="nav-actions-cluster">
+        <!-- Language Switcher Pill Button (Mobile & Desktop) -->
+        <button type="button" class="lang-toggle-pill" id="headerLangToggle" aria-label="Chuyển đổi ngôn ngữ Tiếng Việt / English" title="Chuyển ngôn ngữ / Switch language (VI / EN)">
+          <span class="lang-chip lang-chip-vi active" data-lang-opt="vi">VI</span>
+          <span class="lang-sep" aria-hidden="true">/</span>
+          <span class="lang-chip lang-chip-en" data-lang-opt="en">EN</span>
+        </button>
+
         <!-- Le-Lab Signature Organic Liquid Morphing Magnetic Button -->
         <a href="#contact" class="le-lab-magnetic-btn" aria-label="Connect with Nguyễn Thành Lộc">
           <div class="le-lab-wrap">
@@ -456,8 +513,8 @@
           <div class="hero-editorial-eyebrow">
             <span class="eyebrow-accent-dash"></span>
             <div class="eyebrow-text-group">
-              <span class="eyebrow-line-en">TECHNOLOGY · CREATIVITY · LIFE</span>
-              <span class="eyebrow-line-vi">CÔNG NGHỆ · SÁNG TẠO · ĐỜI SỐNG</span>
+              <span class="eyebrow-line-en lang-text-en">TECHNOLOGY · CREATIVITY · LIFE</span>
+              <span class="eyebrow-line-vi lang-text-vi">CÔNG NGHỆ · SÁNG TẠO · ĐỜI SỐNG</span>
             </div>
           </div>
 
@@ -486,10 +543,16 @@
           </div>
 
           <div class="hero-portfolio-tagline-box">
-            <div class="hero-portfolio-italic" data-edit-key="hero-tagline-en">Personal Website &amp; Portfolio</div>
+            <div class="hero-portfolio-italic">
+              <span class="lang-text-vi">Website &amp; Portfolio Cá Nhân</span>
+              <span class="lang-text-en" data-edit-key="hero-tagline-en">Personal Website &amp; Portfolio</span>
+            </div>
             <div class="hero-quote-bar">
               <span class="quote-bar-gold-line"></span>
-              <p class="quote-bar-text" data-edit-key="hero-quote-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</p>
+              <p class="quote-bar-text">
+                <span class="lang-text-vi" data-edit-key="hero-quote-vi">Không gian cá nhân lưu giữ những điều tôi xây dựng, những điều tôi học hỏi và những điều tôi trân quý.</span>
+                <span class="lang-text-en">A personal sanctuary curating what I build, what I learn, and what I hold dear.</span>
+              </p>
             </div>
           </div>
 
@@ -497,31 +560,37 @@
           <div class="hero-tags-pill-row">
             <div class="hero-interest-pill">
               <i data-lucide="code" style="width: 14px; height: 14px;"></i>
-              <span>Công nghệ</span>
+              <span class="lang-text-vi">Công nghệ</span>
+              <span class="lang-text-en">Technology</span>
             </div>
             <div class="hero-interest-pill">
               <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-              <span>Sáng tạo</span>
+              <span class="lang-text-vi">Sáng tạo</span>
+              <span class="lang-text-en">Creativity</span>
             </div>
             <div class="hero-interest-pill">
               <i data-lucide="book-open" style="width: 14px; height: 14px;"></i>
-              <span>Học tập</span>
+              <span class="lang-text-vi">Học tập</span>
+              <span class="lang-text-en">Learning</span>
             </div>
             <div class="hero-interest-pill">
               <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-              <span>Đời sống</span>
+              <span class="lang-text-vi">Đời sống</span>
+              <span class="lang-text-en">Life</span>
             </div>
           </div>
 
           <!-- Action CTA Buttons -->
           <div class="hero-cta-button-row">
             <a href="#works" class="hero-primary-cta-btn">
-              <span>Khám phá dự án</span>
+              <span class="lang-text-vi">Khám phá dự án</span>
+              <span class="lang-text-en">Explore Projects</span>
               <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
             </a>
             <a href="#about-stage" class="hero-secondary-cta-btn">
               <i data-lucide="book-open" style="width: 15px; height: 15px;"></i>
-              <span>Về tôi</span>
+              <span class="lang-text-vi">Về tôi</span>
+              <span class="lang-text-en">About Me</span>
             </a>
           </div>
         </div>
@@ -549,13 +618,25 @@
             </div>
             <div class="hero-about-body">
               <div class="hero-about-title-row">
-                <h3 class="hero-about-title">Đôi chút về tôi</h3>
+                <h3 class="hero-about-title">
+                  <span class="lang-text-vi">Đôi chút về tôi</span>
+                  <span class="lang-text-en">A Little About Me</span>
+                </h3>
               </div>
-              <p class="hero-about-p">Chào bạn! Cảm ơn bạn đã ghé thăm không gian cá nhân của tôi.</p>
-              <p class="hero-about-p">Tôi là <strong>Nguyễn Thành Lộc</strong>, hiện đang làm việc tại <strong>TRIBECO</strong>.</p>
-              <p class="hero-about-p">Tôi quan tâm đến công nghệ, thiết kế và nhiều lĩnh vực khác nhau. Ngoài công việc, tôi thường dành thời gian tìm hiểu những điều mới, học cách sử dụng công nghệ và phát triển các dự án cá nhân.</p>
-              <p class="hero-about-p">Tôi thích tìm hiểu bản chất của một vấn đề, nhìn nhận nó từ nhiều góc độ và thử áp dụng những gì đã học vào thực tế.</p>
-              <p class="hero-about-p">Hy vọng bạn sẽ tìm thấy điều gì đó thú vị khi khám phá website này. Chúc bạn có một khoảng thời gian vui vẻ!</p>
+              <div class="lang-text-vi">
+                <p class="hero-about-p">Chào bạn! Cảm ơn bạn đã ghé thăm không gian cá nhân của tôi.</p>
+                <p class="hero-about-p">Tôi là <strong>Nguyễn Thành Lộc</strong>, hiện đang làm việc tại <strong>TRIBECO</strong>.</p>
+                <p class="hero-about-p">Tôi quan tâm đến công nghệ, thiết kế và nhiều lĩnh vực khác nhau. Ngoài công việc, tôi thường dành thời gian tìm hiểu những điều mới, học cách sử dụng công nghệ và phát triển các dự án cá nhân.</p>
+                <p class="hero-about-p">Tôi thích tìm hiểu bản chất của một vấn đề, nhìn nhận nó từ nhiều góc độ và thử áp dụng những gì đã học vào thực tế.</p>
+                <p class="hero-about-p">Hy vọng bạn sẽ tìm thấy điều gì đó thú vị khi khám phá website này. Chúc bạn có một khoảng thời gian vui vẻ!</p>
+              </div>
+              <div class="lang-text-en">
+                <p class="hero-about-p">Hello and welcome! Thank you for visiting my personal space.</p>
+                <p class="hero-about-p">I am <strong>Nguyen Thanh Loc</strong>, currently working at <strong>TRIBECO</strong>.</p>
+                <p class="hero-about-p">I am passionate about technology, design, and multidisciplinary exploration. Beyond my day-to-day work, I dedicate time to mastering emerging technologies and crafting purposeful digital products.</p>
+                <p class="hero-about-p">I enjoy examining the core nature of systems, synthesizing cross-disciplinary ideas, and translating concepts into practical craft.</p>
+                <p class="hero-about-p">I hope you discover something inspiring while exploring here. Wishing you a delightful visit!</p>
+              </div>
             </div>
           </div>
 
@@ -571,7 +652,8 @@
               </div>
               <div class="hero-bio-quote">
                 “我努力不一定会成功 但我不努力一定会失败”
-                <div style="font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.2rem; font-style: normal;">Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại.</div>
+                <div class="lang-text-vi" style="font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.2rem; font-style: normal;">Tôi nỗ lực chưa chắc thành công, nhưng không nỗ lực chắc chắn thất bại.</div>
+                <div class="lang-text-en" style="font-size: 0.75rem; color: var(--ink-muted); margin-top: 0.2rem; font-style: normal;">Effort may not guarantee success, but without effort, failure is certain.</div>
               </div>
             </div>
           </div>
@@ -694,28 +776,24 @@
       <div class="tech-marquee-wrapper">
         <!-- Set 1 -->
         <div class="tech-item welcome-marquee-item">
-          <span class="welcome-marquee-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET.</span>
-          <span class="welcome-marquee-sep">—</span>
-          <span class="welcome-marquee-vi">Cảm ơn bạn đã ghé thăm góc nhỏ của tôi. Đây là nơi tôi lưu giữ những điều mình quan tâm, những gì đang học hỏi, những dự án đang thực hiện và một phần hành trình của bản thân. Hy vọng bạn sẽ tìm thấy điều gì đó thú vị trong khoảng thời gian ở đây.</span>
+          <span class="welcome-marquee-en lang-text-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET. A PERSONAL SANCTUARY CURATING MY WORK, LEARNING &amp; THOUGHTS.</span>
+          <span class="welcome-marquee-vi lang-text-vi">CẢM ƠN BẠN ĐÃ GHÉ THĂM GÓC NHỎ CỦA TÔI. ĐÂY LÀ NƠI TÔI LƯU GIỮ NHỮNG GÌ MÌNH QUAN TÂM, HỌC HỎI, XÂY DỰNG VÀ TRÂN QUÝ.</span>
           <span class="tech-item-dot"></span>
         </div>
         <div class="tech-item welcome-marquee-item">
-          <span class="welcome-marquee-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET.</span>
-          <span class="welcome-marquee-sep">—</span>
-          <span class="welcome-marquee-vi">Cảm ơn bạn đã ghé thăm góc nhỏ của tôi. Đây là nơi tôi lưu giữ những điều mình quan tâm, những gì đang học hỏi, những dự án đang thực hiện và một phần hành trình của bản thân. Hy vọng bạn sẽ tìm thấy điều gì đó thú vị trong khoảng thời gian ở đây.</span>
+          <span class="welcome-marquee-en lang-text-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET. A PERSONAL SANCTUARY CURATING MY WORK, LEARNING &amp; THOUGHTS.</span>
+          <span class="welcome-marquee-vi lang-text-vi">CẢM ƠN BẠN ĐÃ GHÉ THĂM GÓC NHỎ CỦA TÔI. ĐÂY LÀ NƠI TÔI LƯU GIỮ NHỮNG GÌ MÌNH QUAN TÂM, HỌC HỎI, XÂY DỰNG VÀ TRÂN QUÝ.</span>
           <span class="tech-item-dot"></span>
         </div>
         <!-- Duplicated Set 2 for seamless infinite loop -->
         <div class="tech-item welcome-marquee-item" aria-hidden="true">
-          <span class="welcome-marquee-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET.</span>
-          <span class="welcome-marquee-sep">—</span>
-          <span class="welcome-marquee-vi">Cảm ơn bạn đã ghé thăm góc nhỏ của tôi. Đây là nơi tôi lưu giữ những điều mình quan tâm, những gì đang học hỏi, những dự án đang thực hiện và một phần hành trình của bản thân. Hy vọng bạn sẽ tìm thấy điều gì đó thú vị trong khoảng thời gian ở đây.</span>
+          <span class="welcome-marquee-en lang-text-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET. A PERSONAL SANCTUARY CURATING MY WORK, LEARNING &amp; THOUGHTS.</span>
+          <span class="welcome-marquee-vi lang-text-vi">CẢM ƠN BẠN ĐÃ GHÉ THĂM GÓC NHỎ CỦA TÔI. ĐÂY LÀ NƠI TÔI LƯU GIỮ NHỮNG GÌ MÌNH QUAN TÂM, HỌC HỎI, XÂY DỰNG VÀ TRÂN QUÝ.</span>
           <span class="tech-item-dot"></span>
         </div>
         <div class="tech-item welcome-marquee-item" aria-hidden="true">
-          <span class="welcome-marquee-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET.</span>
-          <span class="welcome-marquee-sep">—</span>
-          <span class="welcome-marquee-vi">Cảm ơn bạn đã ghé thăm góc nhỏ của tôi. Đây là nơi tôi lưu giữ những điều mình quan tâm, những gì đang học hỏi, những dự án đang thực hiện và một phần hành trình của bản thân. Hy vọng bạn sẽ tìm thấy điều gì đó thú vị trong khoảng thời gian ở đây.</span>
+          <span class="welcome-marquee-en lang-text-en">THANK YOU FOR VISITING MY LITTLE CORNER OF THE INTERNET. A PERSONAL SANCTUARY CURATING MY WORK, LEARNING &amp; THOUGHTS.</span>
+          <span class="welcome-marquee-vi lang-text-vi">CẢM ƠN BẠN ĐÃ GHÉ THĂM GÓC NHỎ CỦA TÔI. ĐÂY LÀ NƠI TÔI LƯU GIỮ NHỮNG GÌ MÌNH QUAN TÂM, HỌC HỎI, XÂY DỰNG VÀ TRÂN QUÝ.</span>
           <span class="tech-item-dot"></span>
         </div>
       </div>
@@ -734,18 +812,25 @@
           <div>
             <div class="eyebrow" style="margin-bottom: 0.5rem;">
               <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
-              <span>CURATED PERSONAL PROJECTS · DỰ ÁN CÁ NHÂN ĐƯỢC CHỌN LỌC</span>
+              <span class="lang-text-vi">DỰ ÁN CÁ NHÂN ĐƯỢC CHỌN LỌC</span>
+              <span class="lang-text-en">CURATED PERSONAL PROJECTS</span>
             </div>
             <h2 class="title-section">
-              Featured Works
-              <span class="bilingual-title-vi">Dự án tiêu biểu</span>
+              <span class="lang-text-vi">Dự án tiêu biểu</span>
+              <span class="lang-text-en">Featured Works</span>
             </h2>
           </div>
           <div class="works-counter-capsule">
             <span class="counter-capsule-num">03</span>
             <div class="counter-capsule-text">
-              <span class="counter-capsule-title">Flagship Projects · Interactive Preview</span>
-              <span class="counter-capsule-sub">03 Dự án trọng tâm · Bản xem trước tương tác</span>
+              <span class="counter-capsule-title">
+                <span class="lang-text-vi">Dự Án Trọng Tâm</span>
+                <span class="lang-text-en">Flagship Projects</span>
+              </span>
+              <span class="counter-capsule-sub">
+                <span class="lang-text-vi">03 Dự án trọng tâm · Bản xem trước tương tác</span>
+                <span class="lang-text-en">03 Flagship Projects · Interactive Preview</span>
+              </span>
             </div>
             <div class="counter-capsule-arrow" aria-hidden="true">
               <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
@@ -785,11 +870,15 @@
                   <!-- Floating Bottom Bar -->
                   <div class="loc-dragon-bottom-dock">
                     <div class="loc-dragon-stats-row">
-                      <span class="loc-mini-glass-pill" style="color: #6EE7B7; border-color: rgba(16, 185, 129, 0.35);">8 Tính năng lõi · 8 Features</span>
+                      <span class="loc-mini-glass-pill" style="color: #6EE7B7; border-color: rgba(16, 185, 129, 0.35);">
+                        <span class="lang-text-vi">8 Tính năng lõi</span>
+                        <span class="lang-text-en">8 Core Features</span>
+                      </span>
                       <span class="loc-mini-glass-pill">Multi-Domain</span>
                     </div>
                     <div class="loc-dragon-click-cue" style="border-color: rgba(16, 185, 129, 0.4);">
-                      <span>Khám phá · Explore</span>
+                      <span class="lang-text-vi">Khám phá</span>
+                      <span class="lang-text-en">Explore</span>
                       <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
                     </div>
                   </div>
@@ -798,8 +887,14 @@
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge" style="color: #059669; border-color: rgba(5, 150, 105, 0.25); background: rgba(16, 185, 129, 0.08);">01 // LEARNING PLATFORM · NỀN TẢNG HỌC TẬP</span>
-                  <span class="project-tag">Personalized · Multi-Domain</span>
+                  <span class="project-badge" style="color: #059669; border-color: rgba(5, 150, 105, 0.25); background: rgba(16, 185, 129, 0.08);">
+                    <span class="lang-text-vi">01 // NỀN TẢNG HỌC TẬP</span>
+                    <span class="lang-text-en">01 // LEARNING PLATFORM</span>
+                  </span>
+                  <span class="project-tag">
+                    <span class="lang-text-vi">Cá nhân hóa · Đa lĩnh vực</span>
+                    <span class="lang-text-en">Personalized · Multi-Domain</span>
+                  </span>
                 </div>
                 <h3 class="project-card-title">LỘC LEARN</h3>
                 <div class="project-desc">
@@ -811,24 +906,27 @@
                   </p>
                 </div>
                 <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.6rem;">
-                  “Learn Anything, Your Way — Không giới hạn điều bạn có thể học.”
+                  <span class="lang-text-vi">“Không giới hạn điều bạn có thể học — Learn Anything, Your Way.”</span>
+                  <span class="lang-text-en">“Learn Anything, Your Way — Open horizons for every learner.”</span>
                 </div>
                 <div style="display: flex; gap: 0.45rem; margin-top: 0.9rem; flex-wrap: wrap;">
-                  <span class="badge-pill">Lộ trình học tập · Roadmaps</span>
+                  <span class="badge-pill"><span class="lang-text-vi">Lộ trình học tập</span><span class="lang-text-en">Learning Roadmaps</span></span>
                   <span class="badge-pill">Flashcard SM-2</span>
-                  <span class="badge-pill">Luyện viết &amp; Phát âm · Writing &amp; Audio</span>
-                  <span class="badge-pill" style="color: #059669; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);">✦ 8 Màn hình giao diện</span>
+                  <span class="badge-pill"><span class="lang-text-vi">Luyện viết &amp; Phát âm</span><span class="lang-text-en">Writing &amp; Audio</span></span>
+                  <span class="badge-pill" style="color: #059669; border-color: rgba(16, 185, 129, 0.4); background: rgba(16, 185, 129, 0.08);"><span class="lang-text-vi">✦ 8 Màn hình giao diện</span><span class="lang-text-en">✦ 8 UI Screens</span></span>
                 </div>
 
                 <!-- Direct Showcase & Web App Action CTAs -->
                 <div class="loc-card-action-bar">
                   <a href="https://duolearn-hsk.pages.dev/#showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta" onclick="event.stopPropagation();" title="Xem trang giới thiệu DuoLearn Showcase">
                     <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #10B981;"></i>
-                    <span>Trang Giới Thiệu (Showcase)</span>
+                    <span class="lang-text-vi">Trang Giới Thiệu (Showcase)</span>
+                    <span class="lang-text-en">Showcase Landing Page</span>
                   </a>
                   <a href="https://duolearn-hsk.pages.dev/" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn live-cta" onclick="event.stopPropagation();" title="Khởi chạy trực tiếp ứng dụng DuoLearn Web App">
                     <i data-lucide="external-link" style="width: 14px; height: 14px; color: var(--accent-gold);"></i>
-                    <span>Khởi Chạy Web App ↗</span>
+                    <span class="lang-text-vi">Khởi Chạy Web App ↗</span>
+                    <span class="lang-text-en">Launch Web App ↗</span>
                   </a>
                 </div>
               </div>
@@ -864,11 +962,15 @@
                   <!-- Floating Bottom Bar -->
                   <div class="loc-dragon-bottom-dock">
                     <div class="loc-dragon-stats-row">
-                      <span class="loc-mini-glass-pill" style="color: #FDE68A; border-color: rgba(245, 158, 11, 0.35);">23 Màn hình · 5 Themes</span>
+                      <span class="loc-mini-glass-pill" style="color: #FDE68A; border-color: rgba(245, 158, 11, 0.35);">
+                        <span class="lang-text-vi">23 Màn hình · 5 Themes</span>
+                        <span class="lang-text-en">23 Screens · 5 Themes</span>
+                      </span>
                       <span class="loc-mini-glass-pill">Financial AI</span>
                     </div>
                     <div class="loc-dragon-click-cue" style="border-color: rgba(245, 158, 11, 0.4);">
-                      <span>Khám phá · Explore</span>
+                      <span class="lang-text-vi">Khám phá</span>
+                      <span class="lang-text-en">Explore</span>
                       <i data-lucide="arrow-up-right" style="width: 13px; height: 13px;"></i>
                     </div>
                   </div>
@@ -877,8 +979,14 @@
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge" style="color: #D97706; border-color: rgba(217, 119, 6, 0.25); background: rgba(245, 158, 11, 0.08);">02 // FINANCIAL SUITE · QUẢN TRỊ TÀI CHÍNH</span>
-                  <span class="project-tag">5 Signature Themes · Financial Suite</span>
+                  <span class="project-badge" style="color: #D97706; border-color: rgba(217, 119, 6, 0.25); background: rgba(245, 158, 11, 0.08);">
+                    <span class="lang-text-vi">02 // QUẢN TRỊ TÀI CHÍNH</span>
+                    <span class="lang-text-en">02 // FINANCIAL SUITE</span>
+                  </span>
+                  <span class="project-tag">
+                    <span class="lang-text-vi">5 Phong Cách Độc Bản · Tài Chính</span>
+                    <span class="lang-text-en">5 Signature Themes · Financial Suite</span>
+                  </span>
                 </div>
                 <h3 class="project-card-title">LỘC MONEY 2</h3>
                 <div class="project-desc">
@@ -890,24 +998,27 @@
                   </p>
                 </div>
                 <div style="font-family: var(--font-serif); font-style: italic; font-size: 0.82rem; color: var(--accent-gold); margin-top: 0.6rem;">
-                  “Hiểu tiền hôm nay. Nhìn thấy ngày mai. — Understand today's money. Foresee tomorrow.”
+                  <span class="lang-text-vi">“Hiểu tiền hôm nay. Nhìn thấy ngày mai.”</span>
+                  <span class="lang-text-en">“Understand today's money. Foresee tomorrow.”</span>
                 </div>
                 <div style="display: flex; gap: 0.45rem; margin-top: 0.9rem; flex-wrap: wrap;">
-                  <span class="badge-pill">4 Giỏ Tài Sản · Asset Buckets</span>
-                  <span class="badge-pill">Dự Báo Dòng Tiền · Cashflow Forecast</span>
-                  <span class="badge-pill">5 Phong Cách Độc Bản · 5 Themes</span>
-                  <span class="badge-pill" style="color: #D97706; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.08);">✦ 23 Màn hình Showcase &amp; App</span>
+                  <span class="badge-pill"><span class="lang-text-vi">4 Giỏ Tài Sản</span><span class="lang-text-en">4 Asset Buckets</span></span>
+                  <span class="badge-pill"><span class="lang-text-vi">Dự Báo Dòng Tiền</span><span class="lang-text-en">Cashflow Forecast</span></span>
+                  <span class="badge-pill"><span class="lang-text-vi">5 Phong Cách Độc Bản</span><span class="lang-text-en">5 Signature Themes</span></span>
+                  <span class="badge-pill" style="color: #D97706; border-color: rgba(245, 158, 11, 0.4); background: rgba(245, 158, 11, 0.08);"><span class="lang-text-vi">✦ 23 Màn hình Showcase &amp; App</span><span class="lang-text-en">✦ 23 Showcase &amp; App Screens</span></span>
                 </div>
 
                 <!-- Direct Showcase & Web App Action CTAs (Requirement R2) -->
                 <div class="loc-card-action-bar">
                   <a href="https://locmoney2.pages.dev/showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta" onclick="event.stopPropagation();" title="Xem trang giới thiệu Lộc Money 2 Showcase">
                     <i data-lucide="sparkles" style="width: 14px; height: 14px; color: #F59E0B;"></i>
-                    <span>Trang Giới Thiệu (Showcase)</span>
+                    <span class="lang-text-vi">Trang Giới Thiệu (Showcase)</span>
+                    <span class="lang-text-en">Showcase Landing Page</span>
                   </a>
                   <a href="https://locmoney2.pages.dev" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn live-cta" onclick="event.stopPropagation();" title="Khởi chạy trực tiếp ứng dụng Lộc Money 2 Web App">
                     <i data-lucide="external-link" style="width: 14px; height: 14px; color: var(--accent-gold);"></i>
-                    <span>Khởi Chạy Web App ↗</span>
+                    <span class="lang-text-vi">Khởi Chạy Web App ↗</span>
+                    <span class="lang-text-en">Launch Web App ↗</span>
                   </a>
                 </div>
               </div>
@@ -948,8 +1059,14 @@
 
               <div class="project-details">
                 <div class="project-meta-top">
-                  <span class="project-badge">03 // AI PIPELINE · QUY TRÌNH AI</span>
-                  <span class="project-tag">AI Workflow · Media</span>
+                  <span class="project-badge">
+                    <span class="lang-text-vi">03 // QUY TRÌNH TỰ ĐỘNG AI</span>
+                    <span class="lang-text-en">03 // AI PIPELINE</span>
+                  </span>
+                  <span class="project-tag">
+                    <span class="lang-text-vi">Quy trình AI · Đa phương tiện</span>
+                    <span class="lang-text-en">AI Workflow · Media</span>
+                  </span>
                 </div>
                 <h3 class="project-card-title">LỘC VIDEO</h3>
                 <div class="project-desc">
@@ -961,9 +1078,9 @@
                   </p>
                 </div>
                 <div style="display: flex; gap: 0.5rem; margin-top: 1rem; flex-wrap: wrap;">
-                  <span class="badge-pill">Semantic Parser · Phân tích ngữ nghĩa</span>
-                  <span class="badge-pill">TTS Narration · Thuyết minh AI</span>
-                  <span class="badge-pill">MP4 Render · Xuất video</span>
+                  <span class="badge-pill"><span class="lang-text-vi">Phân tích ngữ nghĩa</span><span class="lang-text-en">Semantic Parser</span></span>
+                  <span class="badge-pill"><span class="lang-text-vi">Thuyết minh AI</span><span class="lang-text-en">TTS Narration</span></span>
+                  <span class="badge-pill"><span class="lang-text-vi">Xuất video MP4</span><span class="lang-text-en">MP4 Render</span></span>
                 </div>
               </div>
             </article>
@@ -977,11 +1094,12 @@
       <div class="container">
         <div class="eyebrow" style="margin-bottom: 0.5rem;">
           <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-          <span>MY JOURNEY · HÀNH TRÌNH &amp; TRƯỞNG THÀNH</span>
+          <span class="lang-text-vi">HÀNH TRÌNH &amp; TRƯỞNG THÀNH</span>
+          <span class="lang-text-en">MY JOURNEY &amp; GROWTH</span>
         </div>
         <h2 class="title-section">
-          Hành trình của tôi
-          <span class="bilingual-title-vi">My Journey</span>
+          <span class="lang-text-vi">Hành trình của tôi</span>
+          <span class="lang-text-en">My Journey</span>
         </h2>
         <div class="text-body" style="max-width: 660px; margin-top: 0.5rem;">
           <p class="bilingual-en" style="margin-bottom: 0.35rem;">
@@ -996,12 +1114,24 @@
           <!-- Control Buttons -->
           <div class="synthesis-controls">
             <button class="synthesis-btn active" data-mode="code" type="button">
-              <span class="synthesis-btn-title">01 / Hành trình · My Journey</span>
-              <span class="synthesis-btn-sub">Tiểu sử tự học &amp; Trưởng thành</span>
+              <span class="synthesis-btn-title">
+                <span class="lang-text-vi">01 / Hành trình</span>
+                <span class="lang-text-en">01 / My Journey</span>
+              </span>
+              <span class="synthesis-btn-sub">
+                <span class="lang-text-vi">Tiểu sử tự học &amp; Trưởng thành</span>
+                <span class="lang-text-en">Self-Directed Learning &amp; Growth</span>
+              </span>
             </button>
             <button class="synthesis-btn" data-mode="design" type="button">
-              <span class="synthesis-btn-title">02 / Cách học &amp; Tư duy</span>
-              <span class="synthesis-btn-sub">How I Learn &amp; Think · Framework 5 bước</span>
+              <span class="synthesis-btn-title">
+                <span class="lang-text-vi">02 / Cách học &amp; Tư duy</span>
+                <span class="lang-text-en">02 / How I Learn &amp; Think</span>
+              </span>
+              <span class="synthesis-btn-sub">
+                <span class="lang-text-vi">Framework tư duy 5 bước</span>
+                <span class="lang-text-en">5-Step Thinking Framework</span>
+              </span>
             </button>
           </div>
 
@@ -1012,7 +1142,10 @@
               <div class="bio-article-wrap">
                 <header class="bio-article-header">
                   <div class="bio-article-meta">
-                    <span class="bio-article-tag">01 // MY JOURNEY · HÀNH TRÌNH CỦA TÔI</span>
+                    <span class="bio-article-tag">
+                      <span class="lang-text-vi">01 // HÀNH TRÌNH CỦA TÔI</span>
+                      <span class="lang-text-en">01 // MY JOURNEY</span>
+                    </span>
                     <span class="bio-article-reading-time">~3 phút đọc</span>
                   </div>
                   <h3 class="bio-article-headline">Hành Trình Của Tôi</h3>
@@ -1209,14 +1342,15 @@
       <div class="container explorations-container">
         <div class="eyebrow" style="margin-bottom: 0.65rem;">
           <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
-          <span data-edit-key="explorations-eyebrow">LIBRARY · THƯ VIỆN</span>
+          <span class="lang-text-vi" data-edit-key="explorations-eyebrow">THƯ VIỆN &amp; KHOẢNH KHẮC</span>
+          <span class="lang-text-en">LIBRARY &amp; MOMENTS</span>
         </div>
 
         <div class="explorations-header-row">
           <div class="explorations-header-left">
-            <h2 class="explorations-title" data-edit-key="explorations-title">
-              Thư Viện
-              <span class="explorations-title-sub">· Library</span>
+            <h2 class="explorations-title">
+              <span class="lang-text-vi" data-edit-key="explorations-title">Thư Viện</span>
+              <span class="lang-text-en">Library</span>
             </h2>
           </div>
         </div>
@@ -1234,11 +1368,13 @@
         <div class="contact-wrap">
           <div class="eyebrow" style="margin-bottom: 0.75rem; justify-content: center;">
             <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-            <span>AUTHENTIC IDENTITY // CONNECT · DANH TÍNH &amp; KẾT NỐI</span>
+            <span class="lang-text-vi">DANH TÍNH &amp; KẾT NỐI</span>
+            <span class="lang-text-en">AUTHENTIC IDENTITY // CONNECT</span>
           </div>
           <h2 class="title-section" style="margin-bottom: 2rem;">
             Nguyễn Thành Lộc
-            <span class="bilingual-title-vi">Kết nối với tôi</span>
+            <span class="bilingual-title-vi lang-text-vi">Kết nối</span>
+            <span class="lang-text-en">Connect</span>
           </h2>
 
           <!-- Carrd Signature Frosted Profile Card -->
@@ -1259,7 +1395,10 @@
             <!-- Profile Info -->
             <div class="carrd-card-body">
               <h3 class="carrd-name">Nguyễn Thành Lộc</h3>
-              <div class="carrd-subtitle">Lộc Studio · 阮城禄 · Developer · Creator · Product Builder</div>
+              <div class="carrd-subtitle">
+                <span class="lang-text-vi">Lộc Studio · 阮城禄 · Phát triển sản phẩm &amp; Sáng tạo công nghệ</span>
+                <span class="lang-text-en">Lộc Studio · 阮城禄 · Developer · Creator · Product Builder</span>
+              </div>
 
               <!-- Motto Quote -->
               <div class="carrd-quote-box">
@@ -1338,7 +1477,10 @@
                     </svg>
                   </div>
                   <div class="carrd-btn-text">
-                    <span class="carrd-btn-title">Gmail · Hòm thư điện tử</span>
+                    <span class="carrd-btn-title">
+                      <span class="lang-text-vi">Hòm thư điện tử (Gmail)</span>
+                      <span class="lang-text-en">Gmail Email</span>
+                    </span>
                     <span class="carrd-btn-handle">locn7169@gmail.com</span>
                   </div>
                   <div class="carrd-btn-arrow">
@@ -1361,11 +1503,14 @@
                 </a>
                 <a href="sms:0866192413" class="carrd-dock-btn" title="Gửi tin nhắn SMS · Send SMS">
                   <i data-lucide="message-square" style="width: 15px; height: 15px;"></i>
-                  <span>SMS Message</span>
+                  <span>SMS</span>
                 </a>
                 <button type="button" class="carrd-dock-btn copy-phone-trigger" data-phone="0866192413" title="Sao chép số điện thoại · Copy Phone Number">
                   <i data-lucide="copy" style="width: 15px; height: 15px;"></i>
-                  <span class="copy-label">Sao chép SĐT · Copy</span>
+                  <span class="copy-label">
+                    <span class="lang-text-vi">Sao chép SĐT</span>
+                    <span class="lang-text-en">Copy Phone</span>
+                  </span>
                 </button>
               </div>
             </div>
@@ -1375,25 +1520,32 @@
         <!-- Toast Notification -->
         <div class="toast-notice" role="alert" aria-live="polite">
           <i data-lucide="check" style="width: 16px; height: 16px; color: var(--accent-gold);"></i>
-          <span class="toast-msg">Đã sao chép SĐT: 0866192413 · Phone copied</span>
+          <span class="toast-msg">
+            <span class="lang-text-vi">Đã sao chép SĐT: 0866192413</span>
+            <span class="lang-text-en">Copied phone: 0866192413</span>
+          </span>
         </div>
 
         <div class="colophon-footer">
           <div>
-            © 2026 Nguyễn Thành Lộc (阮城禄). All rights reserved · Bảo lưu mọi quyền.
+            <span class="lang-text-vi">© 2026 Nguyễn Thành Lộc (阮城禄). Bảo lưu mọi quyền.</span>
+            <span class="lang-text-en">© 2026 Nguyễn Thành Lộc (阮城禄). All rights reserved.</span>
           </div>
           <div class="time-badge">
             <i data-lucide="clock" style="width: 13px; height: 13px; color: var(--accent-gold);"></i>
             <span id="live-time">Loading local time...</span>
           </div>
           <div>
-            Direct Contact: <a href="tel:0866192413" style="color: var(--accent-gold); text-decoration: none;">0866 192 413</a> · Ho Chi Minh City, VN (TP. Hồ Chí Minh)
+            <span class="lang-text-vi">Liên hệ trực tiếp: </span>
+            <span class="lang-text-en">Direct Contact: </span>
+            <a href="tel:0866192413" style="color: var(--accent-gold); text-decoration: none;">0866 192 413</a> · Ho Chi Minh City, VN
           </div>
         </div>
         <!-- Discrete Floating Scroll-to-Top Pill -->
         <button type="button" class="scroll-top-btn" aria-label="Cuộn lên đầu trang · Back to top">
           <i data-lucide="arrow-up" style="width: 14px; height: 14px;"></i>
-          <span>Lên đầu · Top</span>
+          <span class="lang-text-vi">Lên đầu</span>
+          <span class="lang-text-en">Top</span>
         </button>
       </div>
     </section>
@@ -1425,16 +1577,24 @@
                 ● Live Ready
               </span>
             </div>
-            <p>Financial Intelligence — Quản trị tài chính cá nhân thông minh &amp; Độc bản</p>
-            <div class="loc-modal-header-slogan">“Hiểu tiền hôm nay. Nhìn thấy ngày mai.”</div>
+            <p>
+              <span class="lang-text-vi">Financial Intelligence — Quản trị tài chính cá nhân thông minh &amp; Độc bản</span>
+              <span class="lang-text-en">Financial Intelligence — Intelligent &amp; Bespoke Wealth Management Suite</span>
+            </p>
+            <div class="loc-modal-header-slogan">
+              <span class="lang-text-vi">“Hiểu tiền hôm nay. Nhìn thấy ngày mai.”</span>
+              <span class="lang-text-en">“Understand today's money. Foresee tomorrow.”</span>
+            </div>
             <div style="display: flex; gap: 0.55rem; margin-top: 0.85rem; flex-wrap: wrap;">
               <a href="https://locmoney2.pages.dev/showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta" style="background: rgba(245, 158, 11, 0.25); color: #FDE68A; border-color: rgba(245, 158, 11, 0.5);">
                 <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-                <span>Xem Showcase Giới Thiệu ↗</span>
+                <span class="lang-text-vi">Xem Showcase Giới Thiệu ↗</span>
+                <span class="lang-text-en">Explore Showcase Page ↗</span>
               </a>
               <a href="https://locmoney2.pages.dev" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn live-cta" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.3);">
                 <i data-lucide="external-link" style="width: 14px; height: 14px; color: var(--accent-gold);"></i>
-                <span>Khởi Chạy Ứng Dụng ↗</span>
+                <span class="lang-text-vi">Khởi Chạy Ứng Dụng ↗</span>
+                <span class="lang-text-en">Launch Live App ↗</span>
               </a>
             </div>
           </div>
@@ -1449,23 +1609,23 @@
       <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Money 2 · Lộc Money 2 Modules">
         <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-loc-tab="tong-quan">
           <i data-lucide="layout" style="width: 14px; height: 14px;"></i>
-          <span>Tổng quan · Overview</span>
+          <span><span class="lang-text-vi">Tổng quan</span><span class="lang-text-en">Overview</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="interactive-hub">
           <i data-lucide="play-circle" style="width: 14px; height: 14px;"></i>
-          <span>Động Cơ Tương Tác · Playground</span>
+          <span><span class="lang-text-vi">Động Cơ Tương Tác</span><span class="lang-text-en">Playground</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="signature-themes">
           <i data-lucide="palette" style="width: 14px; height: 14px;"></i>
-          <span>5 Chủ Đề Độc Bản · 5 Themes</span>
+          <span><span class="lang-text-vi">5 Chủ Đề Độc Bản</span><span class="lang-text-en">5 Themes</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="app-screens">
           <i data-lucide="smartphone" style="width: 14px; height: 14px;"></i>
-          <span>6 Màn Hình Ứng Dụng · App Screens</span>
+          <span><span class="lang-text-vi">6 Màn Hình Ứng Dụng</span><span class="lang-text-en">6 App Screens</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-loc-tab="showcase-gallery">
           <i data-lucide="image" style="width: 14px; height: 14px;"></i>
-          <span>Bộ Sưu Tập Giao Diện · Gallery</span>
+          <span><span class="lang-text-vi">Bộ Sưu Tập Giao Diện</span><span class="lang-text-en">Showcase Gallery</span></span>
         </button>
       </nav>
 
@@ -2196,16 +2356,24 @@
                 ● Live Ready
               </span>
             </div>
-            <p>Learn Anything, Your Way — Nền tảng học tập cá nhân hóa &amp; không giới hạn</p>
-            <div class="loc-modal-header-slogan">“Không giới hạn điều bạn có thể học.”</div>
+            <p>
+              <span class="lang-text-vi">Learn Anything, Your Way — Nền tảng học tập cá nhân hóa &amp; không giới hạn</span>
+              <span class="lang-text-en">Learn Anything, Your Way — Open, Personalized Learning Ecosystem</span>
+            </p>
+            <div class="loc-modal-header-slogan">
+              <span class="lang-text-vi">“Không giới hạn điều bạn có thể học.”</span>
+              <span class="lang-text-en">“Open horizons for every learner.”</span>
+            </div>
             <div style="display: flex; gap: 0.55rem; margin-top: 0.85rem; flex-wrap: wrap;">
               <a href="https://duolearn-hsk.pages.dev/#showcase" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn showcase-cta" style="background: rgba(16, 185, 129, 0.25); color: #6EE7B7; border-color: rgba(16, 185, 129, 0.5);">
                 <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-                <span>Xem Showcase Giới Thiệu ↗</span>
+                <span class="lang-text-vi">Xem Showcase Giới Thiệu ↗</span>
+                <span class="lang-text-en">Explore Showcase Page ↗</span>
               </a>
               <a href="https://duolearn-hsk.pages.dev/" target="_blank" rel="noopener noreferrer" class="loc-action-cta-btn live-cta" style="background: rgba(255, 255, 255, 0.12); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.3);">
                 <i data-lucide="external-link" style="width: 14px; height: 14px; color: var(--accent-gold);"></i>
-                <span>Khởi Chạy Ứng Dụng ↗</span>
+                <span class="lang-text-vi">Khởi Chạy Ứng Dụng ↗</span>
+                <span class="lang-text-en">Launch Live App ↗</span>
               </a>
             </div>
           </div>
@@ -2220,23 +2388,23 @@
       <nav class="loc-modal-nav" role="tablist" aria-label="Phân hệ Lộc Learn · DuoLearn Modules">
         <button type="button" class="loc-modal-tab-btn active" role="tab" aria-selected="true" data-learn-tab="tong-quan">
           <i data-lucide="layout" style="width: 14px; height: 14px;"></i>
-          <span>Tổng quan · Overview</span>
+          <span><span class="lang-text-vi">Tổng quan</span><span class="lang-text-en">Overview</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="dong-co">
           <i data-lucide="play-circle" style="width: 14px; height: 14px;"></i>
-          <span>Động Cơ 4 Giác Quan · Playground</span>
+          <span><span class="lang-text-vi">Động Cơ 4 Giác Quan</span><span class="lang-text-en">Playground</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="lo-trinh">
           <i data-lucide="layers" style="width: 14px; height: 14px;"></i>
-          <span>Lộ Trình &amp; SM-2 · Roadmaps</span>
+          <span><span class="lang-text-vi">Lộ Trình &amp; SM-2</span><span class="lang-text-en">Roadmaps &amp; SM-2</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="tu-dai-thu-thach">
           <i data-lucide="sparkles" style="width: 14px; height: 14px;"></i>
-          <span>Tứ Đại Thử Thách · Features</span>
+          <span><span class="lang-text-vi">Tứ Đại Thử Thách</span><span class="lang-text-en">Core Features</span></span>
         </button>
         <button type="button" class="loc-modal-tab-btn" role="tab" aria-selected="false" data-learn-tab="thu-vien-anh">
           <i data-lucide="image" style="width: 14px; height: 14px;"></i>
-          <span>Bộ Sưu Tập Giao Diện · Gallery</span>
+          <span><span class="lang-text-vi">Bộ Sưu Tập Giao Diện</span><span class="lang-text-en">Showcase Gallery</span></span>
         </button>
       </nav>
 

@@ -572,6 +572,120 @@ main {
   to { transform: rotate(-720deg); }
 }
 
+/* ==========================================================================
+   ELEGANT DUAL-LANGUAGE SWITCHER PILL (VI / EN)
+   Luxury glassmorphic pill button for header & mobile navigation
+   ========================================================================== */
+.nav-actions-cluster {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.lang-toggle-pill {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  height: 32px;
+  padding: 2px 4px;
+  border-radius: 9999px;
+  background: rgba(28, 26, 23, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 142, 56, 0.28);
+  box-shadow: 0 1px 4px rgba(24, 22, 19, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  outline: none;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 105;
+  box-sizing: border-box;
+}
+
+.lang-toggle-pill:hover {
+  background: rgba(28, 26, 23, 0.08);
+  border-color: rgba(184, 142, 56, 0.45);
+  box-shadow: 0 2px 8px rgba(184, 142, 56, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+  transform: translateY(-1px);
+}
+
+.lang-toggle-pill:active {
+  transform: scale(0.94);
+}
+
+.lang-toggle-pill .lang-chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 24px;
+  padding: 0 6px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--ink-muted, #726b60);
+  background: transparent;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.lang-toggle-pill .lang-chip:hover {
+  color: var(--ink-primary, #1c1a17);
+}
+
+.lang-toggle-pill .lang-chip.active {
+  color: #FAF7F2 !important;
+  background: #1c1a17 !important;
+  box-shadow: 0 2px 6px rgba(28, 26, 23, 0.3), 0 0 0 1px rgba(184, 142, 56, 0.35);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.lang-toggle-pill .lang-sep {
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(184, 142, 56, 0.4);
+  padding: 0 1px;
+  user-select: none;
+  pointer-events: none;
+}
+
+.menu-topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.menu-lang-toggle {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(184, 142, 56, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ==========================================================================
+   LANGUAGE CONTENT ENGINE (VIETNAMESE / ENGLISH CLEAN TOGGLE)
+   Eliminates bilingual clutter so the site is clean and compact
+   ========================================================================== */
+html[data-lang="vi"] .lang-text-en,
+html[data-lang="vi"] .lang-en-only {
+  display: none !important;
+}
+
+html[data-lang="en"] .lang-text-vi,
+html[data-lang="en"] .lang-vi-only {
+  display: none !important;
+}
+
+.lang-text-vi,
+.lang-text-en {
+  transition: opacity 0.2s ease;
+}
+
 /* Le-Lab Hamburger & Fullscreen Mobile Menu */
 .hamburger-toggle-btn {
   display: none;
@@ -5028,6 +5142,21 @@ body.menu-active .hamburger-line:nth-child(3) {
   .nav-status,
   .le-lab-magnetic-btn {
     display: none !important;
+  }
+  .nav-actions-cluster {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.45rem !important;
+  }
+  .lang-toggle-pill {
+    height: 30px !important;
+    padding: 2px 3.5px !important;
+  }
+  .lang-toggle-pill .lang-chip {
+    min-width: 23px !important;
+    height: 22px !important;
+    font-size: 0.68rem !important;
+    padding: 0 5px !important;
   }
   .hamburger-toggle-btn {
     width: 38px;

@@ -54,6 +54,7 @@ import { initTiptapEditor } from './tiptap-editor';
 import { initScrollBackdrop } from './scroll-backdrop';
 import { initAdminStudio } from './admin-studio';
 import { initFirebaseCMS } from './firebase-cms';
+import { initI18n } from './i18n';
 
 // Initialize Lucide icons
 function setupIcons() {
@@ -223,6 +224,9 @@ function setupCopyPhone() {
 
 // App bootstrap
 document.addEventListener('DOMContentLoaded', () => {
+  // 0. Language Engine Initialization (VI/EN Clean Toggle)
+  initI18n();
+
   // 1. Instant Data Hydration (Text & Photos restored at 0ms before paint)
   initTiptapEditor();
   initExplorationsMoments();
