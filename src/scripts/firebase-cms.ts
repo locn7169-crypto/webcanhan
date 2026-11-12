@@ -109,6 +109,11 @@ export function applyDataToDOM(data: Record<string, any>) {
   Object.entries(data).forEach(([key, val]) => {
     if (!val) return;
 
+    // Ignore all volatile/corrupted synthesis keys from legacy snapshots
+    if (key.startsWith('tt-synthesis-') || key.includes('synthesis')) {
+      return;
+    }
+
     // 1. Kiểm tra nếu khối bị xóa
     if (typeof val === 'object' && val !== null && val.deleted) {
       const el = document.querySelector<HTMLElement>(`[data-edit-key="${key}"], [data-key="${key}"], #${key}`);

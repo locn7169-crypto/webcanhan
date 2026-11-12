@@ -209,7 +209,7 @@ export function ensureStableEditKeys() {
   );
 
   candidates.forEach((el, idx) => {
-    if (el.closest('#visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, #admin-studio-overlay, #admin-auth-overlay, #previewModal, #exploration-journal-modal, script, style, svg')) return;
+    if (el.closest('#synthesis, #visual-editor-dock, #tiptap-bubble-menu, #tiptap-composer-modal, .toast-notice, #admin-studio-overlay, #admin-auth-overlay, #previewModal, #exploration-journal-modal, script, style, svg')) return;
     if (!el.getAttribute('data-edit-key')) {
       const secId = el.closest('section[id], div[id]')?.id || 'doc';
       const tag = el.tagName.toLowerCase();
@@ -291,7 +291,7 @@ function sanitizeEdits(edits: Record<string, any>): boolean {
     const val = edits[key];
     const text = typeof val === 'string' ? val : (val?.html || JSON.stringify(val));
     const isObsoleteString = obsoleteStrings.some((s) => text.includes(s));
-    const isObsoleteKey = obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle'));
+    const isObsoleteKey = obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle')) || key.startsWith('tt-synthesis-') || key.includes('synthesis');
     if (isObsoleteString || isObsoleteKey) {
       delete edits[key];
       changed = true;
@@ -352,7 +352,8 @@ function applyEditsToDOM(edits: Record<string, any>) {
     const valStr = typeof val === 'string' ? val : (val?.html || JSON.stringify(val) || '');
     if (
       obsoleteStrings.some((s) => valStr.includes(s)) ||
-      obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle'))
+      obsoleteKeys.some((k) => key === k || key.includes('explorations-subtitle')) ||
+      key.startsWith('tt-synthesis-') || key.includes('synthesis')
     ) {
       return;
     }
