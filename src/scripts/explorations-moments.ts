@@ -19,9 +19,9 @@ export const moments: MomentItem[] = [
   {
     id: 'moment-1',
     catId: 'photography',
-    title: 'Qua ống kính của tôi',
+    title: 'Bình hoa hồng trắng — Kỷ niệm cuối cấp 3',
     meta: '2026 · NHIẾP ẢNH & THỊ GIÁC',
-    caption: 'Một cuốn nhật ký bằng hình ảnh, nơi những chuyến đi, cảnh vật và khoảnh khắc đáng nhớ được lưu giữ theo cách riêng.',
+    caption: 'Đây là bức ảnh mà tôi đã được chị Trâm Anh tặng vào cuối năm cấp 3. Hiện tại đang là tất cả các ảnh đại diện mạng xã hội của tôi',
     image: './assets/loc-banner.jpg',
     imgId: 'exp-cover-photography',
     categoryName: 'Nhiếp ảnh',
@@ -29,31 +29,12 @@ export const moments: MomentItem[] = [
   {
     id: 'moment-2',
     catId: 'trekking',
-    title: 'Một mình đi núi · Cung đường cao nguyên',
+    title: 'Khung cảnh trên núi nhìn xuống Thành Phố Tây Ninh',
     meta: '2026 · SỨC BỀN & TĨNH TÂM',
-    caption: 'Tìm kiếm sự tĩnh tâm và bền bỉ qua những cung đường cao nguyên, triền sương mù và rừng thông tĩnh lặng.',
+    caption: 'Hình ảnh từ trên núi nhìn xuống . rất đẹp',
     image: './assets/backdrop-works.jpg',
     imgId: 'exp-cover-trekking',
     categoryName: 'Trekking & Outdoors',
-  },
-  {
-    id: 'moment-3',
-    catId: 'chinese',
-    title: 'Chiêm nghiệm “Tri hành hợp nhất” · 知行合一',
-    meta: 'HSK 4 · NGÔN NGỮ & NHÂN SINH',
-    caption: 'Học chữ Hán và những câu nói triết lý nơi ngôn ngữ phản chiếu nhân sinh quan: Biết mà không làm thì chưa phải là biết thật sự.',
-    image: './assets/chinese-philosophy-card.svg',
-    imgId: 'exp-cover-chinese',
-    categoryName: 'Ngôn ngữ & Triết lý Hán tự',
-  },
-  {
-    id: 'moment-4',
-    catId: 'photography',
-    title: 'Tĩnh vật & Ánh sáng tự nhiên',
-    meta: '2026 · KHOẢNG LẶNG THỊ GIÁC',
-    caption: 'Quan sát nét tĩnh lặng của hoa lá và sự cân bằng không gian trong những khoảnh khắc đời thường.',
-    image: './assets/loc-bg.jpg',
-    categoryName: 'Nhiếp ảnh',
   },
 ];
 
@@ -68,7 +49,7 @@ export function loadCachedMoments() {
     if (raw) {
       const parsed = JSON.parse(raw);
       if (Array.isArray(parsed) && parsed.length > 0) {
-        parsed.forEach((cachedItem: MomentItem, idx: number) => {
+        parsed.slice(0, 2).forEach((cachedItem: MomentItem, idx: number) => {
           if (moments[idx]) {
             if (cachedItem.image) moments[idx].image = cachedItem.image;
             if (cachedItem.title) moments[idx].title = cachedItem.title;
@@ -81,6 +62,7 @@ export function loadCachedMoments() {
   } catch (e) {
     console.warn('[Moments] Cache load notice:', e);
   }
+  moments.length = 2;
 }
 
 function cleanMediaTitle(rawTitle?: string): string {
@@ -109,7 +91,6 @@ export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
 
   const photos = mediaList.filter((m) => m.collectionId === 'photography' || !m.collectionId);
   const treks = mediaList.filter((m) => m.collectionId === 'trekking');
-  const chinese = mediaList.filter((m) => m.collectionId === 'chinese');
 
   // Moment 1: Latest photography (Prioritize high-res dataUrl for razor-sharp Retina display)
   if (photos[0]) {
@@ -125,23 +106,8 @@ export function updateMomentsFromMediaList(mediaList: MediaItem[]) {
     if (treks[0].caption) moments[1].caption = cleanMediaCaption(treks[0].caption);
   }
 
-  // Moment 3: Latest Chinese
-  if (chinese[0]) {
-    moments[2].image = chinese[0].dataUrl || chinese[0].thumbUrl;
-    if (chinese[0].title) moments[2].title = cleanMediaTitle(chinese[0].title);
-    if (chinese[0].caption) moments[2].caption = cleanMediaCaption(chinese[0].caption);
-  }
-
-  // Moment 4: Second photography (or next photo)
-  if (photos[1]) {
-    moments[3].image = photos[1].dataUrl || photos[1].thumbUrl;
-    if (photos[1].title) moments[3].title = cleanMediaTitle(photos[1].title);
-    if (photos[1].caption) moments[3].caption = cleanMediaCaption(photos[1].caption);
-  } else if (mediaList[3]) {
-    moments[3].image = mediaList[3].dataUrl || mediaList[3].thumbUrl;
-    if (mediaList[3].title) moments[3].title = cleanMediaTitle(mediaList[3].title);
-    if (mediaList[3].caption) moments[3].caption = cleanMediaCaption(mediaList[3].caption);
-  }
+  // Strictly enforce 2 items in Thư Viện
+  moments.length = 2;
 
   // Persist cache immediately
   try {
@@ -177,11 +143,13 @@ export async function syncMomentsWithStorage() {
       const categories = await dbGetSetting<any>('journal_categories', null);
       if (categories?.photography?.coverUrl) moments[0].image = categories.photography.coverUrl;
       if (categories?.trekking?.coverUrl) moments[1].image = categories.trekking.coverUrl;
-      if (categories?.chinese?.coverUrl) moments[2].image = categories.chinese.coverUrl;
     }
   } catch (err) {
     console.warn('[Moments] Storage sync notice:', err);
   }
+
+  // Strictly enforce 2 items in Thư Viện
+  moments.length = 2;
 
   // Re-render moment cards to ensure updated titles, captions, and images are live
   renderMoments();
